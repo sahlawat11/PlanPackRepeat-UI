@@ -3,7 +3,6 @@ import { Routes, RouterModule } from '@angular/router';
 import { HomeComponent } from './pages/home/home.component';
 import { CallbackComponent } from './pages/callback/callback.component';
 import { AuthGuard } from './auth/auth.guard';
-import { LoginGuard } from './auth/login.guard';
 import { ProfileComponent } from './pages/profile/profile.component';
 import { LoginComponent } from './components/login/login.component';
 

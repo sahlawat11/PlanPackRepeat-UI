@@ -9,9 +9,12 @@ import { Router } from '@angular/router';
   providedIn: 'root'
 })
 export class AuthService {
+
+  isRunningLocally: boolean = window.location.href.search('localhost') > -1
+
   auth0Client$ = (from(
     createAuth0Client({
-      domain: 'dev-zzz.auth0.com',
+      domain: this.isRunningLocally ? 'localhost:4200' : 'dev-zzz.auth0.com',
       client_id: 'hpU9Ad9k0yQzRPkBOS26ou6qR2HHjJeu',
       redirect_uri: `localhost:4200/callback`
     })
@@ -42,8 +45,10 @@ export class AuthService {
   }
 
   localAuthSetup() {
+    console.log('THIS HAS BEEN ENVOKED');
     const checkAuth$ = this.isAuthenticated$.pipe(
       concatMap((loggedIn: boolean) => {
+        debugger;
         if (loggedIn) {
           return this.getUser$();
         }

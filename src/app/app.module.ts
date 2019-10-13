@@ -6,13 +6,17 @@ import { AppComponent } from './app.component';
 import { NavbarComponent } from './shared/navbar/navbar.component';
 import { CallbackComponent } from './shared/callback/callback.component';
 import { ProfileComponent } from './shared/profile/profile.component';
+import { HomeComponent } from './shared/home/home.component';
+
+import { RouteGuard } from './auth-route-guard';
 
 @NgModule({
   declarations: [
     AppComponent,
     NavbarComponent,
     CallbackComponent,
-    ProfileComponent
+    ProfileComponent,
+    HomeComponent
   ],
   imports: [
     BrowserModule,

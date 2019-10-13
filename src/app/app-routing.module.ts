@@ -1,10 +1,9 @@
 import { NgModule } from '@angular/core';
-import { Routes, RouterModule, RouterEvent } from '@angular/router';
-import { CallbackComponent } from './shared/callback/callback.component';
-import { ProfileComponent } from './shared/profile/profile.component';
-import { HomeComponent } from './shared/home/home.component';
-
-import { RouteGuard } from './auth-route-guard';
+import { Routes, RouterModule } from '@angular/router';
+import { HomeComponent } from './pages/home/home.component';
+import { CallbackComponent } from './pages/callback/callback.component';
+import { AuthGuard } from './auth/auth.guard';
+import { ProfileComponent } from './pages/profile/profile.component';
 
 const routes: Routes = [
   {
@@ -13,22 +12,18 @@ const routes: Routes = [
   },
   {
     path: 'profile',
-    component: ProfileComponent
-  },
-  {
-    path: 'login',
-    component: HomeComponent
+    component: ProfileComponent,
+    canActivate: [AuthGuard]
   },
   {
     path: '',
-    redirectTo: '/login',
-    pathMatch: 'full',
+    component: HomeComponent,
+    pathMatch: 'full'
   }
 ];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
-  exports: [RouterModule],
-  providers: [RouteGuard]
+  exports: [RouterModule]
 })
 export class AppRoutingModule { }

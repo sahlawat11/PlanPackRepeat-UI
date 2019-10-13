@@ -22,7 +22,7 @@
         >
           <ul class="navbar-nav mr-auto">
             <li class="nav-item">
-              <button class="standard-btn btn-primary" routerLink="/"><span>Home</span></button>
+              <button [disabled]="!auth.loggedIn" class="standard-btn btn-primary" routerLink="/"><span>Home</span></button>
             </li>
           </ul>
 

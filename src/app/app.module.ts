@@ -15,6 +15,7 @@ import { FooterComponent } from './components/footer/footer.component';
 import { HeroComponent } from './components/hero/hero.component';
 import { HomeContentComponent } from './components/home-content/home-content.component';
 import { LoadingComponent } from './components/loading/loading.component';
+import { LoginComponent } from './components/login/login.component';
 
 export function hljsLanguages() {
   return [{ name: 'json', func: json }];
@@ -30,7 +31,8 @@ export function hljsLanguages() {
     FooterComponent,
     HeroComponent,
     HomeContentComponent,
-    LoadingComponent
+    LoadingComponent,
+    LoginComponent
   ],
   imports: [
     BrowserModule,

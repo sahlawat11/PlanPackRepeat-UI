@@ -21,6 +21,8 @@ import { HttpClientModule, HttpClient } from '@angular/common/http';
 
 import { UserService } from './services/user.service';
 import { LoadingService } from './components/loading/loading.service'
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { ToastrModule } from 'ngx-toastr';
 
 
 export function hljsLanguages() {
@@ -48,7 +50,12 @@ export function hljsLanguages() {
       languages: hljsLanguages
     }),
     FontAwesomeModule,
-    HttpClientModule
+    HttpClientModule,
+    BrowserAnimationsModule,
+    ToastrModule.forRoot({
+      timeOut: 4000,
+      positionClass: 'toast-top-right'
+    })
   ],
   providers: [ UserService, HttpClient, LoadingService ],
   bootstrap: [AppComponent]

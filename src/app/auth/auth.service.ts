@@ -10,6 +10,9 @@ import { Router } from '@angular/router';
   providedIn: 'root'
 })
 export class AuthService {
+
+  checkIfTheUserIsExisting: boolean;
+
   // Create an observable of Auth0 instance of client
   auth0Client$ = (from(
     createAuth0Client({
@@ -104,6 +107,9 @@ export class AuthService {
     // Subscribe to authentication completion observable
     // Response will be an array of user and login status
     authComplete$.subscribe(([user, loggedIn]) => {
+      this.checkIfTheUserIsExisting = true;
+      console.log('***** checking if the user is an existing:', this.checkIfTheUserIsExisting);
+      // debugger;
       // Redirect to target route after callback processing
       this.router.navigate([targetRoute]);
     });

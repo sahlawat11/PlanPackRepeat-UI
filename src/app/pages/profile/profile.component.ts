@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from 'src/app/auth/auth.service';
+import { LoadingService } from '../../components/loading/loading.service';
 
 @Component({
   selector: 'app-profile',
@@ -9,14 +10,20 @@ import { AuthService } from 'src/app/auth/auth.service';
 export class ProfileComponent implements OnInit {
   profileJson: string = null;
 
-  constructor(public auth: AuthService) { }
+  constructor(public auth: AuthService, private loadingService: LoadingService) { }
 
   ngOnInit() {
     this.auth.userProfile$.subscribe(
       profile => {
         console.log('NOW THIS HAS BEEN ENVOKED:', profile);
-        this.profileJson = JSON.stringify(profile, null, 2)}
-    );
-  }
+        this.loadingService.enableLoadingMask();
+        setTimeout(() => {
+          this.loadingService.disableLoadingMask();
+          this.profileJson = JSON.stringify(profile, null, 2)
+
+        }, 5000);
+    
+  });
+}
 
 }

@@ -19,9 +19,9 @@ export class LoginComponent implements OnInit {
   constructor(private router: Router, private authService: AuthService) {
     this.authService.isAuthenticated$.subscribe(
       (loggedIn => {
-        debugger;
+        // debugger;
         console.log('****', UrlTree, window.location.href);
-        debugger;
+        // debugger;
         if (!loggedIn) {
             console.log('Need to stay here.');
         } else {

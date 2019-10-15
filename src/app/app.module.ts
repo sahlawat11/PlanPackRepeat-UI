@@ -17,6 +17,12 @@ import { HomeContentComponent } from './components/home-content/home-content.com
 import { LoadingComponent } from './components/loading/loading.component';
 import { LoginComponent } from './components/login/login.component';
 
+import { HttpClientModule, HttpClient } from '@angular/common/http';
+
+import { UserService } from './services/user.service';
+import { LoadingService } from './components/loading/loading.service'
+
+
 export function hljsLanguages() {
   return [{ name: 'json', func: json }];
 }
@@ -41,9 +47,10 @@ export function hljsLanguages() {
     HighlightModule.forRoot({
       languages: hljsLanguages
     }),
-    FontAwesomeModule
+    FontAwesomeModule,
+    HttpClientModule
   ],
-  providers: [],
+  providers: [ UserService, HttpClient, LoadingService ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

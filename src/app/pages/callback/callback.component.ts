@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from 'src/app/auth/auth.service';
+import { LoadingService } from '../../components/loading/loading.service';
 
 @Component({
   selector: 'app-callback',
@@ -8,10 +9,14 @@ import { AuthService } from 'src/app/auth/auth.service';
 })
 export class CallbackComponent implements OnInit {
 
-  constructor(private auth: AuthService) { }
+  constructor(private auth: AuthService, private loadingService: LoadingService) { }
 
   ngOnInit() {
-    this.auth.handleAuthCallback();
+    this.loadingService.enableLoadingMask();
+    setTimeout(() => {
+      this.auth.handleAuthCallback();
+
+    }, 5000);
   }
 
 }

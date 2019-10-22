@@ -23,6 +23,9 @@ import { UserService } from './services/user.service';
 import { LoadingService } from './components/loading/loading.service'
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ToastrModule } from 'ngx-toastr';
+import { CreateItineraryComponent } from './pages/create-itinerary/create-itinerary.component';
+import { GoogleMapsComponent } from './components/google-maps/google-maps.component';
+import { AgmCoreModule } from '@agm/core';
 
 
 export function hljsLanguages() {
@@ -40,7 +43,9 @@ export function hljsLanguages() {
     HeroComponent,
     HomeContentComponent,
     LoadingComponent,
-    LoginComponent
+    LoginComponent,
+    CreateItineraryComponent,
+    GoogleMapsComponent
   ],
   imports: [
     BrowserModule,
@@ -48,6 +53,10 @@ export function hljsLanguages() {
     NgbModule,
     HighlightModule.forRoot({
       languages: hljsLanguages
+    }),
+    AgmCoreModule.forRoot({
+      apiKey: 'AIzaSyAzdiZyPOCqTWmA8g-WVGYFG5DuDAIsV4I',
+      libraries: ['places']
     }),
     FontAwesomeModule,
     HttpClientModule,

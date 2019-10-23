@@ -1,5 +1,7 @@
+/// <reference types="@types/googlemaps" />
 import { Component, OnInit, ViewChild, ElementRef, NgZone } from '@angular/core';
 import { MapsAPILoader, MouseEvent } from '@agm/core';
+// import {} from '@types/googlemaps';
 
 @Component({
   selector: 'app-google-maps',
@@ -37,7 +39,7 @@ export class GoogleMapsComponent implements OnInit {
           if (place.geometry === undefined || place.geometry === null) {
             return;
           }
- 
+          debugger;
           //set latitude, longitude and zoom
           this.latitude = place.geometry.location.lat();
           this.longitude = place.geometry.location.lng();

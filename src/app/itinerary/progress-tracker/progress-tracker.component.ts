@@ -1,54 +1,26 @@
 import { Component, OnInit } from '@angular/core';
 
+import { ItineraryService } from '../itinerary.service';
+
 @Component({
   selector: 'app-progress-tracker',
   templateUrl: './progress-tracker.component.html',
-  styleUrls: ['./progress-tracker.component.css']
+  styleUrls: ['./progress-tracker.component.scss']
 })
 export class ProgressTrackerComponent implements OnInit {
 
-  trackerOptions = [
-    {
-      step: 'endpoint', stepReady: false,
-      section: 'platform-progress', stepCompleted: false
-    },
-    {
-      step: 'assets', stepReady: false,
-      section: 'assets-progress', stepCompleted: false
-    },
-    {
-      step: 'instruction', stepReady: false,
-      section: 'format-progress', stepCompleted: false
-    },
-    {
-      step: 'metadata', stepReady: false,
-      section: 'format-progress', stepCompleted: false
-    },
-    {
-      step: 'instructions', stepReady: false,
-      section: 'format-progress', stepCompleted: false
-    },
-    {
-      step: 'schedule', stepReady: false,
-      section: 'schedule-progress', stepCompleted: false
-    },
-    {
-      step: 'review', stepReady: false,
-      section: 'review-progress', stepCompleted: false
-    },
-    {
-      step: 'submit', stepReady: false,
-      section: 'NA', stepCompleted: false
-    }
-  ];
+  trackerOptions: Array<any>;
 
-  constructor() { }
+  constructor(private itineraryService: ItineraryService) { }
 
   ngOnInit() {
+    this.trackerOptions = this.itineraryService.trackerOptions;
   }
 
   goToStep() {
     console.log('This has been called');
   }
+
+
 
 }

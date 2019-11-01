@@ -4,7 +4,7 @@ import { faLink } from '@fortawesome/free-solid-svg-icons';
 @Component({
   selector: 'app-home-content',
   templateUrl: './home-content.component.html',
-  styleUrls: ['./home-content.component.css']
+  styleUrls: ['./home-content.component.scss']
 })
 export class HomeContentComponent implements OnInit {
   faLink = faLink;

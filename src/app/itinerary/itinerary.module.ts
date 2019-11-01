@@ -7,6 +7,7 @@ import { ProgressTrackerComponent } from './progress-tracker/progress-tracker.co
 import { ItineraryBaseComponent } from './itinerary-base/itinerary-base.component';
 import { ItineraryService } from './itinerary.service';
 
+
 @NgModule({
   declarations: [InfoComponent, ProgressTrackerComponent, ItineraryBaseComponent],
   providers: [ ItineraryService ],

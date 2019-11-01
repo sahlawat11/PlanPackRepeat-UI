@@ -26,7 +26,7 @@ import { ToastrModule } from 'ngx-toastr';
 import { CreateItineraryComponent } from './pages/create-itinerary/create-itinerary.component';
 import { GoogleMapsComponent } from './components/google-maps/google-maps.component';
 import { AgmCoreModule } from '@agm/core';
-
+import { ItineraryModule } from './itinerary/itinerary.module';
 
 export function hljsLanguages() {
   return [{ name: 'json', func: json }];
@@ -64,7 +64,8 @@ export function hljsLanguages() {
     ToastrModule.forRoot({
       timeOut: 4000,
       positionClass: 'toast-top-right'
-    })
+    }),
+    ItineraryModule
   ],
   providers: [ UserService, HttpClient, LoadingService ],
   bootstrap: [AppComponent]

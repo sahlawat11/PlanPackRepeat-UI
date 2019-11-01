@@ -19,14 +19,4 @@ export class AppComponent implements OnInit {
     this.auth.localAuthSetup();
   }
 
-  public loadScript() {
-    let body = <HTMLDivElement> document.body;
-    let script = document.createElement('script');
-    script.innerHTML = '';
-    script.src = './utilities/util.js';
-    script.async = true;
-    script.defer = true;
-    body.appendChild(script);
-}
-
 }

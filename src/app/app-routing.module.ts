@@ -6,6 +6,7 @@ import { AuthGuard } from './auth/auth.guard';
 import { ProfileComponent } from './pages/profile/profile.component';
 import { LoginComponent } from './components/login/login.component';
 import { GoogleMapsComponent } from './components/google-maps/google-maps.component';
+import { ItineraryModule } from './itinerary/itinerary.module';
 
 const routes: Routes = [
   {
@@ -22,10 +23,16 @@ const routes: Routes = [
     component: HomeComponent,
     canActivate: [AuthGuard]
   },
-  {
-    path: 'create-itinerary',
-    component: GoogleMapsComponent
+  { path: 'create-itinerary',
+    // children: [
+    //   { path: '', loadChildren: './itinerary/itinerary.module#ItineraryModule' }
+    // ]
+    loadChildren: () => import('./itinerary/itinerary.module').then(m => m.ItineraryModule)
   },
+  // {
+  //   path: 'create-itinerary',
+  //   component: GoogleMapsComponent
+  // },
   {
     path: 'login',
     component: LoginComponent

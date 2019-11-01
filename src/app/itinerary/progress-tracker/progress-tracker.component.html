@@ -1,0 +1,21 @@
+<div id="progress-tracker">    
+        <div class="steps-container">
+            <div *ngFor="let item of trackerOptions">
+                <div class="steps">
+                    <span class="{{item.step}}"
+                        [ngClass]="{'completed': item.stepReady === true, 'route-highlight': orderRoute === item.step}"></span>
+                    <div 
+                        
+                        [ngClass]="{'completed': item.stepCompleted === true, 'route-highlight': orderRoute === item.step && item.stepCompleted === true}">
+                        <label class="section-{{item.step}}">
+                            <button
+                                [ngClass]="{'route-highlight': orderRoute === item.step, 'completed': item.stepReady === true}"
+                                
+                                (click)="goToStep(item.step)">{{item.step | uppercase}}</button>
+                        </label>
+                    </div>
+                </div>
+            </div>
+        </div>       
+       
+</div>

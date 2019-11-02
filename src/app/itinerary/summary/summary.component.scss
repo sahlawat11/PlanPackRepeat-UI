@@ -1,0 +1,32 @@
+.summary-container {
+    border: 2px solid #DBE6EC;
+    padding: 10px;
+    color: #869aa7;
+    font-size: 14px;
+    .header {
+        .title {
+            font-size: 18px;
+            color: black;
+        }
+        .name {
+            span {
+                margin-left: 40px;
+            }
+        }
+        .date {
+            span {
+                &.start {
+                    margin-left: 13px;
+                }
+                &.end {
+                    margin-left: 20px;
+                }
+            }
+        }
+        .visibility {
+            span {
+                margin-left: 25px
+            }
+        }
+    }
+}

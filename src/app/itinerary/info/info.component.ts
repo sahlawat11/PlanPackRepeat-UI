@@ -1,5 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
+import { Info } from '../../models/itinerary-info';
+import { ItineraryService } from '../itinerary.service';
 
 
 @Component({
@@ -13,31 +16,59 @@ export class InfoComponent implements OnInit {
     name: new FormControl('', Validators.required),
     startDate: new FormControl('', Validators.required),
     endDate: new FormControl('', Validators.required),
-    visibility: new FormControl('public')
+    visibility: new FormControl('Public')
   });
-
+  itineraryInfo: Info;
   isFormValid: boolean;
   today: string;
+  itineraryUpdateTimeout: any;
 
-
-  constructor() { }
+  constructor(private router: Router, private itineraryService: ItineraryService) { }
 
   ngOnInit() {
     this.itineraryInfoForm.valueChanges.subscribe((data) => {
-      console.log('this value has been changed', data, this.itineraryInfoForm);
+      this.updateInput();
       this.isFormValid = this.itineraryInfoForm.valid;
     });
-
     this.setTodaysDate();
-
   }
 
   onSubmit() {
     console.log('this is the data:', this.itineraryInfoForm);
+    this.itineraryInfo = {
+      name: this.itineraryInfoForm.value.name,
+      startDate: this.itineraryInfoForm.value.startDate,
+      endDate: this.itineraryInfoForm.value.endDate,
+      visiblity: this.itineraryInfoForm.value.visibility
+    };
+    this.itineraryService.itineraryObj = {
+      info: this.itineraryInfo
+    }
+    this.router.navigateByUrl('create-itinerary/destinations');
   }
 
   updateInput() {
-    console.log('Update input has been called:', this.itineraryInfoForm.value);
+    if (this.itineraryUpdateTimeout !== null) {
+      clearTimeout(this.itineraryUpdateTimeout);
+    }
+    this.itineraryUpdateTimeout = setTimeout(() => {
+      this.itineraryUpdateTimeout = null;
+      this.setItineraryObj();
+      console.log('Update input has been called:', this.itineraryInfoForm.value);
+      this.itineraryService.broadcastUpdates(this.itineraryService.itineraryObj)
+  }, 500)
+}
+
+  setItineraryObj() {
+    this.itineraryInfo = {
+      name: this.itineraryInfoForm.value.name,
+      startDate: this.itineraryInfoForm.value.startDate,
+      endDate: this.itineraryInfoForm.value.endDate,
+      visiblity: this.itineraryInfoForm.value.visibility
+    };
+    this.itineraryService.itineraryObj = {
+      info: this.itineraryInfo
+    }
   }
 
   setTodaysDate() {

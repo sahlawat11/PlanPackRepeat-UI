@@ -1,9 +1,14 @@
 import { Injectable } from '@angular/core';
+import { BehaviorSubject } from 'rxjs';
+import { Itinerary } from '../models/itinerary';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ItineraryService {
+
+  private itinerarySubject: BehaviorSubject<Itinerary> = new BehaviorSubject(<Itinerary>{});
+  itineraryStream = this.itinerarySubject.asObservable();
 
   trackerOptions = [
     {
@@ -36,5 +41,13 @@ export class ItineraryService {
     }
   ];
 
+  itineraryObj: Itinerary;
+
   constructor() { }
+
+  broadcastUpdates(itineraryData: any): void {
+    this.itinerarySubject.next(itineraryData);
+  }
+
+
 }

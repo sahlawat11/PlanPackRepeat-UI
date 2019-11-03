@@ -29,10 +29,10 @@ const routes: Routes = [
     // ]
     loadChildren: () => import('./itinerary/itinerary.module').then(m => m.ItineraryModule)
   },
-  // {
-  //   path: 'create-itinerary',
-  //   component: GoogleMapsComponent
-  // },
+  {
+    path: 'maps',
+    component: GoogleMapsComponent
+  },
   {
     path: 'login',
     component: LoginComponent

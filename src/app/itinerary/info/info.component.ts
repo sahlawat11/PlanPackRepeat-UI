@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { Info } from '../../models/itinerary-info';
+import { Info } from '../../models/itinerary';
 import { ItineraryService } from '../itinerary.service';
 
 

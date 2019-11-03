@@ -9,6 +9,8 @@ import { ItineraryService } from './itinerary.service';
 import { DistinationsComponent } from './distinations/distinations.component';
 import { SummaryComponent } from './summary/summary.component';
 
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+
 
 @NgModule({
   declarations: [InfoComponent, ProgressTrackerComponent, ItineraryBaseComponent, DistinationsComponent, SummaryComponent],
@@ -16,7 +18,8 @@ import { SummaryComponent } from './summary/summary.component';
   imports: [
     CommonModule,
     ReactiveFormsModule,
-    ItineraryRoutesModule
+    ItineraryRoutesModule,
+    NgbModule
   ]
 })
 export class ItineraryModule { }

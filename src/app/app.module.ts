@@ -27,6 +27,8 @@ import { CreateItineraryComponent } from './pages/create-itinerary/create-itiner
 import { GoogleMapsComponent } from './components/google-maps/google-maps.component';
 import { AgmCoreModule } from '@agm/core';
 import { ItineraryModule } from './itinerary/itinerary.module';
+import { HomePageHeaderComponent } from './components/home-page-header/home-page-header.component';
+import { HomePageCarouselViewComponent } from './components/home-page-carousel-view/home-page-carousel-view.component';
 
 export function hljsLanguages() {
   return [{ name: 'json', func: json }];
@@ -45,7 +47,9 @@ export function hljsLanguages() {
     LoadingComponent,
     LoginComponent,
     CreateItineraryComponent,
-    GoogleMapsComponent
+    GoogleMapsComponent,
+    HomePageHeaderComponent,
+    HomePageCarouselViewComponent
   ],
   imports: [
     BrowserModule,

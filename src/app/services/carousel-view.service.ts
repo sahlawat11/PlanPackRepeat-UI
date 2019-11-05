@@ -11,7 +11,8 @@ export class CarouselViewService {
   constructor(private authHttp: HttpClient) { }
 
   getItineraryInfoDashboard(email: string): Observable<any> {
-     return this.authHttp.get(`http://localhost:5000/itinerary/getItineraryByEmail/saransh%40gmail.com`);
+      return this.authHttp.get('./../../mockjson/retrieveitinerary.json')
+     ///return this.authHttp.get(`http://travelapp-env-1.ey2unjuyh7.us-east-1.elasticbeanstalk.com/itinerary/getItineraryByEmail/saransh%40gmail.com`);
   }
 
 

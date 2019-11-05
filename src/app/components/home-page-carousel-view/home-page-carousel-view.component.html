@@ -1,4 +1,3 @@
-<section id="home">
     <div class="container">
         <div class="row">
             <div class="section-heading text-center">
@@ -8,220 +7,36 @@
                 </div>
             </div>
         </div>
+       <div class="row">
+          <div *ngFor="let item of itineraries; let i = index"  class="col-sm-4" style="height:50%">
+              <div  [attr.id]="'myCarousel'+i" class="carousel slide" data-pause="true">
+                  <ol class="carousel-indicators">
+                      <li *ngFor="let destination of item.destinations; let j = index" [attr.data-target]= "'myCarousel'+ i" [attr.data-slide-to]="j" ></li>
+                  </ol>
+                  <div class="carousel-inner" role="listbox">
+                      <div  *ngFor="let destination of item.destinations; let j = index" [ngClass]="j == 0 ? 'item active': 'item'" style="height:auto">
+                          <img [attr.src]="destination.imageSourceUrl" [attr.alt]="destination.destinationName" style="width:100%; height:350px">
+                          <div class="carousel-caption" style="align:bottom">
+                              {{destination.destinationName}}
+                          </div>
+                      </div>
+                      <a class="left carousel-control" [attr.href]="'#myCarousel'+i" role="button" data-slide="prev">
+                          <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+                          <span class="sr-only">Previous</span>
+                      </a>
+                      <a class="right carousel-control" [attr.href]="'#myCarousel'+i"  role="button" data-slide="next">
+                          <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+                          <span class="sr-only">Next</span>
+                      </a>
+                      <a class='btn btn-success' style="width:100%" href="http://getbootstrap.com">{{item.itineraryName}}</a>
+                  </div>
+              </div>
+              <br/>
+          </div>
+      </div>
 
-        <div class="row">
 
-            <div class="col-sm-4" style="height:50%">
-                <div id="myCarousel0" class="carousel slide" data-pause="true">
-                    <ol class="carousel-indicators">
-                        <li data-target="#myCarousel0" data-slide-to="0" class="active"></li>
-                        <li data-target="#myCarousel0" data-slide-to="1"></li>
-                    </ol>
+      <br>
 
-                    <div class="carousel-inner" role="listbox">
-                        <div class="item active" style="height:auto">
-                            <img src="https://lh3.googleusercontent.com/p/AF1QipPDXEbGTbsMRuBvdONwmMq-qfREtAne0Uv8N09c=s1600-w400" alt="Image" style="width:100%; height:350px">
-                            <div class="carousel-caption" style="align:bottom">
-                                NYC
-                            </div>
-                        </div>
 
-                        <div class="item" style="height:auto">
-                            <img src="../../../assets/dc.jpg" alt="Image" style="width:100%; height: 350px">
-                            <div class="carousel-caption">
-                                DC
-                            </div>
-                        </div>
-                        <a class="left carousel-control" href="#myCarousel0" role="button" data-slide="prev">
-                            <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
-                            <span class="sr-only">Previous</span>
-                        </a>
-
-                        <a class="right carousel-control" href="#myCarousel0" role="button" data-slide="next">
-                            <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
-                            <span class="sr-only">Next</span>
-                        </a>
-                        <a class='btn btn-success' style="width:100%" href="http://getbootstrap.com">NYC
-                            Itinerary</a>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-sm-4" style="height:50%">
-                <div id="myCarousel1" class="carousel slide" data-pause="true">
-                    <ol class="carousel-indicators">
-                        <li data-target="#myCarousel1" data-slide-to="0" class="active"></li>
-                        <li data-target="#myCarousel1" data-slide-to="1"></li>
-                    </ol>
-
-                    <div class="carousel-inner" role="listbox">
-                        <div class="item active" style="height:auto">
-                            <img src="../../../assets/florida.jpg" alt="Image" style="width:100%; height:350px">
-                            <div class="carousel-caption" style="align:bottom">
-                                Florida
-                            </div>
-                        </div>
-
-                        <div class="item" style="height:auto">
-                            <img src="../../../assets/hoboken.jpg" alt="Image" style="width:100%; height: 350px">
-                            <div class="carousel-caption">
-                                Hoboken
-                            </div>
-                        </div>
-                        <a class="left carousel-control" href="#myCarousel1" role="button" data-slide="prev">
-                            <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
-                        </a>
-                        <a class="right carousel-control" href="#myCarousel1" role="button" data-slide="next">
-                            <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
-                        </a>
-                        <a class='btn btn-success' style="width:100%" href="http://getbootstrap.com">Florida and
-                            Hoboken
-                            Itinerary</a>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-sm-4" style="height:50%">
-                <div id="myCarousel2" class="carousel slide" data-pause="true">
-                    <ol class="carousel-indicators">
-                        <li data-target="#myCarousel2" data-slide-to="0" class="active"></li>
-                        <li data-target="#myCarousel2" data-slide-to="1"></li>
-                    </ol>
-
-                    <div class="carousel-inner" role="listbox">
-                        <div class="item active" style="height:auto">
-                            <img src="../../../assets/niagara.jpg" alt="Image" style="width:100%; height:350px">
-                            <div class="carousel-caption" style="align:bottom">
-                                Niagara
-                            </div>
-                        </div>
-
-                        <div class="item" style="height:auto">
-                            <img src="../../../assets/seattle.jpg" alt="Image" style="width:100%; height: 350px">
-                            <div class="carousel-caption">
-                                Seattle
-                            </div>
-                        </div>
-                        <a class="left carousel-control" href="#myCarousel2" role="button" data-slide="prev">
-                            <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
-                        </a>
-                        <a class="right carousel-control" href="#myCarousel2" role="button" data-slide="next">
-                            <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
-                        </a>
-                        <a class='btn btn-success' style="width:100%" href="http://getbootstrap.com">Niagara +
-                            Seattle
-                            Itinerary</a>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <br>
-
-        <div class="row">
-            <div class="col-sm-4" style="height:50%">
-                <div id="myCarousel3" class="carousel slide" data-pause="true">
-                    <ol class="carousel-indicators">
-                        <li data-target="#myCarousel3" data-slide-to="0" class="active"></li>
-                        <li data-target="#myCarousel3" data-slide-to="1"></li>
-                    </ol>
-
-                    <div class="carousel-inner" role="listbox">
-                        <div class="item active" style="height:auto">
-                            <img src="../../../assets/nyc.jpg" alt="Image" style="width:100%; height:350px">
-                            <div class="carousel-caption" style="align:bottom">
-                                NYC
-                            </div>
-                        </div>
-
-                        <div class="item" style="height:auto">
-                            <img src="../../../assets/dc.jpg" alt="Image" style="width:100%; height: 350px">
-                            <div class="carousel-caption">
-                                DC
-                            </div>
-                        </div>
-                        <a class="left carousel-control" href="#myCarousel0" role="button" data-slide="prev">
-                            <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
-                            <span class="sr-only">Previous</span>
-                        </a>
-
-                        <a class="right carousel-control" href="#myCarousel3" role="button" data-slide="next">
-                            <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
-                            <span class="sr-only">Next</span>
-                        </a>
-                        <a class='btn btn-success' style="width:100%" href="http://getbootstrap.com">NYC
-                            Itinerary</a>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-sm-4" style="height:50%">
-                <div id="myCarousel4" class="carousel slide" data-pause="true">
-                    <ol class="carousel-indicators">
-                        <li data-target="#myCarousel4" data-slide-to="0" class="active"></li>
-                        <li data-target="#myCarousel4" data-slide-to="1"></li>
-                    </ol>
-
-                    <div class="carousel-inner" role="listbox">
-                        <div class="item active" style="height:auto">
-                            <img src="../../../assets/florida.jpg" alt="Image" style="width:100%; height:350px">
-                            <div class="carousel-caption" style="align:bottom">
-                                Florida
-                            </div>
-                        </div>
-
-                        <div class="item" style="height:auto">
-                            <img src="../../../assets/hoboken.jpg" alt="Image" style="width:100%; height: 350px">
-                            <div class="carousel-caption">
-                                Hoboken
-                            </div>
-                        </div>
-                        <a class="left carousel-control" href="#myCarousel4" role="button" data-slide="prev">
-                            <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
-                        </a>
-                        <a class="right carousel-control" href="#myCarousel4" role="button" data-slide="next">
-                            <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
-                        </a>
-                        <a class='btn btn-success' style="width:100%" href="http://getbootstrap.com">Florida and
-                            Hoboken
-                            Itinerary</a>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-sm-4" style="height:50%">
-                <div id="myCarousel5" class="carousel slide" data-pause="true">
-                    <ol class="carousel-indicators">
-                        <li data-target="#myCarousel5" data-slide-to="0" class="active"></li>
-                        <li data-target="#myCarousel5" data-slide-to="1"></li>
-                    </ol>
-
-                    <div class="carousel-inner" role="listbox">
-                        <div class="item active" style="height:auto">
-                            <img src="../../../assets/niagara.jpg" alt="Image" style="width:100%; height:350px">
-                            <div class="carousel-caption" style="align:bottom">
-                                Niagara
-                            </div>
-                        </div>
-
-                        <div class="item" style="height:auto">
-                            <img src="../../../assets/seattle.jpg" alt="Image" style="width:100%; height: 350px">
-                            <div class="carousel-caption">
-                                Seattle
-                            </div>
-                        </div>
-                        <a class="left carousel-control" href="#myCarousel5" role="button" data-slide="prev">
-                            <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
-                        </a>
-                        <a class="right carousel-control" href="#myCarousel5" role="button" data-slide="next">
-                            <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
-                        </a>
-                        <a class='btn btn-success' style="width:100%" href="http://getbootstrap.com">Niagara +
-                            Seattle
-                            Itinerary</a>
-                    </div>
-                </div>
-            </div>
-        </div>
     </div>
-</section>

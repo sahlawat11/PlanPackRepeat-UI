@@ -12,7 +12,7 @@ export class CarouselViewService {
 
   constructor(private authHttp: HttpClient) { }
 
-  getItineraryInfoDashboard(email: string, isJsonString?: boolean): Observable<Array<any>> {
+  getItineraryInfoDashboard(email: string, isJsonString?: boolean): Observable<any> {
       // return this.authHttp.get('./../../mockjson/retrieveitinerary.json')
       if (isJsonString) {
         console.log("printing json string")

@@ -1,5 +1,5 @@
 ﻿export class PagerService {
-    getPager(totalItems: number, currentPage: number = 1, pageSize: number = 10) {
+    getPager(totalItems: number, currentPage: number = 1, pageSize: number = 6) {
         // calculate total pages
         const totalPages = Math.ceil(totalItems / pageSize);
 

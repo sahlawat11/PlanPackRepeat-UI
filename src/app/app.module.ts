@@ -1,3 +1,4 @@
+import { PagerService } from './services/pager.service';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
@@ -71,7 +72,7 @@ export function hljsLanguages() {
     }),
     ItineraryModule
   ],
-  providers: [ UserService, HttpClient, LoadingService ],
+  providers: [ UserService, HttpClient, LoadingService,PagerService ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

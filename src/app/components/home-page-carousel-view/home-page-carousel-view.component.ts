@@ -1,3 +1,4 @@
+import { PagerService } from './../../services/pager.service';
 
 import { Itinerary, Destination } from './../../models/carouselmodels';
 import { CarouselViewService } from './../../services/carousel-view.service';
@@ -10,24 +11,27 @@ import { error } from 'util';
   styleUrls: ['./home-page-carousel-view.component.css']
 })
 export class HomePageCarouselViewComponent implements OnInit {
-
-  constructor(private carouselService: CarouselViewService) { }
-  itineraries :  Itinerary[] = [];
+    private allItems: any[];
+    pager: any = {};
+    pagedItems: any[];
+  constructor(private carouselService: CarouselViewService, private pagerService:PagerService) { }
+    allitineraries :  Itinerary[] = [];
 
   ngOnInit() {
     this.carouselService.getItineraryInfoDashboard('saransh@gmail.com', true).subscribe(
       (result : Array<any> ) => {
-            console.log(typeof(result),result)
+            const value_list= []
             result.forEach(itinerary => {
             const destArray= [];
             itinerary.destinations.forEach(destination => {
                   destArray.push(new Destination(destination.destName, destination.imgUrl));
             });
             const iti = new Itinerary(itinerary.id,itinerary.itineraryName, destArray);
-            this.itineraries.push(iti);
+            value_list.push(iti);
         });
-
-          console.log(this.itineraries);
+        this.allitineraries=value_list
+          console.log(this.allitineraries);
+          this.setPage(1);
 
       }, (error) => {
            console.log('erroor is ', error);
@@ -35,5 +39,9 @@ export class HomePageCarouselViewComponent implements OnInit {
       );
   }
 
-
+  setPage(page: number) {
+    this.pager = this.pagerService.getPager(this.allitineraries.length, page);
+    this.pagedItems = this.allitineraries.slice(this.pager.startIndex, this.pager.endIndex + 1);
+    console.log("pagedItems are",this.pagedItems)
+}
 }

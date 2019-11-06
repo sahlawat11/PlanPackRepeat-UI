@@ -168,7 +168,7 @@ export var jsonString= [
     "public": false,
     "active": false
   }
-  /*,
+  ,
   {
     "startDate": "2014-01-22T14:56:59.301+0000",
     "endDate": "2014-01-22T14:56:59.301+0000",
@@ -196,6 +196,62 @@ export var jsonString= [
     "id": "5dac85cbca74690c6d6aaac7",
     "public": false,
     "active": false
-  }*/
+  },
+  {
+    "startDate": "2014-01-22T14:56:59.301+0000",
+    "endDate": "2014-01-22T14:56:59.301+0000",
+    "email": "saransh@gmail.com",
+    "budgetId": null,
+    "itineraryName":"Taj Mahal + Darjeeling Itinerary",
+    "destinations": [
+      {
+        "destName": "Taj Mahal",
+        "address": " 45th street",
+        "plannedTime": "2014-01-22T14:56:59.301+0000",
+        "status": "travelled",
+        "imgUrl": "https://images.unsplash.com/photo-1506462945848-ac8ea6f609cc?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&w=1000&q=80",
+        "id": "5dac85cbca74690c6d6aaac5"
+      },
+      {
+        "destName": "Darjeeling",
+        "address": "Brooklyn",
+        "plannedTime": "2014-01-22T14:56:59.301+0000",
+        "status": "wishlist",
+        "imgUrl": "https://img.theculturetrip.com/768x432/wp-content/uploads/2016/05/image7.jpeg",
+        "id": "5dac85cbca74690c6d6aaac6"
+      }
+    ],
+    "id": "5dac85cbca74690c6d6aaac7",
+    "public": false,
+    "active": false
+  },
+  {
+    "startDate": "2014-01-22T14:56:59.301+0000",
+    "endDate": "2014-01-22T14:56:59.301+0000",
+    "email": "saransh@gmail.com",
+    "budgetId": null,
+    "itineraryName":"Taj Mahal + Darjeeling Itinerary",
+    "destinations": [
+      {
+        "destName": "Taj Mahal",
+        "address": " 45th street",
+        "plannedTime": "2014-01-22T14:56:59.301+0000",
+        "status": "travelled",
+        "imgUrl": "https://images.unsplash.com/photo-1506462945848-ac8ea6f609cc?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&w=1000&q=80",
+        "id": "5dac85cbca74690c6d6aaac5"
+      },
+      {
+        "destName": "Darjeeling",
+        "address": "Brooklyn",
+        "plannedTime": "2014-01-22T14:56:59.301+0000",
+        "status": "wishlist",
+        "imgUrl": "https://img.theculturetrip.com/768x432/wp-content/uploads/2016/05/image7.jpeg",
+        "id": "5dac85cbca74690c6d6aaac6"
+      }
+    ],
+    "id": "5dac85cbca74690c6d6aaac7",
+    "public": false,
+    "active": false
+  }
 ];
 

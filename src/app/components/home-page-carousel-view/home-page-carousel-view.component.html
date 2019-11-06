@@ -7,8 +7,28 @@
                 </div>
             </div>
         </div>
+
+        <div class="row">
+            <ul *ngIf="pager.pages && pager.pages.length" class="pagination pull-right">
+                <li [ngClass]="{disabled:pager.currentPage === 1}">
+                    <a (click)="setPage(1)">First</a>
+                </li>
+                <li [ngClass]="{disabled:pager.currentPage === 1}">
+                    <a (click)="setPage(pager.currentPage - 1)">Previous</a>
+                </li>
+                <li *ngFor="let page of pager.pages" [ngClass]="{active:pager.currentPage === page}">
+                    <a (click)="setPage(page)">{{page}}</a>
+                </li>
+                <li [ngClass]="{disabled:pager.currentPage === pager.totalPages}">
+                    <a (click)="setPage(pager.currentPage + 1)">Next</a>
+                </li>
+                <li [ngClass]="{disabled:pager.currentPage === pager.totalPages}">
+                    <a (click)="setPage(pager.totalPages)">Last</a>
+                </li>
+            </ul>
+        </div>
        <div class="row">
-          <div *ngFor="let item of itineraries; let i = index"  class="col-sm-4" style="height:50%">
+          <div *ngFor="let item of pagedItems; let i = index"  class="col-sm-4" style="height:50%">
               <div  [attr.id]="'myCarousel'+i" class="carousel slide" data-pause="true">
                   <ol class="carousel-indicators">
                       <li *ngFor="let destination of item.destinations; let j = index" [attr.data-target]= "'myCarousel'+ i" [attr.data-slide-to]="j" ></li>
@@ -34,26 +54,5 @@
               <br/>
           </div>
       </div>
-
-
-      <br>
-      <nav aria-label="...">
-        <ul class="pagination pull-right">
-          <li class="page-item disabled">
-            <span class="page-link">Previous</span>
-          </li>
-          <li class="page-item"><a class="page-link" href="#">1</a></li>
-          <li class="page-item active">
-            <span class="page-link">
-              2
-              <span class="sr-only">(current)</span>
-            </span>
-          </li>
-          <li class="page-item"><a class="page-link" href="#">3</a></li>
-          <li class="page-item">
-            <a class="page-link" href="#">Next</a>
-          </li>
-        </ul>
-      </nav>
-
-    </div>
+    <br>
+   </div>

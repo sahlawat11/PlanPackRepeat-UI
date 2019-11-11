@@ -1,12 +1,13 @@
 /// <reference types='@types/googlemaps' />
-import { Component, OnInit, ViewChild, ElementRef, NgZone, Input, Output, EventEmitter } from '@angular/core';
-import { MapsAPILoader, MouseEvent } from '@agm/core';
+import { Component, OnInit, ViewChild, ElementRef, NgZone } from '@angular/core';
+import { MapsAPILoader, MouseEvent, PolylineManager, GoogleMapsAPIWrapper } from '@agm/core';
 // import {} from '@types/googlemaps';
 
 @Component({
   selector: 'app-google-maps',
   templateUrl: './google-maps.component.html',
-  styleUrls: ['./google-maps.component.scss']
+  styleUrls: ['./google-maps.component.scss'],
+  providers: [PolylineManager, GoogleMapsAPIWrapper]
 })
 export class GoogleMapsComponent implements OnInit {
 
@@ -17,38 +18,30 @@ export class GoogleMapsComponent implements OnInit {
   address: string;
   private geoCoder;
 
-  @Output() dialogRef = new EventEmitter<any>();
-
   @ViewChild('search', {static: false}) searchElementRef: ElementRef;
-  @ViewChild('dialogRef', {static: false}) dialog: any;
 
-  constructor(private mapsAPILoader: MapsAPILoader,
+  constructor(private mapsAPILoader: MapsAPILoader, polylineManager: PolylineManager,
     private ngZone: NgZone) { }
 
   ngOnInit() {
-    
-  }
-
-
-  loadMaps() {
     this.mapsAPILoader.load().then(() => {
       this.setCurrentLocation();
-      this.geoCoder = new google.maps.Geocoder;
+      this.geoCoder = new google.maps.Geocoder();
  
-      const autocompconste = new google.maps.places.Autocompconste(this.searchElementRef.nativeElement, {
+      const autocomplete = new google.maps.places.Autocomplete(this.searchElementRef.nativeElement, {
         types: ['address']
       });
-      autocompconste.addListener('place_changed', () => {
+      autocomplete.addListener('place_changed', () => {
         this.ngZone.run(() => {
-          //get the place result
-          const place: google.maps.places.PlaceResult = autocompconste.getPlace();
+          // get the place result
+          const place: google.maps.places.PlaceResult = autocomplete.getPlace();
  
-          //verify result
+          // verify result
           if (place.geometry === undefined || place.geometry === null) {
             return;
           }
           debugger;
-          //set latitude, longitude and zoom
+          // set latitude, longitude and zoom
           this.latitude = place.geometry.location.lat();
           this.longitude = place.geometry.location.lng();
           this.zoom = 12;
@@ -94,9 +87,12 @@ export class GoogleMapsComponent implements OnInit {
 
     });
   }
+ 
+}
 
 
-  // use the Complex Ploylines: https://developers-dot-devsite-v2-prod.appspot.com/maps/documentation/javascript/examples/polyline-complex
+
+// use the Complex Ploylines: https://developers-dot-devsite-v2-prod.appspot.com/maps/documentation/javascript/examples/polyline-complex
   // deconsting a vertix: https://developers-dot-devsite-v2-prod.appspot.com/maps/documentation/javascript/examples/deconste-vertex-menu
   // use this: https://developers-dot-devsite-v2-prod.appspot.com/maps/documentation/javascript/examples/aerial-simple
 
@@ -104,4 +100,4 @@ export class GoogleMapsComponent implements OnInit {
   // if someone wants to check the directions: https://developers-dot-devsite-v2-prod.appspot.com/maps/documentation/javascript/examples/directions-panel
   // draggable directions: https://developers-dot-devsite-v2-prod.appspot.com/maps/documentation/javascript/examples/directions-draggable
   // toggle street view: https://developers-dot-devsite-v2-prod.appspot.com/maps/documentation/javascript/examples/streetview-overlays
-}
+

@@ -24,9 +24,8 @@ import { LoadingService } from './components/loading/loading.service'
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ToastrModule } from 'ngx-toastr';
 import { CreateItineraryComponent } from './pages/create-itinerary/create-itinerary.component';
-import { GoogleMapsComponent } from './components/google-maps/google-maps.component';
 import { AgmCoreModule } from '@agm/core';
-
+import { ItineraryModule } from './itinerary/itinerary.module';
 
 export function hljsLanguages() {
   return [{ name: 'json', func: json }];
@@ -44,8 +43,7 @@ export function hljsLanguages() {
     HomeContentComponent,
     LoadingComponent,
     LoginComponent,
-    CreateItineraryComponent,
-    GoogleMapsComponent
+    CreateItineraryComponent
   ],
   imports: [
     BrowserModule,
@@ -61,6 +59,7 @@ export function hljsLanguages() {
     FontAwesomeModule,
     HttpClientModule,
     BrowserAnimationsModule,
+    ItineraryModule,
     ToastrModule.forRoot({
       timeOut: 4000,
       positionClass: 'toast-top-right'

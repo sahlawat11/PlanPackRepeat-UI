@@ -14,6 +14,7 @@ import { NgbModalConfig, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 export class DistinationsComponent implements OnInit {
   isCollapsed = false;
   destinationsArr: Array<Destinations> = [];
+  dialogRef: any;
 
   constructor(
     private router: Router,
@@ -24,6 +25,7 @@ export class DistinationsComponent implements OnInit {
   ) {
     config.backdrop = 'static';
     config.keyboard = false;
+    config.size = 'xl'
   }
 
   ngOnInit() {
@@ -52,7 +54,12 @@ export class DistinationsComponent implements OnInit {
     }
   }
 
-  openDialog(content) {
-    this.modalService.open(content);
+  openMapsDialog() {
+    this.modalService.open(this.dialogRef);
+  }
+
+  setDialogRef(event) {
+    console.log('this is set', event);
+    this.dialogRef = event;
   }
 }

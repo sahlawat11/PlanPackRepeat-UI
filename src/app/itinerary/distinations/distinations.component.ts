@@ -3,20 +3,28 @@ import { Router } from '@angular/router';
 import { ItineraryService } from '../itinerary.service';
 import { Destinations } from '../../models/itinerary';
 import { AuthService } from '../../auth/auth.service';
-
-
+import { NgbModalConfig, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-distinations',
   templateUrl: './distinations.component.html',
-  styleUrls: ['./distinations.component.scss']
+  styleUrls: ['./distinations.component.scss'],
+  providers: [NgbModalConfig, NgbModal]
 })
 export class DistinationsComponent implements OnInit {
-
   isCollapsed = false;
   destinationsArr: Array<Destinations> = [];
 
-  constructor(private router: Router, private itineraryService: ItineraryService, private auth: AuthService) { }
+  constructor(
+    private router: Router,
+    private itineraryService: ItineraryService,
+    private auth: AuthService,
+    config: NgbModalConfig,
+    private modalService: NgbModal
+  ) {
+    config.backdrop = 'static';
+    config.keyboard = false;
+  }
 
   ngOnInit() {
     // this.validateItineraryObj();
@@ -30,11 +38,13 @@ export class DistinationsComponent implements OnInit {
       address2: '',
       date: '',
       time: ''
-    }
+    };
     this.destinationsArr.push(destObj);
   }
 
-
+  removeDestination(index: number) {
+    this.destinationsArr.splice(index, 1);
+  }
 
   validateItineraryObj() {
     if (typeof this.itineraryService.itineraryObj === 'undefined') {
@@ -42,4 +52,7 @@ export class DistinationsComponent implements OnInit {
     }
   }
 
+  openDialog(content) {
+    this.modalService.open(content);
+  }
 }

@@ -1,5 +1,5 @@
-/// <reference types="@types/googlemaps" />
-import { Component, OnInit, ViewChild, ElementRef, NgZone } from '@angular/core';
+/// <reference types='@types/googlemaps' />
+import { Component, OnInit, ViewChild, ElementRef, NgZone, Input, Output, EventEmitter } from '@angular/core';
 import { MapsAPILoader, MouseEvent } from '@agm/core';
 // import {} from '@types/googlemaps';
 
@@ -17,23 +17,31 @@ export class GoogleMapsComponent implements OnInit {
   address: string;
   private geoCoder;
 
+  @Output() dialogRef = new EventEmitter<any>();
+
   @ViewChild('search', {static: false}) searchElementRef: ElementRef;
+  @ViewChild('dialogRef', {static: false}) dialog: any;
 
   constructor(private mapsAPILoader: MapsAPILoader,
     private ngZone: NgZone) { }
 
   ngOnInit() {
+    
+  }
+
+
+  loadMaps() {
     this.mapsAPILoader.load().then(() => {
       this.setCurrentLocation();
       this.geoCoder = new google.maps.Geocoder;
  
-      let autocomplete = new google.maps.places.Autocomplete(this.searchElementRef.nativeElement, {
-        types: ["address"]
+      const autocompconste = new google.maps.places.Autocompconste(this.searchElementRef.nativeElement, {
+        types: ['address']
       });
-      autocomplete.addListener("place_changed", () => {
+      autocompconste.addListener('place_changed', () => {
         this.ngZone.run(() => {
           //get the place result
-          let place: google.maps.places.PlaceResult = autocomplete.getPlace();
+          const place: google.maps.places.PlaceResult = autocompconste.getPlace();
  
           //verify result
           if (place.geometry === undefined || place.geometry === null) {
@@ -89,7 +97,7 @@ export class GoogleMapsComponent implements OnInit {
 
 
   // use the Complex Ploylines: https://developers-dot-devsite-v2-prod.appspot.com/maps/documentation/javascript/examples/polyline-complex
-  // deleting a vertix: https://developers-dot-devsite-v2-prod.appspot.com/maps/documentation/javascript/examples/delete-vertex-menu
+  // deconsting a vertix: https://developers-dot-devsite-v2-prod.appspot.com/maps/documentation/javascript/examples/deconste-vertex-menu
   // use this: https://developers-dot-devsite-v2-prod.appspot.com/maps/documentation/javascript/examples/aerial-simple
 
   // Finding the address using lats and logs: https://developers-dot-devsite-v2-prod.appspot.com/maps/documentation/javascript/examples/geocoding-reverse

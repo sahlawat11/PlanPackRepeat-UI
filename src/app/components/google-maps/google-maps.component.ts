@@ -27,15 +27,18 @@ export class GoogleMapsComponent implements OnInit {
     this.mapsAPILoader.load().then(() => {
       this.setCurrentLocation();
       this.geoCoder = new google.maps.Geocoder();
- 
+      
       const autocomplete = new google.maps.places.Autocomplete(this.searchElementRef.nativeElement, {
         types: ['address']
       });
+      console.log('***************** this is first check', this.searchElementRef);
       autocomplete.addListener('place_changed', () => {
+        debugger;
         this.ngZone.run(() => {
+          console.log('this is running right now');
           // get the place result
           const place: google.maps.places.PlaceResult = autocomplete.getPlace();
- 
+          debugger;
           // verify result
           if (place.geometry === undefined || place.geometry === null) {
             return;
@@ -72,17 +75,17 @@ export class GoogleMapsComponent implements OnInit {
  
   getAddress(latitude, longitude) {
     this.geoCoder.geocode({ 'location': { lat: latitude, lng: longitude } }, (results, status) => {
-      console.log(results);
-      console.log(status);
+      console.log('******** results:',results);
+      console.log('******** status', status);
       if (status === 'OK') {
         if (results[0]) {
           this.zoom = 12;
           this.address = results[0].formatted_address;
         } else {
-          window.alert('No results found');
+          console.error('No results found');
         }
       } else {
-        window.alert('Geocoder failed due to: ' + status);
+        console.error('Geocoder failed due to: ' + status);
       }
 
     });

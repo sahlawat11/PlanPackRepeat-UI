@@ -12,9 +12,6 @@ export class LoadingComponent implements OnInit {
   constructor(private loadingService: LoadingService) { }
 
   ngOnInit() {
-    setInterval(() => {
-      console.log('*****sdsdsdsdsds interval value:', this.showLoadingMask);
-    }, 2000);
   }
 
   get showLoadingMask(): boolean {

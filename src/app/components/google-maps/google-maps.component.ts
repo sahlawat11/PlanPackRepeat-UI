@@ -1,6 +1,7 @@
 /// <reference types='@types/googlemaps' />
 import { Component, OnInit, ViewChild, ElementRef, NgZone } from '@angular/core';
 import { MapsAPILoader, MouseEvent, PolylineManager, GoogleMapsAPIWrapper } from '@agm/core';
+import { LoadingService } from '../loading/loading.service';
 // import {} from '@types/googlemaps';
 
 @Component({
@@ -11,17 +12,20 @@ import { MapsAPILoader, MouseEvent, PolylineManager, GoogleMapsAPIWrapper } from
 })
 export class GoogleMapsComponent implements OnInit {
 
+  selectedLocations = [];
+
   title: string = 'AGM project';
   latitude: number;
   longitude: number;
   zoom: number;
   address: string;
+  mapLoaded: boolean;
   private geoCoder;
 
   @ViewChild('search', {static: false}) searchElementRef: ElementRef;
 
   constructor(private mapsAPILoader: MapsAPILoader, polylineManager: PolylineManager,
-    private ngZone: NgZone) { }
+    private ngZone: NgZone, private loadingService: LoadingService) { }
 
   ngOnInit() {
     this.mapsAPILoader.load().then(() => {
@@ -31,7 +35,6 @@ export class GoogleMapsComponent implements OnInit {
       const autocomplete = new google.maps.places.Autocomplete(this.searchElementRef.nativeElement, {
         types: ['address']
       });
-      console.log('***************** this is first check', this.searchElementRef);
       autocomplete.addListener('place_changed', () => {
         debugger;
         this.ngZone.run(() => {
@@ -48,6 +51,7 @@ export class GoogleMapsComponent implements OnInit {
           this.latitude = place.geometry.location.lat();
           this.longitude = place.geometry.location.lng();
           this.zoom = 12;
+          this.address = place.formatted_address;
         });
       });
     });
@@ -65,7 +69,6 @@ export class GoogleMapsComponent implements OnInit {
     }
   }
  
- 
   markerDragEnd($event: MouseEvent) {
     console.log($event);
     this.latitude = $event.coords.lat;
@@ -75,8 +78,6 @@ export class GoogleMapsComponent implements OnInit {
  
   getAddress(latitude, longitude) {
     this.geoCoder.geocode({ 'location': { lat: latitude, lng: longitude } }, (results, status) => {
-      console.log('******** results:',results);
-      console.log('******** status', status);
       if (status === 'OK') {
         if (results[0]) {
           this.zoom = 12;
@@ -89,6 +90,20 @@ export class GoogleMapsComponent implements OnInit {
       }
 
     });
+  }
+
+
+  selectLocation(event: any) {
+    this.selectedLocations.push(
+      {lat: event.coords.lat, lon: event.coords.lng}
+    );
+  }
+
+  removeLocation(location: any) {
+    const index = this.selectedLocations.indexOf(location);
+    if (typeof index !== 'undefined' || index !== null) {
+      this.selectedLocations.splice(index, 1);
+    }
   }
  
 }

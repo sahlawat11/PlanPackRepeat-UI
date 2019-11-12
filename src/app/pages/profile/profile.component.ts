@@ -16,9 +16,9 @@ export class ProfileComponent implements OnInit {
   ngOnInit() {
     this.auth.userProfile$.subscribe(
       profile => {
-        this.loadingService.enableLoadingMask();
+        // this.loadingService.enableLoadingMask();
         this.alerts.success('Success! Your profile has been loaded!');
-        this.loadingService.disableLoadingMask();
+        // this.loadingService.disableLoadingMask();
         this.profileJson = JSON.stringify(profile, null, 2)
   });
 }

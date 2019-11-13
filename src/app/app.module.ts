@@ -1,6 +1,8 @@
+import { MessageService } from './services/message.service';
 import { PagerService } from './services/pager.service';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { HighlightModule } from 'ngx-highlightjs';
 import json from 'highlight.js/lib/languages/json';
@@ -25,11 +27,11 @@ import { LoadingService } from './components/loading/loading.service'
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ToastrModule } from 'ngx-toastr';
 import { CreateItineraryComponent } from './pages/create-itinerary/create-itinerary.component';
-import { GoogleMapsComponent } from './components/google-maps/google-maps.component';
 import { AgmCoreModule } from '@agm/core';
 import { ItineraryModule } from './itinerary/itinerary.module';
 import { HomePageHeaderComponent } from './components/home-page-header/home-page-header.component';
 import { HomePageCarouselViewComponent } from './components/home-page-carousel-view/home-page-carousel-view.component';
+import { SearchItineraryComponent } from './components/search-itinerary/search-itinerary.component';
 
 export function hljsLanguages() {
   return [{ name: 'json', func: json }];
@@ -48,14 +50,15 @@ export function hljsLanguages() {
     LoadingComponent,
     LoginComponent,
     CreateItineraryComponent,
-    GoogleMapsComponent,
     HomePageHeaderComponent,
-    HomePageCarouselViewComponent
+    HomePageCarouselViewComponent,
+    SearchItineraryComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     NgbModule,
+    FormsModule,
     HighlightModule.forRoot({
       languages: hljsLanguages
     }),
@@ -72,7 +75,7 @@ export function hljsLanguages() {
     }),
     ItineraryModule
   ],
-  providers: [ UserService, HttpClient, LoadingService,PagerService ],
+  providers: [ UserService, HttpClient, LoadingService,PagerService, MessageService ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

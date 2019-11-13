@@ -1,3 +1,4 @@
+import { MessageService } from 'src/app/services/message.service';
 import { PagerService } from './../../services/pager.service';
 
 import { Itinerary, Destination } from './../../models/carouselmodels';
@@ -11,10 +12,10 @@ import { error } from 'util';
   styleUrls: ['./home-page-carousel-view.component.css']
 })
 export class HomePageCarouselViewComponent implements OnInit {
-    private allItems: any[];
+    filteredItinerary: Itinerary[] = [];
     pager: any = {};
     pagedItems: any[];
-  constructor(private carouselService: CarouselViewService, private pagerService:PagerService) { }
+  constructor(private carouselService: CarouselViewService, private pagerService:PagerService, private messageService:MessageService) { }
     allitineraries :  Itinerary[] = [];
 
   ngOnInit() {
@@ -32,8 +33,7 @@ export class HomePageCarouselViewComponent implements OnInit {
         this.allitineraries=value_list
           console.log(this.allitineraries);
           this.setPage(1);
-
-      }, (error) => {
+       }, (error) => {
            console.log('erroor is ', error);
       }
       );
@@ -44,4 +44,29 @@ export class HomePageCarouselViewComponent implements OnInit {
     this.pagedItems = this.allitineraries.slice(this.pager.startIndex, this.pager.endIndex + 1);
     console.log("pagedItems are",this.pagedItems)
 }
+
+  getDetails(){
+     /*
+     this.messageService.getMessage().subscribe(textboxreader=>{
+        console.log("value of the text is ",textboxreader.text)
+        if(textboxreader.text){
+          this.pager = this.pagerService.getPager(this.allitineraries.length, 1);
+          this.pagedItems = this.allitineraries.slice(this.pager.startIndex, this.pager.endIndex + 1);
+          return this.pagedItems;
+        }else{
+          console.log("data empty ")
+        }
+        console.log("data received is =>=> ",textboxreader.text)
+        this.filteredItinerary = this.allitineraries.filter(v => v.getItineraryName() === textboxreader.text);
+        this.pager = this.pagerService.getPager(this.filteredItinerary.length, 1);
+        this.pagedItems = this.filteredItinerary.slice(this.pager.startIndex, this.pager.endIndex + 1);
+        console.log("Page Items",this.pagedItems)
+        //return this.pagedItems;
+        return this.pagedItems;
+     }, failure => {
+
+     })
+    */
+
+  }
 }

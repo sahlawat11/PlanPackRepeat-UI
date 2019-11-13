@@ -42,6 +42,13 @@ const routes: Routes = [
     redirectTo: '/login',
     pathMatch: 'full'
   },
+  { path: 'create-itinerary',
+    // children: [
+    //   { path: '', loadChildren: './itinerary/itinerary.module#ItineraryModule' }
+    // ]
+    loadChildren: () => import('./itinerary/itinerary.module').then(m => m.ItineraryModule)
+  },
+
   {
     path: '**',
     redirectTo: '/login',

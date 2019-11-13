@@ -1,58 +1,58 @@
-    <div class="container">
-        <div class="row">
-            <div class="section-heading text-center">
-                <div class="col-md-12 col-xs-12">
-                    <h1>Top <span>Itineraries</span></h1>
-                    <p class="subheading">We picked the top 6 itineraries for you!</p>
-                </div>
-            </div>
-        </div>
-
-        <div class="row">
-            <ul *ngIf="pager.pages && pager.pages.length" class="pagination pull-right">
-                <li [ngClass]="{disabled:pager.currentPage === 1}">
-                    <a (click)="setPage(1)">First</a>
-                </li>
-                <li [ngClass]="{disabled:pager.currentPage === 1}">
-                    <a (click)="setPage(pager.currentPage - 1)">Previous</a>
-                </li>
-                <li *ngFor="let page of pager.pages" [ngClass]="{active:pager.currentPage === page}">
-                    <a (click)="setPage(page)">{{page}}</a>
-                </li>
-                <li [ngClass]="{disabled:pager.currentPage === pager.totalPages}">
-                    <a (click)="setPage(pager.currentPage + 1)">Next</a>
-                </li>
-                <li [ngClass]="{disabled:pager.currentPage === pager.totalPages}">
-                    <a (click)="setPage(pager.totalPages)">Last</a>
-                </li>
-            </ul>
-        </div>
-       <div class="row">
-          <div *ngFor="let item of pagedItems; let i = index"  class="col-sm-4" style="height:50%">
-              <div  [attr.id]="'myCarousel'+i" class="carousel slide" data-pause="true">
-                  <ol class="carousel-indicators">
-                      <li *ngFor="let destination of item.destinations; let j = index" [attr.data-target]= "'myCarousel'+ i" [attr.data-slide-to]="j" ></li>
-                  </ol>
-                  <div class="carousel-inner" role="listbox">
-                      <div  *ngFor="let destination of item.destinations; let j = index" [ngClass]="j == 0 ? 'item active': 'item'" style="height:auto">
-                          <img [attr.src]="destination.imageSourceUrl" [attr.alt]="destination.destinationName" style="width:100%; height:350px">
-                          <div class="carousel-caption" style="align:bottom">
-                              {{destination.destinationName}}
-                          </div>
-                      </div>
-                      <a class="left carousel-control" [attr.href]="'#myCarousel'+i" role="button" data-slide="prev">
-                          <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
-                          <span class="sr-only">Previous</span>
-                      </a>
-                      <a class="right carousel-control" [attr.href]="'#myCarousel'+i"  role="button" data-slide="next">
-                          <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
-                          <span class="sr-only">Next</span>
-                      </a>
-                      <a class='btn btn-success' style="width:100%" href="http://getbootstrap.com">{{item.itineraryName}}</a>
-                  </div>
-              </div>
-              <br/>
+<div class="container">
+  <div class="row">
+      <div class="section-heading text-center">
+          <div class="col-md-12 col-xs-12">
+              <h1>Top <span>Itineraries</span></h1>
+              <p class="subheading">We picked the top 6 itineraries for you!</p>
           </div>
       </div>
-    <br>
-   </div>
+  </div>
+
+  <div class="row">
+      <ul *ngIf="pager.pages && pager.pages.length" class="pagination pull-right">
+          <li [ngClass]="{disabled:pager.currentPage === 1}">
+              <a (click)="setPage(1)">First</a>
+          </li>
+          <li [ngClass]="{disabled:pager.currentPage === 1}">
+              <a (click)="setPage(pager.currentPage - 1)">Previous</a>
+          </li>
+          <li *ngFor="let page of pager.pages" [ngClass]="{active:pager.currentPage === page}">
+              <a (click)="setPage(page)">{{page}}</a>
+          </li>
+          <li [ngClass]="{disabled:pager.currentPage === pager.totalPages}">
+              <a (click)="setPage(pager.currentPage + 1)">Next</a>
+          </li>
+          <li [ngClass]="{disabled:pager.currentPage === pager.totalPages}">
+              <a (click)="setPage(pager.totalPages)">Last</a>
+          </li>
+      </ul>
+  </div>
+ <div class="row">
+    <div *ngFor="let item of pagedItems; let i = index"  class="col-sm-4" style="height:50%">
+        <div  [attr.id]="'myCarousel'+i" class="carousel slide" data-pause="true">
+            <ol class="carousel-indicators">
+                <li *ngFor="let destination of item.destinations; let j = index" [attr.data-target]= "'myCarousel'+ i" [attr.data-slide-to]="j" ></li>
+            </ol>
+            <div class="carousel-inner" role="listbox">
+                <div  *ngFor="let destination of item.destinations; let j = index" [ngClass]="j == 0 ? 'item active': 'item'" style="height:auto">
+                    <img [attr.src]="destination.imageSourceUrl" [attr.alt]="destination.destinationName" style="width:100%; height:350px">
+                    <div class="carousel-caption" style="align:bottom">
+                        {{destination.destinationName}}
+                    </div>
+                </div>
+                <a class="left carousel-control" [attr.href]="'#myCarousel'+i" role="button" data-slide="prev">
+                    <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+                    <span class="sr-only">Previous</span>
+                </a>
+                <a class="right carousel-control" [attr.href]="'#myCarousel'+i"  role="button" data-slide="next">
+                    <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+                    <span class="sr-only">Next</span>
+                </a>
+                <a class='btn btn-success' style="width:100%" href="http://getbootstrap.com">{{item.itineraryName}}</a>
+            </div>
+        </div>
+        <br/>
+    </div>
+</div>
+<br>
+</div>

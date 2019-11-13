@@ -1,0 +1,92 @@
+<!-- <form [formGroup]="itineraryInfoForm" (ngSubmit)="onSubmit()"> -->
+<div class="destinations-container">
+    <div class="form-container">
+        <div class="add-new-destination">
+        </div>
+
+        <div class="destinations">
+            <div class="nav-item dropdown" ngbDropdown>
+                <button class="btn btn-success dropdown" ngbDropdownToggle><i class="fa fa-plus" aria-hidden="true"></i>
+                    Add Destination</button>
+                <div class="dropdown-menu dropdown-menu-left" ngbDropdownMenu>
+                    <div class="dropdown-item cursor-pointer" (click)="openMapsDialog()"><i class="fa fa-map" aria-hidden="true"></i> Search Maps
+                    </div>
+                    <div class="dropdown-item cursor-pointer" (click)="addManualDestination()">Add Manually</div>
+                </div>
+            </div>
+
+
+
+            <div *ngFor="let destinationObj of destinationsArr; let i = index" class="destination-form">
+                <div class="title"><span>Destination {{ i + 1}}</span> &nbsp; <span (click)="removeDestination(i)"><i class="fa fa-trash cursor-pointer" aria-hidden="true"></i>
+                </span></div>
+                <br />
+                <div class="form-group">
+                    <label>Name <span class="red">*</span>
+                        <input type="text" class="form-control name" id="nameInput" ([ngModel])="destinationObj.name"
+                            placeholder="Enter itinerary name" required>
+                    </label>
+                </div>
+                <div class="form-group">
+                    <label>Address Line 1 <span class="red">*</span>
+                        <input #startDate type="text" class="form-control address" id="startDateInput"
+                            ([ngModel])="destinationObj.address1" placeholder="Address" required>
+                    </label>
+                </div>
+                <div class="form-group">
+                    <label>Address Line 2
+                        <input #startDate type="text" class="form-control address" id="startDateInput"
+                            ([ngModel])="destinationObj.address2" placeholder="Address" required>
+                    </label>
+                </div>
+
+                <div class="form-group">
+                    <label>Date <span class="red">*</span>
+                        <input type="date" class="form-control date" id="endDateInput" ([ngModel])="destinationObj.date"
+                            placeholder="Select end date" required>
+                    </label>
+                </div>
+
+                <div class="form-group">
+                    <label>Time <span class="red">*</span>
+                        <input type="time" class="form-control time" id="endDateInput" ([ngModel])="destinationObj.time"
+                            placeholder="Select end date" required>
+                    </label>
+                </div>
+
+                <hr />
+
+                <!-- <label>Visibility <span class="red">*</span></label>
+                    <div class="row visibility-container">
+                        <div class="form-group form-check radio col-md-2">
+                            <input type="radio" class="form-check-input" id="visibilityStatusPublic" formControlName="visibility"
+                                value="Public" checked>
+                            <label class="form-check-label" for="visibilityStatusPublic">Public</label>
+                        </div>
+            
+                        <div class="form-group form-check radio col-md-10">
+                            <input type="radio" class="form-check-input" id="visibilityStatusPrivate" formControlName="visibility"
+                                value="Private">
+                            <label class="form-check-label" for="visibilityStatusPrivate">Private</label>
+                        </div>
+                    </div> -->
+
+
+            </div>
+
+
+
+
+
+
+        </div>
+        <button type="submit" class="btn btn-primary submit previous-btn disabled" [disabled]="true">Previous</button>
+        <button type="submit" class="btn btn-primary submit next-btn" [disabled]="!isFormValid"
+            [ngClass]="{'disabled': !isFormValid}">Next</button>
+    </div>
+    <!-- </form> -->
+</div>
+
+
+
+<app-dialog [content]="'maps'" (dialogRef)="setDialogRef($event)"></app-dialog>

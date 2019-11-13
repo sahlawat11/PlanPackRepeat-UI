@@ -1,1 +1,44 @@
-<p>info works!</p>
+<form [formGroup]="itineraryInfoForm" (ngSubmit)="onSubmit()">
+    <div class="form-container">
+        <div class="form-group">
+            <label>Itinerary Name <span class="red">*</span>
+                <input type="text" class="form-control name" id="nameInput" formControlName="name"
+                    placeholder="Enter itinerary name" required>
+                <small id="emailHelp" class="form-text text-muted">Choose a name that will make you excited!</small>
+            </label>
+        </div>
+        <div class="form-group">
+            <label>Start Date <span class="red">*</span>
+                <input #startDate type="date" class="form-control" id="startDateInput" formControlName="startDate"
+                    placeholder="Select start date" [min]="today" required>
+            </label>
+        </div>
+
+        <div class="form-group">
+            <label>End Date <span class="red">*</span>
+                <input type="date" class="form-control" id="endDateInput" formControlName="endDate"
+                    placeholder="Select end date" [min]="startDate.value" required>
+            </label>
+        </div>
+
+
+        <label>Visibility <span class="red">*</span></label>
+        <div class="row visibility-container">
+            <div class="form-group form-check radio col-md-2">
+                <input type="radio" class="form-check-input" id="visibilityStatusPublic" formControlName="visibility"
+                    value="Public" checked>
+                <label class="form-check-label" for="visibilityStatusPublic">Public</label>
+            </div>
+
+            <div class="form-group form-check radio col-md-10">
+                <input type="radio" class="form-check-input" id="visibilityStatusPrivate" formControlName="visibility"
+                    value="Private">
+                <label class="form-check-label" for="visibilityStatusPrivate">Private</label>
+            </div>
+        </div>
+
+        <button type="submit" class="btn btn-primary" [disabled]="true">Previous</button>
+        <button type="submit" class="btn btn-primary" [disabled]="!isFormValid"
+            [ngClass]="{'disabled': !isFormValid}">Next</button>
+    </div>
+</form>

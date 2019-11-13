@@ -1,13 +1,44 @@
 <div class="form-group">
-    <label>Enter address</label>
-    <input type="text" class="form-control" (keydown.enter)="$event.preventDefault()" placeholder="Search Nearest Location" autocorrect="off" autocapitalize="off" spellcheck="off" type="text" #search>
-  </div>
- 
-  <agm-map [latitude]="latitude" [longitude]="longitude" [zoom]="zoom">
-    <agm-marker [latitude]="latitude" [longitude]="longitude" [markerDraggable]="true"
-      (dragEnd)="markerDragEnd($event)"></agm-marker>
+  <label>Enter address</label>
+  <input type="text" class="form-control" (keydown.enter)="$event.preventDefault()"
+    placeholder="Search Nearest Location" autocorrect="off" autocapitalize="off" spellcheck="on" type="text" #search />
+</div>
+
+<div class="agm-map-container">
+  <agm-map
+    [latitude]="latitude"
+    [longitude]="longitude"
+    [zoom]="zoom"
+    [disableDoubleClickZoom]="true"
+    (mapRightClick)="selectLocation($event)"
+    (mapReady)="mapLoaded = true">
+
+    <agm-polyline 
+      [clickable]="true"
+      [polylineDraggable]="true"
+      [editable]="true"
+      [visible]="true"
+      [strokeWeight]="3"
+      >
+        <ng-container *ngFor="let location of selectedLocations; let i = index">
+          <agm-marker
+            [latitude]="location.lat"
+            [longitude]="location.lon"
+            [markerDraggable]="true"
+            (dragEnd)="markerDragEnd($event)"
+            (markerRightClick)="removeLocation(location)">
+          </agm-marker>
+          
+          <agm-polyline-point
+            [latitude]="location.lat"
+            [longitude]="location.lon">
+          </agm-polyline-point>
+        </ng-container>
+    </agm-polyline>
+
   </agm-map>
- 
-  <h5>Address: {{address}}</h5>
-  <div>Latitude: {{latitude}}</div>
-  <div>Longitude: {{longitude}}</div>
+</div>
+
+<h5>Address: {{ address }}</h5>
+<div>Latitude: {{ latitude }}</div>
+<div>Longitude: {{ longitude }}</div>

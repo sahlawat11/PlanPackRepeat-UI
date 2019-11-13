@@ -1,23 +1,17 @@
 ﻿export class PagerService {
     getPager(totalItems: number, currentPage: number = 1, pageSize: number = 6) {
-        // calculate total pages
         const totalPages = Math.ceil(totalItems / pageSize);
-
-        // ensure current page isn't out of range
         if (currentPage < 1) {
             currentPage = 1;
         } else if (currentPage > totalPages) {
             currentPage = totalPages;
         }
-
         let startPage: number;
         let endPage: number;
         if (totalPages <= 10) {
-            // less than 10 total pages so show all
             startPage = 1;
             endPage = totalPages;
         } else {
-            // more than 10 total pages so calculate start and end pages
             if (currentPage <= 6) {
                 startPage = 1;
                 endPage = 10;
@@ -29,8 +23,6 @@
                 endPage = currentPage + 4;
             }
         }
-
-        // calculate start and end item indexes
         const startIndex = (currentPage - 1) * pageSize;
         const endIndex = Math.min(startIndex + pageSize - 1, totalItems - 1);
 

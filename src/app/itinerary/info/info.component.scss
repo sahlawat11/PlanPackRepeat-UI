@@ -1,0 +1,41 @@
+form {
+    margin-bottom: 40px;
+}
+
+.name {
+    width: 500px;
+}
+
+.submit {
+    border-radius: 5px;
+}
+
+// .form-container {
+//     margin-left: 28%;
+// }
+
+.next-btn {
+    position: relative;
+    left: 50%;
+    width: 90px;
+}
+
+.previous-btn {
+    // position: relative;
+    // right: 20%;
+    width: 90px;
+}
+
+.disabled {
+    background: grey;
+    border-color: grey;
+}
+
+.red {
+    color: red;
+}
+
+.visibility-container {
+    margin-left: 0;
+    margin-bottom: 50px;
+}

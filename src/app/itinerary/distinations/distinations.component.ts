@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { ItineraryService } from '../itinerary.service';
 import { Destinations } from '../../models/itinerary';
-import { AuthService } from '../../auth/auth.service';
 import { NgbModalConfig, NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
@@ -19,7 +18,6 @@ export class DistinationsComponent implements OnInit {
   constructor(
     private router: Router,
     private itineraryService: ItineraryService,
-    private auth: AuthService,
     config: NgbModalConfig,
     private modalService: NgbModal
   ) {

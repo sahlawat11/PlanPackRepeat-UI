@@ -9,6 +9,8 @@ import { AuthService } from './auth/auth.service';
 })
 export class AppComponent implements OnInit {
 
+  array = [1,2]
+
   constructor(private auth: AuthService) {}
 
   ngOnInit() {

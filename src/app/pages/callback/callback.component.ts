@@ -16,7 +16,7 @@ export class CallbackComponent implements OnInit {
     setTimeout(() => {
       this.auth.handleAuthCallback();
 
-    }, 5000);
+    }, 1000);
   }
 
 }

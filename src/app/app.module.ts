@@ -1,3 +1,4 @@
+import { PagerService } from './services/pager.service';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
@@ -26,6 +27,8 @@ import { ToastrModule } from 'ngx-toastr';
 import { CreateItineraryComponent } from './pages/create-itinerary/create-itinerary.component';
 import { AgmCoreModule } from '@agm/core';
 import { ItineraryModule } from './itinerary/itinerary.module';
+import { HomePageHeaderComponent } from './components/home-page-header/home-page-header.component';
+import { HomePageCarouselViewComponent } from './components/home-page-carousel-view/home-page-carousel-view.component';
 
 export function hljsLanguages() {
   return [{ name: 'json', func: json }];
@@ -43,7 +46,9 @@ export function hljsLanguages() {
     HomeContentComponent,
     LoadingComponent,
     LoginComponent,
-    CreateItineraryComponent
+    CreateItineraryComponent,
+    HomePageHeaderComponent,
+    HomePageCarouselViewComponent
   ],
   imports: [
     BrowserModule,
@@ -63,9 +68,10 @@ export function hljsLanguages() {
     ToastrModule.forRoot({
       timeOut: 4000,
       positionClass: 'toast-top-right'
-    })
+    }),
+    ItineraryModule
   ],
-  providers: [ UserService, HttpClient, LoadingService ],
+  providers: [ UserService, HttpClient, LoadingService,PagerService ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

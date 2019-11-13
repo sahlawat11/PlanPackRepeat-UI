@@ -33,6 +33,10 @@ const routes: Routes = [
     path: 'maps',
     component: GoogleMapsComponent
   },
+  // {
+  //   path: 'create-itinerary',
+  //   component: GoogleMapsComponent
+  // },
   {
     path: 'login',
     component: LoginComponent

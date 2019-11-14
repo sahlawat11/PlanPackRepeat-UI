@@ -27,8 +27,7 @@ export class DistinationsComponent implements OnInit {
   }
 
   ngOnInit() {
-    // this.validateItineraryObj();
-    console.log('**************:', this.itineraryService.itineraryObj);
+    this.checkThisObj();
   }
 
   addManualDestination() {
@@ -53,7 +52,16 @@ export class DistinationsComponent implements OnInit {
   }
 
   openMapsDialog() {
-    this.modalService.open(this.dialogRef);
+    // this.modalService.open(this.dialogRef);
+    // console.log('********:', this.dialogRef);
+    this.dialogRef.next(true);
+    // this.dialogRef.nativeElement.modal({"show": true});
+  }
+
+  checkThisObj() {
+    setInterval(() => {
+      console.log('******************:', this.itineraryService.savedDestinations);
+    }, 5000);
   }
 
   setDialogRef(event) {

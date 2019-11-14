@@ -2,7 +2,7 @@
 import { Component, OnInit, ViewChild, ElementRef, NgZone } from '@angular/core';
 import { MapsAPILoader, MouseEvent, PolylineManager, GoogleMapsAPIWrapper } from '@agm/core';
 import { LoadingService } from '../loading/loading.service';
-// import {} from '@types/googlemaps';
+import { ItineraryService } from '../../itinerary/itinerary.service';
 
 @Component({
   selector: 'app-google-maps',
@@ -25,7 +25,7 @@ export class GoogleMapsComponent implements OnInit {
   @ViewChild('search', {static: false}) searchElementRef: ElementRef;
 
   constructor(private mapsAPILoader: MapsAPILoader, polylineManager: PolylineManager,
-    private ngZone: NgZone, private loadingService: LoadingService) { }
+    private ngZone: NgZone, private loadingService: LoadingService, private itineraryService: ItineraryService) { }
 
   ngOnInit() {
     this.mapsAPILoader.load().then(() => {
@@ -50,7 +50,7 @@ export class GoogleMapsComponent implements OnInit {
           // set latitude, longitude and zoom
           this.latitude = place.geometry.location.lat();
           this.longitude = place.geometry.location.lng();
-          this.zoom = 12;
+          this.zoom = 15;
           this.address = place.formatted_address;
         });
       });
@@ -78,6 +78,7 @@ export class GoogleMapsComponent implements OnInit {
  
   getAddress(latitude, longitude) {
     this.geoCoder.geocode({ 'location': { lat: latitude, lng: longitude } }, (results, status) => {
+      debugger;
       if (status === 'OK') {
         if (results[0]) {
           this.zoom = 12;
@@ -92,18 +93,45 @@ export class GoogleMapsComponent implements OnInit {
     });
   }
 
+  getAddressFromCoordinates(latitude, longitude) {
+    debugger;
+    this.geoCoder.geocode({ 'location': { lat: latitude, lng: longitude } }, (results, status) => {
+      debugger;
+      if (status === 'OK') {
+        debugger;
+        // if (results[0]) {
+          // this.address = results[0].formatted_address;
+          this.getStreetAddress(results);
+        // } else {
+        //   console.error('No results found');
+        // }
+      } else {
+        console.error('Geocoder failed due to: ' + status);
+      }
+
+    });
+  }
+
+  getStreetAddress(locationResults: Array<any>) {
+    console.log('THESE ARE ALL THE LOCATIONS:', locationResults);
+  }
 
   selectLocation(event: any) {
-    this.selectedLocations.push(
+    this.getAddressFromCoordinates(event.coords.lat, event.coords.lng);
+    this.itineraryService.savedDestinations.push(
       {lat: event.coords.lat, lon: event.coords.lng}
     );
   }
 
   removeLocation(location: any) {
-    const index = this.selectedLocations.indexOf(location);
+    const index = this.itineraryService.savedDestinations.indexOf(location);
     if (typeof index !== 'undefined' || index !== null) {
-      this.selectedLocations.splice(index, 1);
+      this.itineraryService.savedDestinations.splice(index, 1);
     }
+  }
+
+  get savedDestinations() {
+    return this.itineraryService.savedDestinations;
   }
  
 }

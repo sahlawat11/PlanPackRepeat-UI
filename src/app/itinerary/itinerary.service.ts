@@ -10,6 +10,8 @@ export class ItineraryService {
   private itinerarySubject: BehaviorSubject<Itinerary> = new BehaviorSubject(<Itinerary>{});
   itineraryStream = this.itinerarySubject.asObservable();
 
+  savedDestinations: Array<any> = [];
+
   trackerOptions = [
     {
       step: 'info',
@@ -44,6 +46,8 @@ export class ItineraryService {
   itineraryObj: Itinerary;
 
   constructor() { }
+
+
 
   broadcastUpdates(itineraryData: any): void {
     this.itinerarySubject.next(itineraryData);

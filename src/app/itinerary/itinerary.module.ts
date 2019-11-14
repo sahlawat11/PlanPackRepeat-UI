@@ -17,7 +17,7 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 @NgModule({
   declarations: [InfoComponent, ProgressTrackerComponent, ItineraryBaseComponent, DistinationsComponent, SummaryComponent, DialogComponent, GoogleMapsComponent],
-  providers: [ ItineraryService ],
+  providers: [ ItineraryService],
   imports: [
     CommonModule,
     ReactiveFormsModule,

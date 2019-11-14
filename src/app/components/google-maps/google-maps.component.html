@@ -20,7 +20,7 @@
       [visible]="true"
       [strokeWeight]="3"
       >
-        <ng-container *ngFor="let location of selectedLocations; let i = index">
+        <ng-container *ngFor="let location of savedDestinations; let i = index">
           <agm-marker
             [latitude]="location.lat"
             [longitude]="location.lon"

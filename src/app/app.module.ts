@@ -63,7 +63,7 @@ export function hljsLanguages() {
       languages: hljsLanguages
     }),
     AgmCoreModule.forRoot({
-      apiKey: 'AIzaSyAzdiZyPOCqTWmA8g-WVGYFG5DuDAIsV4I',
+      apiKey: '5DuDAIsV4I',
       libraries: ['places']
     }),
     FontAwesomeModule,

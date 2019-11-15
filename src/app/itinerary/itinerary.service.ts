@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
-import { Itinerary } from '../models/itinerary';
+import { Itinerary, Destinations } from '../models/itinerary';
 
 @Injectable({
   providedIn: 'root'
@@ -8,9 +8,13 @@ import { Itinerary } from '../models/itinerary';
 export class ItineraryService {
 
   private itinerarySubject: BehaviorSubject<Itinerary> = new BehaviorSubject(<Itinerary>{});
-  itineraryStream = this.itinerarySubject.asObservable();
+  public onSaveMapsLocationsSubject: BehaviorSubject<boolean> = new BehaviorSubject(false);
 
-  savedDestinations: Array<any> = [];
+  itineraryStream = this.itinerarySubject.asObservable();
+  onSaveMapsLocationsStream = this.onSaveMapsLocationsSubject.asObservable();
+
+
+  savedDestinations: Array<Destinations> = [];
 
   trackerOptions = [
     {

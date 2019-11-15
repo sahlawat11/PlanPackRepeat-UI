@@ -69,5 +69,8 @@ form {
 .name, .address, .date, .time {
     height: 30px;
     width: 250px;
-    font-size: 12px
+    font-size: 12px;
+    &.long-field {
+        width: 500px;
+    }
 }

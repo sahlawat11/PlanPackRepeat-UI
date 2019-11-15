@@ -20,12 +20,12 @@
 
       </div>
       <div class="modal-body">
-        <app-google-maps></app-google-maps>
+        <app-google-maps [dialogRef]="dialogRef"></app-google-maps>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-danger save-btn pull-left"
           (click)="googleDialogIsOpen=false;">CANCEL</button>
-        <button type="button" class="btn btn-primary save-btn pull-right">Save</button>
+        <button type="button" class="btn btn-primary save-btn pull-right" (click)="saveMapsDestinations()">Save</button>
       </div>
     </div>
   </div>

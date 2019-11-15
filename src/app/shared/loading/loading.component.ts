@@ -18,4 +18,8 @@ export class LoadingComponent implements OnInit {
     return this.loadingService.showLoadingMask;
   }
 
+  get loadingMessage(): string {
+    return this.loadingService.loadingMessage;
+  }
+
 }

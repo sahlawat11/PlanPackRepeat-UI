@@ -6,14 +6,19 @@ import { Injectable } from '@angular/core';
 export class LoadingService {
 
   showLoadingMask = false;
+  loadingMessage = '';
 
   constructor() { }
 
-  enableLoadingMask(): void {
+  enableLoadingMask(message?: string): void {
     this.showLoadingMask = true;
+    if (typeof message !== 'undefined') {
+      this.loadingMessage = message;
+    }
   }
 
   disableLoadingMask(): void {
     this.showLoadingMask = false;
+    this.loadingMessage = '';
   }
 }

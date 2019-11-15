@@ -7,6 +7,17 @@
             <div *ngIf="itineraryobj.info.startDate" class="date">Start Date: <span class="start">{{itineraryobj.info.startDate | date: "mediumDate"}}</span></div>
             <div *ngIf="itineraryobj.info.endDate" class="date">End Date: <span class="end">{{itineraryobj.info.endDate | date: "mediumDate"}}</span></div>
             <div *ngIf="itineraryobj.info.visiblity" class="visibility">Visibility: <span>{{itineraryobj.info.visiblity}}</span></div>
+
+            <div class="row">
+            <ng-container *ngFor="let destination of itineraryobj.destinations">
+                <div class="col-md-6 destination-container">
+                    <div *ngIf="destination.name" class="name">Name: <span>{{destination.name}}</span></div>
+                    <div *ngIf="destination.streetAddress" class="date">Street Address: <span class="start">{{destination.streetAddress}}</span></div>
+                    <div *ngIf="destination.date" class="date">Date: <span class="end">{{destination.date | date: "mediumDate"}}</span></div>
+                    <div *ngIf="destination.time" class="visibility">Time: <span>{{destination.time}}</span></div>
+                </div>
+            </ng-container>
+        </div>
         </ng-container>
     </div>
 </div>

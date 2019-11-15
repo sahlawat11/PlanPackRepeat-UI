@@ -1,6 +1,8 @@
 import { Component, OnInit, ViewChild, Input, Output, EventEmitter, AfterViewInit } from '@angular/core';
 import { ReplaySubject } from 'rxjs';
 
+import { ItineraryService } from '../../itinerary/itinerary.service';
+
 @Component({
   selector: 'app-dialog',
   templateUrl: './dialog.component.html',
@@ -14,12 +16,12 @@ export class DialogComponent implements OnInit, AfterViewInit {
 
   @ViewChild('googleDialog', {static: false}) googleDialog: any;
 
-  private dialogRef: ReplaySubject<boolean> = new ReplaySubject(1);
+  public dialogRef: ReplaySubject<boolean> = new ReplaySubject(1);
   dialogRefStream = this.dialogRef.asObservable();
 
   googleDialogIsOpen = false;
 
-  constructor() { }
+  constructor(private itineraryService: ItineraryService) { }
 
   ngOnInit() {
     // setTimeout(() => {
@@ -32,8 +34,12 @@ export class DialogComponent implements OnInit, AfterViewInit {
     });
   }
 
-  ngAfterViewInit() {
+  ngAfterViewInit(): void {
     this.openDialogEvent.emit(this.dialogRef);
+  }
+
+  saveMapsDestinations(): void {
+    this.itineraryService.onSaveMapsLocationsSubject.next(true);
   }
 
 }

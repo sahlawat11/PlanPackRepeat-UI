@@ -7,6 +7,7 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { HighlightModule } from 'ngx-highlightjs';
 import json from 'highlight.js/lib/languages/json';
 import { FontAwesomeModule } from '@fortawesome/angular-fontawesome';
+import { SharedModule } from './shared/shared.module';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -17,13 +18,12 @@ import { NavBarComponent } from './components/nav-bar/nav-bar.component';
 import { FooterComponent } from './components/footer/footer.component';
 import { HeroComponent } from './components/hero/hero.component';
 import { HomeContentComponent } from './components/home-content/home-content.component';
-import { LoadingComponent } from './components/loading/loading.component';
 import { LoginComponent } from './components/login/login.component';
 
 import { HttpClientModule, HttpClient } from '@angular/common/http';
 
 import { UserService } from './services/user.service';
-import { LoadingService } from './components/loading/loading.service'
+import { LoadingService } from './shared/loading/loading.service'
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ToastrModule } from 'ngx-toastr';
 import { CreateItineraryComponent } from './pages/create-itinerary/create-itinerary.component';
@@ -47,7 +47,6 @@ export function hljsLanguages() {
     FooterComponent,
     HeroComponent,
     HomeContentComponent,
-    LoadingComponent,
     LoginComponent,
     CreateItineraryComponent,
     HomePageHeaderComponent,
@@ -63,7 +62,7 @@ export function hljsLanguages() {
       languages: hljsLanguages
     }),
     AgmCoreModule.forRoot({
-      apiKey: '5DuDAIsV4I',
+      apiKey: 'AIzaSyAzdiZyPOCqTWmA8g-WVGYFG5DuDAIsV4I',
       libraries: ['places']
     }),
     FontAwesomeModule,
@@ -73,9 +72,10 @@ export function hljsLanguages() {
       timeOut: 4000,
       positionClass: 'toast-top-right'
     }),
-    ItineraryModule
+    ItineraryModule,
+    SharedModule
   ],
-  providers: [ UserService, HttpClient, LoadingService,PagerService, MessageService ],
+  providers: [ UserService, HttpClient, LoadingService, PagerService, MessageService ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

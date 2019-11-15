@@ -1,8 +1,10 @@
 /// <reference types='@types/googlemaps' />
-import { Component, OnInit, ViewChild, ElementRef, NgZone } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, NgZone, Input } from '@angular/core';
 import { MapsAPILoader, MouseEvent, PolylineManager, GoogleMapsAPIWrapper } from '@agm/core';
-import { LoadingService } from '../loading/loading.service';
+import { LoadingService } from '../../shared/loading/loading.service';
 import { ItineraryService } from '../../itinerary/itinerary.service';
+import { Observable, Subject, ReplaySubject } from 'rxjs';
+import { Destinations } from '../../models/itinerary';
 
 @Component({
   selector: 'app-google-maps',
@@ -20,14 +22,51 @@ export class GoogleMapsComponent implements OnInit {
   zoom: number;
   address: string;
   mapLoaded: boolean;
+  destinationCreationCounter = 0;
   private geoCoder;
 
   @ViewChild('search', {static: false}) searchElementRef: ElementRef;
+  @Input() dialogRef: ReplaySubject<any>;
 
   constructor(private mapsAPILoader: MapsAPILoader, polylineManager: PolylineManager,
     private ngZone: NgZone, private loadingService: LoadingService, private itineraryService: ItineraryService) { }
 
   ngOnInit() {
+    this.initOnSaveEventSubscription();
+    this.loadGoogleMaps();
+  }
+
+  initOnSaveEventSubscription(): void {
+    this.itineraryService.onSaveMapsLocationsStream.subscribe((data: boolean) => {
+      if (!!data) {
+        this.loadingService.enableLoadingMask('Saving');
+        console.log('The itinerary has been saved, fetching street address and pix now.', data);
+        for (const location of this.selectedLocations) {
+          this.destinationCreationCounter++;
+          this.getAddressFromCoordinates(location.lat, location.lng).subscribe((data: string | null) => {
+            this.destinationCreationCounter--;
+            const streetAddress = data;
+            this.itineraryService.savedDestinations.push(
+              { latitude: location.lat, longitude: location.lng, streetAddress: streetAddress, source: 'maps', name: '', date: '', time: ''}
+            );
+            // console.log('PUSHED THIS ITEM:', index);
+            if (this.destinationCreationCounter === 0) {  // last location in the array
+              this.loadingService.disableLoadingMask();
+              this.dialogRef.next(false);
+            }
+            });
+        }
+      }
+      },
+      (error: any) => {
+        console.log('Error occurred on save event.', error);
+        this.loadingService.disableLoadingMask();
+    });
+  }
+
+
+  loadGoogleMaps(): void {
+    this.loadingService.enableLoadingMask('Loading Google Maps');
     this.mapsAPILoader.load().then(() => {
       this.setCurrentLocation();
       this.geoCoder = new google.maps.Geocoder();
@@ -36,17 +75,14 @@ export class GoogleMapsComponent implements OnInit {
         types: ['address']
       });
       autocomplete.addListener('place_changed', () => {
-        debugger;
         this.ngZone.run(() => {
           console.log('this is running right now');
           // get the place result
           const place: google.maps.places.PlaceResult = autocomplete.getPlace();
-          debugger;
           // verify result
           if (place.geometry === undefined || place.geometry === null) {
             return;
           }
-          debugger;
           // set latitude, longitude and zoom
           this.latitude = place.geometry.location.lat();
           this.longitude = place.geometry.location.lng();
@@ -78,48 +114,54 @@ export class GoogleMapsComponent implements OnInit {
  
   getAddress(latitude, longitude) {
     this.geoCoder.geocode({ 'location': { lat: latitude, lng: longitude } }, (results, status) => {
-      debugger;
       if (status === 'OK') {
         if (results[0]) {
           this.zoom = 12;
           this.address = results[0].formatted_address;
+          this.loadingService.disableLoadingMask();
         } else {
           console.error('No results found');
+          this.loadingService.disableLoadingMask();
         }
       } else {
         console.error('Geocoder failed due to: ' + status);
+        this.loadingService.disableLoadingMask();
       }
 
     });
   }
 
-  getAddressFromCoordinates(latitude, longitude) {
-    debugger;
+  getAddressFromCoordinates(latitude, longitude): Observable<any> {
+    const streetAddressSubject = new Subject<any>();
     this.geoCoder.geocode({ 'location': { lat: latitude, lng: longitude } }, (results, status) => {
-      debugger;
       if (status === 'OK') {
-        debugger;
-        // if (results[0]) {
-          // this.address = results[0].formatted_address;
-          this.getStreetAddress(results);
-        // } else {
-        //   console.error('No results found');
-        // }
+          const address = this.getStreetAddress(results);
+          streetAddressSubject.next(address);
+          return address;
       } else {
         console.error('Geocoder failed due to: ' + status);
+        streetAddressSubject.next(null);
       }
-
     });
+    return streetAddressSubject.asObservable();
   }
 
   getStreetAddress(locationResults: Array<any>) {
     console.log('THESE ARE ALL THE LOCATIONS:', locationResults);
+    let locationStreetAddress: string;
+    if (locationResults.length > 0) {
+      for (const location of locationResults) {
+        if (location.types.indexOf("street_address") > -1) {
+          locationStreetAddress = location.formatted_address;
+        }
+      }
+    }
+    return locationStreetAddress;
   }
 
   selectLocation(event: any) {
-    this.getAddressFromCoordinates(event.coords.lat, event.coords.lng);
-    this.itineraryService.savedDestinations.push(
-      {lat: event.coords.lat, lon: event.coords.lng}
+    this.selectedLocations.push(
+      { lat: event.coords.lat, lng: event.coords.lng }
     );
   }
 

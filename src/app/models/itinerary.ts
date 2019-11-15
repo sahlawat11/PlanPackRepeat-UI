@@ -13,9 +13,11 @@ export interface Info {
 
 export interface Destinations {
     name: string;
-    address1: string;
-    address2?: string;
+    streetAddress: string;
+    latitude: number | null;
+    longitude: number | null;
     date: string;
     time: string;
-    status?: "travelled" | "wishlist"
+    status?: "travelled" | "wishlist";
+    source?: "maps" | "manual"
 }

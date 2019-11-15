@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { ReactiveFormsModule } from '@angular/forms';
 import { InfoComponent } from './info/info.component';
 import { ItineraryRoutesModule } from './itinerary.routes.module';
+import { SharedModule } from '../shared/shared.module';
 import { ProgressTrackerComponent } from './progress-tracker/progress-tracker.component';
 import { ItineraryBaseComponent } from './itinerary-base/itinerary-base.component';
 import { ItineraryService } from './itinerary.service';
@@ -23,6 +24,7 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
     ReactiveFormsModule,
     ItineraryRoutesModule,
     NgbModule,
+    SharedModule,
     AgmCoreModule.forRoot({
       apiKey: 'AIzaSyAzdiZyPOCqTWmA8g-WVGYFG5DuDAIsV4I',
       libraries: ['places']

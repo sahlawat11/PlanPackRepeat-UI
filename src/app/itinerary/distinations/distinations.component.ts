@@ -21,7 +21,7 @@ export class DistinationsComponent implements OnInit {
   });
   
   itineraryUpdateTimeout: any;
-  isFormValid: boolean;
+  // isFormValid: boolean;
   isCollapsed = false;
   destinationsArr: Array<Destinations> = [];
   dialogRef: any;
@@ -29,7 +29,6 @@ export class DistinationsComponent implements OnInit {
   constructor(
     private router: Router,
     private itineraryService: ItineraryService,
-    private loadingService: LoadingService
   ) {
   }
 
@@ -37,7 +36,7 @@ export class DistinationsComponent implements OnInit {
     this.validateItineraryObj();
     this.itineraryDestinationsForm.valueChanges.subscribe((data) => {
       this.updateInput();
-      this.isFormValid = this.itineraryDestinationsForm.valid;
+      // this.isFormValid = this.itineraryDestinationsForm.valid;
     });
   }
 
@@ -54,7 +53,6 @@ export class DistinationsComponent implements OnInit {
 }
 
 setItineraryObj() {
-  debugger;
   this.itineraryService.itineraryObj.destinations = this.itineraryService.savedDestinations;
 }
 
@@ -69,6 +67,7 @@ setItineraryObj() {
       longitude: null
     };
     this.itineraryService.savedDestinations.push(destObj);
+    this.itineraryService.broadcastUpdates(this.itineraryService.itineraryObj);
   }
 
   removeDestination(index: number) {
@@ -91,12 +90,14 @@ setItineraryObj() {
   }
 
   updateDestinationMetadata(destinationObj: Destination, attr: string, value) {
-    debugger;
     destinationObj[attr] = value;
-    debugger;
   }
 
   get savedDestinations(): Array<Destinations> {
     return this.itineraryService.savedDestinations;
+  }
+
+  get isFormValid() {
+    return this.itineraryService.isDestinationPageValid();
   }
 }

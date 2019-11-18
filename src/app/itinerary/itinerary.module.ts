@@ -14,10 +14,11 @@ import { GoogleMapsComponent } from '../components/google-maps/google-maps.compo
 import { AgmCoreModule } from '@agm/core';
 
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { BudgetComponent } from './budget/budget.component';
 
 
 @NgModule({
-  declarations: [InfoComponent, ProgressTrackerComponent, ItineraryBaseComponent, DistinationsComponent, SummaryComponent, DialogComponent, GoogleMapsComponent],
+  declarations: [InfoComponent, ProgressTrackerComponent, ItineraryBaseComponent, DistinationsComponent, SummaryComponent, DialogComponent, GoogleMapsComponent, BudgetComponent],
   providers: [ ItineraryService],
   imports: [
     CommonModule,

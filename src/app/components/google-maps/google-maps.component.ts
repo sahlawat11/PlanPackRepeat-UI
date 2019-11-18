@@ -41,20 +41,25 @@ export class GoogleMapsComponent implements OnInit {
       if (!!data) {
         this.loadingService.enableLoadingMask('Saving');
         console.log('The itinerary has been saved, fetching street address and pix now.', data);
-        for (const location of this.selectedLocations) {
-          this.destinationCreationCounter++;
-          this.getAddressFromCoordinates(location.lat, location.lng).subscribe((data: string | null) => {
-            this.destinationCreationCounter--;
-            const streetAddress = data;
-            this.itineraryService.savedDestinations.push(
-              { latitude: location.lat, longitude: location.lng, streetAddress: streetAddress, source: 'maps', name: '', date: '', time: ''}
-            );
-            // console.log('PUSHED THIS ITEM:', index);
-            if (this.destinationCreationCounter === 0) {  // last location in the array
-              this.loadingService.disableLoadingMask();
-              this.dialogRef.next(false);
-            }
-            });
+        if (this.selectedLocations.length > 0) {
+          for (const location of this.selectedLocations) {
+            this.destinationCreationCounter++;
+            this.getAddressFromCoordinates(location.lat, location.lng).subscribe((data: string | null) => {
+              this.destinationCreationCounter--;
+              const streetAddress = data;
+              this.itineraryService.savedDestinations.push(
+                { latitude: location.lat, longitude: location.lng, streetAddress: streetAddress, source: 'maps', name: '', date: '', time: ''}
+              );
+              // console.log('PUSHED THIS ITEM:', index);
+              if (this.destinationCreationCounter === 0) {  // last location in the array
+                this.loadingService.disableLoadingMask();
+                this.dialogRef.next(false);
+              }
+              });
+          }
+        } else {
+          this.loadingService.disableLoadingMask();
+          this.dialogRef.next(false);
         }
       }
       },

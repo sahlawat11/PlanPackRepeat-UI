@@ -7,6 +7,7 @@ import { DistinationsComponent } from './distinations/distinations.component';
 import { ProgressTrackerComponent } from './progress-tracker/progress-tracker.component';
 import { SummaryComponent } from './summary/summary.component';
 import { ItineraryBaseComponent } from './itinerary-base/itinerary-base.component';
+import { BudgetComponent } from './budget/budget.component';
 
 const createItineraryRoutes: Routes = [
 
@@ -15,7 +16,8 @@ const createItineraryRoutes: Routes = [
     { path: '', component: ProgressTrackerComponent, outlet: 'progress tracker' },
     { path: '', component: SummaryComponent, outlet: 'summary'},
     { path: 'info', component: InfoComponent },
-    { path: 'destinations', component: DistinationsComponent }
+    { path: 'destinations', component: DistinationsComponent },
+    { path: 'budget', component: BudgetComponent }
   ]
 }
 // ,

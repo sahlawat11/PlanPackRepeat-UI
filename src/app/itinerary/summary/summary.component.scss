@@ -12,10 +12,14 @@
         .name {
             span {
                 margin-left: 40px;
+                font-weight: 700;
+                color: #869aa7 !important;
             }
         }
         .date {
             span {
+                font-weight: 700;
+                color: #869aa7 !important;
                 &.start {
                     margin-left: 13px;
                 }
@@ -26,8 +30,28 @@
         }
         .visibility {
             span {
-                margin-left: 25px
+                margin-left: 25px;
+                font-weight: 700;
+                color: #869aa7 !important;
             }
         }
+    }
+    .destination-container {
+        border: 1px solid;
+        width: 155px;
+        margin-left: 10px;
+        margin-bottom: 10px;
+        font-size: 12px;
+        padding:0 5px;
+        span {
+            color: #869aa7 !important;
+            margin-left: 2px !important;
+        }
+        .name, .date {
+            line-height: 15.5px;
+        }
+    }
+    .row {
+        margin: 0 !important;
     }
 }

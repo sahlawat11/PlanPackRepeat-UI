@@ -2,6 +2,7 @@
 export interface Itinerary {
     info: Info;
     destinations?: Array<Destinations> | null;
+    budget?: number;
 }
 
 export interface Info {

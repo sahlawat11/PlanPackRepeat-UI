@@ -60,9 +60,8 @@
                 </div>
 
             </div>
-            <button type="submit" class="btn btn-primary submit previous-btn disabled"
-                [disabled]="true">Previous</button>
-            <button type="submit" class="btn btn-primary submit next-btn" [disabled]="!isFormValid"
+            <button [routerLink]="'/create-itinerary/info'" class="btn btn-primary submit previous-btn">Previous</button>
+            <button [routerLink]="'/create-itinerary/budget'" type="submit" class="btn btn-primary submit next-btn" [disabled]="!isFormValid"
                 [ngClass]="{'disabled': !isFormValid}">Next</button>
         </div>
         <!-- </form> -->

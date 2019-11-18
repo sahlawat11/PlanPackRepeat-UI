@@ -1,0 +1,8 @@
+<div class="budget-container">
+    <div class="budget">
+    Trip Budget:
+    <input ([ngModel])="itineraryObj.budget" (ngModelChange)="updateBudget($event)" type="number" required [placeholder]="'Enter the trip budget'"/> $
+</div>
+
+<button class="btn btn-primary" [routerLink]="'create-itinerary/destinations'">Previous</button>
+</div>

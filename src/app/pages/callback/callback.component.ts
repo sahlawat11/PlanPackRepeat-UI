@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from 'src/app/auth/auth.service';
-import { LoadingService } from '../../components/loading/loading.service';
+import { LoadingService } from '../../shared/loading/loading.service';
 
 @Component({
   selector: 'app-callback',

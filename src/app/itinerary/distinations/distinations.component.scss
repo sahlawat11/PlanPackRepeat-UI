@@ -10,6 +10,10 @@ form {
     border-radius: 5px;
 }
 
+span {
+    color: #869aa7 !important;
+}
+
 
 // .form-container {
 //     margin-left: 28%;
@@ -49,6 +53,7 @@ form {
     min-height: 400px;
 }
 .dropdown-item {
+    padding: 5px 10px;
     &:active, &:hover {
         color: #fff;
         text-decoration: none;

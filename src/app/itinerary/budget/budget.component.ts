@@ -10,6 +10,7 @@ import { ItineraryService } from '../itinerary.service';
 export class BudgetComponent implements OnInit {
 
   itineraryUpdateTimeout: any;
+  budget: number = 0;
 
   constructor(private itineraryService: ItineraryService) { }
 
@@ -25,14 +26,19 @@ export class BudgetComponent implements OnInit {
     this.updateInput();
   }
 
+  createItinerary() {
+    console.log('************************* ajhadsfjgdshfsdgf:', this.itineraryService.itineraryObj);
+  }
+
+
   updateInput() {
     if (this.itineraryUpdateTimeout !== null) {
       clearTimeout(this.itineraryUpdateTimeout);
     }
     this.itineraryUpdateTimeout = setTimeout(() => {
       this.itineraryUpdateTimeout = null;
-      this.itineraryService.broadcastUpdates(this.itineraryService.itineraryObj)
-  }, 500)
+      this.itineraryService.broadcastUpdates(this.itineraryService.itineraryObj);
+  }, 500);
 }
 
 }

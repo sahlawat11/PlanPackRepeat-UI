@@ -4,5 +4,6 @@
     <input ([ngModel])="itineraryObj.budget" (ngModelChange)="updateBudget($event)" type="number" required [placeholder]="'Enter the trip budget'"/> $
 </div>
 
+<button (click)="createItinerary()" class="btn btn-primary">Create Itinerary</button>
 <button class="btn btn-primary" [routerLink]="'create-itinerary/destinations'">Previous</button>
 </div>

@@ -22,3 +22,24 @@ export interface Destinations {
     status?: "travelled" | "wishlist";
     source?: "maps" | "manual"
 }
+
+export interface BackendItinerary {
+    startDate?: Date | string;
+    endDate?: Date | string;
+    email?: string;
+    budgetId?: number;
+    destinations?: (BackendDestination)[] | null;
+    active?: boolean;
+    public?: boolean;
+}
+
+export interface BackendDestination {
+    destName?: string;
+    address?: string;
+    plannedTime?: Date | string;
+    status?: string;
+    imgUrl?: string;
+    latitude: string | null;
+    longitude: string | null;
+}
+  

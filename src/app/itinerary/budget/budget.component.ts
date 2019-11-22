@@ -10,7 +10,7 @@ import { ItineraryService } from '../itinerary.service';
 export class BudgetComponent implements OnInit {
 
   itineraryUpdateTimeout: any;
-  budget: number = 0;
+  tripBudget: number;
 
   constructor(private itineraryService: ItineraryService) { }
 
@@ -22,12 +22,20 @@ export class BudgetComponent implements OnInit {
   }
 
   updateBudget(value: number) {
-    this.itineraryObj.budget = value;
+    this.itineraryService.itineraryObj.budget = this.tripBudget;
     this.updateInput();
   }
 
   createItinerary() {
     console.log('************************* ajhadsfjgdshfsdgf:', this.itineraryService.itineraryObj);
+    this.itineraryService.saveItinerary().subscribe(
+      (itineraryData) => {
+        console.log('this is it.........:', itineraryData);
+      },
+      error => {
+        console.log('this is the error for post itinerary:', error);
+      }
+    );
   }
 
 

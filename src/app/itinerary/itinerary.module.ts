@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ReactiveFormsModule } from '@angular/forms';
+import { ReactiveFormsModule, FormsModule } from '@angular/forms';
+import { HttpClientModule } from '@angular/common/http';
 import { InfoComponent } from './info/info.component';
 import { ItineraryRoutesModule } from './itinerary.routes.module';
 import { SharedModule } from '../shared/shared.module';
@@ -23,6 +24,8 @@ import { BudgetComponent } from './budget/budget.component';
   imports: [
     CommonModule,
     ReactiveFormsModule,
+    HttpClientModule,
+    FormsModule,
     ItineraryRoutesModule,
     NgbModule,
     SharedModule,

@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject } from 'rxjs';
-import { Itinerary, Destinations } from '../models/itinerary';
+import { HttpClient, HttpResponse } from '@angular/common/http';
+import { BehaviorSubject, Observable } from 'rxjs';
+import { Itinerary, Destinations, BackendDestination, BackendItinerary } from '../models/itinerary';
 
 @Injectable({
   providedIn: 'root'
@@ -60,7 +61,7 @@ export class ItineraryService {
           this.itineraryObj.info.endDate &&
           this.itineraryObj.info.visiblity) {
             option.stepCompleted = true;
-
+            option.stepReady = true;
           }
       }
 
@@ -82,12 +83,13 @@ export class ItineraryService {
               }
         };
           option.stepCompleted = isValid;
-        
+          option.stepReady = true;
       }
 
       if (option.step === 'budget' && this.itineraryObj.budget) {
         if (this.itineraryObj.budget > 0) {
           option.stepCompleted = true;
+          option.stepReady = true;
         }
         
       }
@@ -96,7 +98,8 @@ export class ItineraryService {
   }
 }
 
-  constructor() { }
+  constructor(private httpClient: HttpClient) {
+   }
 
   isDestinationPageValid(): boolean {
     for (const option of this.trackerOptions) {
@@ -109,6 +112,44 @@ export class ItineraryService {
   broadcastUpdates(itineraryData: any): void {
     this.itineraryObj = itineraryData;
     this.itinerarySubject.next(itineraryData);
+  }
+
+  saveItinerary(): Observable<any> {
+    console.log('This is the itinerary object:', this.itineraryObj);
+    // debugger;
+    const payload: BackendItinerary = {
+      startDate: new Date(this.itineraryObj.info.startDate),
+      endDate: new Date(this.itineraryObj.info.endDate),
+      // startDate: '2020-01-22T09:00:59.301+0000',
+      // endDate: '2020-01-22T09:00:59.301+0000',
+      email: "saransh@gmail.com",
+      budgetId: this.itineraryObj.budget,
+      destinations: [],
+      active: true,
+      public: true ? this.itineraryObj.info.visiblity === 'public' : false
+    }
+
+    this.itineraryObj.destinations.forEach((destination: Destinations) => {
+      const dest: BackendDestination = {
+        destName: destination.name,
+        address: destination.streetAddress,
+        plannedTime: new Date(`${destination.date} ${destination.time}`),
+        // plannedTime: '2020-01-22T09:00:59.301+0000',
+        status: destination.status,
+        imgUrl: '',
+        latitude: destination.latitude ? destination.latitude.toString() : null,
+        longitude: destination.longitude ? destination.longitude.toString() : null
+      }
+      payload.destinations.push(dest);
+    });
+
+    // debugger;
+
+    console.log('***************************:', payload);
+
+    return this.httpClient.post(`http://travelapp-env-1.ey2unjuyh7.us-east-1.elasticbeanstalk.com/itinerary/createItinerary`,
+    payload);
+
   }
 
 

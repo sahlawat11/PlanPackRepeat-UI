@@ -118,10 +118,10 @@ export class ItineraryService {
     console.log('This is the itinerary object:', this.itineraryObj);
     // debugger;
     const payload: BackendItinerary = {
-      startDate: new Date(this.itineraryObj.info.startDate),
-      endDate: new Date(this.itineraryObj.info.endDate),
-      // startDate: '2020-01-22T09:00:59.301+0000',
-      // endDate: '2020-01-22T09:00:59.301+0000',
+      startDate: this.itineraryObj.info.startDate,
+      endDate: this.itineraryObj.info.endDate,
+      // startDate: '2019-11-28',
+      // endDate: '2019-11-30',
       email: "saransh@gmail.com",
       budgetId: this.itineraryObj.budget,
       destinations: [],
@@ -133,8 +133,8 @@ export class ItineraryService {
       const dest: BackendDestination = {
         destName: destination.name,
         address: destination.streetAddress,
-        plannedTime: new Date(`${destination.date} ${destination.time}`),
-        // plannedTime: '2020-01-22T09:00:59.301+0000',
+        // plannedTime: new Date(`${destination.date} ${destination.time}`),
+        plannedTime: '2019-10-23 09:00:00',
         status: destination.status,
         imgUrl: '',
         latitude: destination.latitude ? destination.latitude.toString() : null,
@@ -150,6 +150,7 @@ export class ItineraryService {
     return this.httpClient.post(`http://travelapp-env-1.ey2unjuyh7.us-east-1.elasticbeanstalk.com/itinerary/createItinerary`,
     payload);
 
+    // return this.httpClient.get(`http://travelapp-env-1.ey2unjuyh7.us-east-1.elasticbeanstalk.com/itinerary/getAllItineraries`);
   }
 
 

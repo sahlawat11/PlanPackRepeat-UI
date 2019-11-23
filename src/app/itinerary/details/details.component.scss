@@ -1,0 +1,44 @@
+.custom-margin {
+    &.margin-0 {
+        margin-left: 15px;
+        margin-top: 20px;
+        margin-bottom: 20px;
+        padding-left: 15px;
+    }
+}
+
+.fa-money {
+    margin-right: 80px;
+    margin-top: 20px;
+    color: #dddfeb;
+}
+
+.shadow {
+    box-shadow: 0 .15rem 1.75rem 0 rgba(58,59,69,.15);
+}
+
+.card {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    /* min-width: 0; */
+    /* word-wrap: break-word; */
+    background-color: #fff;
+    background-clip: border-box;
+    border: 1px solid #e3e6f0;
+    border-radius: .35rem;
+}
+
+.border-left-budget {
+    border-left: .25rem solid #4e73df;
+}
+
+.itinerary-name, .itinerary-date, .itinerary-date {
+    margin-left: 10px;
+    margin-bottom: 20px;
+    .title {
+        color: #337ab7;
+        font-weight: 700;
+        text-transform: uppercase;
+    }
+}

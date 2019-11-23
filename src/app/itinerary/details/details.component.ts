@@ -11,6 +11,7 @@ import { ItineraryService } from '../itinerary.service';
 export class DetailsComponent implements OnInit {
 
   itineraryId: string;
+  itineraryDetails: any;
 
   constructor(private activatedRoute: ActivatedRoute, private itineraryService: ItineraryService) { }
 
@@ -27,6 +28,7 @@ export class DetailsComponent implements OnInit {
     this.itineraryService.getItineraryDetails(this.itineraryId).subscribe(
       (data: any) => {
         console.log('********* these are the details:', data);
+        this.itineraryDetails = data;
       }
     );
   }

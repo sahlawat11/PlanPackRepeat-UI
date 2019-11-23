@@ -118,6 +118,7 @@ export class ItineraryService {
   saveItinerary(): Observable<any> {
     console.log('This is the itinerary object:', this.itineraryObj, this.userService.userEmail);
     const payload: BackendItinerary = {
+      itineraryName: this.itineraryObj.info.name,
       startDate: this.itineraryObj.info.startDate,
       endDate: this.itineraryObj.info.endDate,
       // startDate: '2019-11-28',

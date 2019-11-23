@@ -1,5 +1,61 @@
-<div class="container">
-    <p>details works!</p>
+<div *ngIf="itineraryDetails" class="container">
+    <!-- Page Heading -->
+    <div class="d-sm-flex align-items-center justify-content-between mb-4">
+        <h1 class="h4 mb-0 text-gray-800">Itinerary Details</h1>
+    </div>
+    <div class="row" id="home">
+
+        <!-- Budget card -->
+        <div class="col-md-4">
+            <div class="card border-left-budget shadow h-100 py-2">
+                <div class="card-body">
+                    <div class="row no-gutters align-items-center">
+                        <div class="col-auto">
+                            <i class="fa fa-money fa-2x text-gray-300" style="float:right"></i>
+                        </div>
+                        <div class="custom-margin margin-0 col mr-2">
+                            <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">Budget </div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800">$1000</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+        <div class="itinerary-name">
+            <div class="title">Itinerary Name</div>
+            <div class="name">{{ itineraryDetails.itineraryName }}</div>
+        </div>
+
+        <div class="itinerary-date">
+            <div class="title">Start Date</div>
+            <div class="name">{{ itineraryDetails.startDate | date: 'fullDate' }}</div>
+        </div>
+
+        <div class="itinerary-date">
+            <div class="title">End Date</div>
+            <div class="name">{{ itineraryDetails.endDate | date: 'fullDate' }}</div>
+        </div>
+
+        <!-- Destinations table -->
+        <table class="table">
+          <thead class="text-primary text-uppercase">
+            <tr>
+              <th>Destinations</th>
+              <th>Street Address</th>
+              <th>Time</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let destination of itineraryDetails.destinations">
+              <td>{{ destination?.destName }}</td>
+              <td>{{ destination?.address }}</td>
+              <td>{{ destination?.plannedTime | date: 'MMM d, y, h:mm a' }}</td>
+            </tr>
+          </tbody>
+        </table>
 </div>
 
  

@@ -24,6 +24,7 @@ export interface Destinations {
 }
 
 export interface BackendItinerary {
+    itineraryName: string;
     startDate?: Date | string;
     endDate?: Date | string;
     email?: string;

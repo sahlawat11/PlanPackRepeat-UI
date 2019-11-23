@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpResponse } from '@angular/common/http';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { Itinerary, Destinations, BackendDestination, BackendItinerary } from '../models/itinerary';
+import { UserService } from '../services/user.service';
 
 @Injectable({
   providedIn: 'root'
@@ -98,7 +99,7 @@ export class ItineraryService {
   }
 }
 
-  constructor(private httpClient: HttpClient) {
+  constructor(private httpClient: HttpClient, private userService: UserService) {
    }
 
   isDestinationPageValid(): boolean {
@@ -115,14 +116,13 @@ export class ItineraryService {
   }
 
   saveItinerary(): Observable<any> {
-    console.log('This is the itinerary object:', this.itineraryObj);
-    // debugger;
+    console.log('This is the itinerary object:', this.itineraryObj, this.userService.userEmail);
     const payload: BackendItinerary = {
       startDate: this.itineraryObj.info.startDate,
       endDate: this.itineraryObj.info.endDate,
       // startDate: '2019-11-28',
       // endDate: '2019-11-30',
-      email: "saransh@gmail.com",
+      email: this.userService.userEmail,
       budgetId: this.itineraryObj.budget,
       destinations: [],
       active: true,
@@ -143,14 +143,13 @@ export class ItineraryService {
       payload.destinations.push(dest);
     });
 
-    // debugger;
+    console.log('***************** this is the stuff I am submitting:', payload);
 
-    console.log('***************************:', payload);
+    return this.httpClient.post(`http://travelapp-env-1.ey2unjuyh7.us-east-1.elasticbeanstalk.com/itinerary/createItinerary`, payload);
+  }
 
-    return this.httpClient.post(`http://travelapp-env-1.ey2unjuyh7.us-east-1.elasticbeanstalk.com/itinerary/createItinerary`,
-    payload);
-
-    // return this.httpClient.get(`http://travelapp-env-1.ey2unjuyh7.us-east-1.elasticbeanstalk.com/itinerary/getAllItineraries`);
+  getItineraryDetails(itineraryId: string) {
+    return this.httpClient.get(`http://travelapp-env-1.ey2unjuyh7.us-east-1.elasticbeanstalk.com/itinerary/getItineraryById/${itineraryId}`);
   }
 
 

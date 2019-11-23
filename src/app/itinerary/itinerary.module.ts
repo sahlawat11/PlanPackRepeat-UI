@@ -16,10 +16,11 @@ import { AgmCoreModule } from '@agm/core';
 
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { BudgetComponent } from './budget/budget.component';
+import { DetailsComponent } from './details/details.component';
 
 
 @NgModule({
-  declarations: [InfoComponent, ProgressTrackerComponent, ItineraryBaseComponent, DistinationsComponent, SummaryComponent, DialogComponent, GoogleMapsComponent, BudgetComponent],
+  declarations: [InfoComponent, ProgressTrackerComponent, ItineraryBaseComponent, DistinationsComponent, SummaryComponent, DialogComponent, GoogleMapsComponent, BudgetComponent, DetailsComponent],
   providers: [ ItineraryService],
   imports: [
     CommonModule,

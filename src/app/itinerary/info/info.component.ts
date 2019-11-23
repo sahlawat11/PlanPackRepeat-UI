@@ -18,7 +18,12 @@ export class InfoComponent implements OnInit {
     endDate: new FormControl('', Validators.required),
     visibility: new FormControl('Public')
   });
-  itineraryInfo: Info;
+  itineraryInfo: Info = {
+    name: '',
+    startDate: '',
+    endDate: '',
+    visiblity: 'Public'
+  };
   isFormValid: boolean;
   today: string;
   itineraryUpdateTimeout: any;
@@ -31,6 +36,10 @@ export class InfoComponent implements OnInit {
       this.isFormValid = this.itineraryInfoForm.valid;
     });
     this.setTodaysDate();
+    if (this.itineraryService.itineraryObj){
+      console.log('************** setting the object from service:', this.itineraryService.itineraryObj);
+      this.itineraryInfo = this.itineraryService.itineraryObj.info;
+    }
   }
 
   onSubmit() {
@@ -44,7 +53,7 @@ export class InfoComponent implements OnInit {
     this.itineraryService.itineraryObj = {
       info: this.itineraryInfo
     }
-    this.router.navigateByUrl('create-itinerary/destinations');
+    this.router.navigateByUrl('itinerary/create-itinerary/destinations');
   }
 
   updateInput() {

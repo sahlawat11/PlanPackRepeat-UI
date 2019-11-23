@@ -36,7 +36,6 @@ export class DistinationsComponent implements OnInit {
     this.validateItineraryObj();
     this.itineraryDestinationsForm.valueChanges.subscribe((data) => {
       this.updateInput();
-      // this.isFormValid = this.itineraryDestinationsForm.valid;
     });
   }
 
@@ -76,7 +75,7 @@ setItineraryObj() {
 
   validateItineraryObj() {
     if (typeof this.itineraryService.itineraryObj === 'undefined') {
-      this.router.navigateByUrl('/create-itinerary/info');
+      this.router.navigateByUrl('/itinerary/create-itinerary/info');
     }
   }
 
@@ -94,6 +93,7 @@ setItineraryObj() {
   }
 
   get savedDestinations(): Array<Destinations> {
+    console.log('************** THIS IS A TEST FOR THESE VALUES:', this.itineraryService.savedDestinations);
     return this.itineraryService.savedDestinations;
   }
 

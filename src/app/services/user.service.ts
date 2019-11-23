@@ -8,10 +8,13 @@ import { NewUser } from '../models/new-user';
 })
 export class UserService {
 
+  userEmail: string;
+
   constructor(private authHttp: HttpClient) { }
 
 
   getUserInfo(email: string): Observable<any> {
+      this.userEmail = email;
       return this.authHttp.get(`http://travelapp-env-1.ey2unjuyh7.us-east-1.elasticbeanstalk.com/users/getUserByEmail/${email}`);
   }
 

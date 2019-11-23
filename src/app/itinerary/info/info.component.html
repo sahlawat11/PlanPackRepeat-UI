@@ -2,21 +2,21 @@
     <div class="form-container">
         <div class="form-group">
             <label>Itinerary Name <span class="red">*</span>
-                <input type="text" class="form-control name" id="nameInput" formControlName="name"
+                <input type="text" class="form-control name" id="nameInput" [ngModel]="itineraryInfo.name" formControlName="name"
                     placeholder="Enter itinerary name" required>
                 <small id="emailHelp" class="form-text text-muted">Choose a name that will make you excited!</small>
             </label>
         </div>
         <div class="form-group">
             <label>Start Date <span class="red">*</span>
-                <input #startDate type="date" class="form-control" id="startDateInput" formControlName="startDate"
+                <input #startDate type="date" class="form-control" id="startDateInput" formControlName="startDate" [ngModel]="itineraryInfo.startDate"
                     placeholder="Select start date" [min]="today" required>
             </label>
         </div>
 
         <div class="form-group">
             <label>End Date <span class="red">*</span>
-                <input type="date" class="form-control" id="endDateInput" formControlName="endDate"
+                <input type="date" class="form-control" id="endDateInput" formControlName="endDate" [ngModel]="itineraryInfo.endDate"
                     placeholder="Select end date" [min]="startDate.value" required>
             </label>
         </div>
@@ -25,7 +25,7 @@
         <label>Visibility <span class="red">*</span></label>
         <div class="row visibility-container">
             <div class="form-group form-check radio col-md-2">
-                <input type="radio" class="form-check-input" id="visibilityStatusPublic" formControlName="visibility"
+                <input type="radio" class="form-check-input" id="visibilityStatusPublic" formControlName="visibility" [ngModel]="itineraryInfo.visiblity"
                     value="Public" checked>
                 <label class="form-check-label" for="visibilityStatusPublic">Public</label>
             </div>

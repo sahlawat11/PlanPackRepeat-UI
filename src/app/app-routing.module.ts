@@ -23,7 +23,7 @@ const routes: Routes = [
     component: HomeComponent,
     canActivate: [AuthGuard]
   },
-  { path: 'create-itinerary',
+  { path: 'itinerary',
     // children: [
     //   { path: '', loadChildren: './itinerary/itinerary.module#ItineraryModule' }
     // ]

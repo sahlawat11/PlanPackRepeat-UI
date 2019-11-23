@@ -3,9 +3,9 @@
         <div *ngFor="let item of updatedTrackerOptions">
             <div class="steps">
                 <span class="{{item.step}}"
-                    [ngClass]="{'completed': item.stepReady, 'route-highlight': orderRoute === '/create-itinerary/'+item.step}"></span>
+                    [ngClass]="{'completed': item.stepReady, 'route-highlight': orderRoute === '/itinerary/create-itinerary/'+item.step}"></span>
                 <div *ngIf="item.showStep"
-                    [ngClass]="{'completed': item.stepCompleted, 'route-highlight': orderRoute === '/create-itinerary/'+item.step && item.stepCompleted}">
+                    [ngClass]="{'completed': item.stepCompleted, 'route-highlight': orderRoute === '/itinerary/create-itinerary/'+item.step && item.stepCompleted}">
                     <label class="section-{{item.step}}">
                         <button
                             [ngClass]="{'route-highlight': orderRoute === 'create-itinerary/'+item.step, 'completed': item.stepReady}"

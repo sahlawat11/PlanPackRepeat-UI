@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-
+import { Router } from '@angular/router';
 import { ItineraryService } from '../itinerary.service';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-budget',
@@ -12,9 +13,10 @@ export class BudgetComponent implements OnInit {
   itineraryUpdateTimeout: any;
   tripBudget: number;
 
-  constructor(private itineraryService: ItineraryService) { }
+  constructor(private itineraryService: ItineraryService, private alertService: ToastrService, private router: Router) { }
 
   ngOnInit() {
+    this.tripBudget = this.itineraryService.itineraryObj.budget;
   }
 
   get itineraryObj() {
@@ -22,7 +24,8 @@ export class BudgetComponent implements OnInit {
   }
 
   updateBudget(value: number) {
-    this.itineraryService.itineraryObj.budget = this.tripBudget;
+    
+    this.itineraryService.itineraryObj.budget = value;
     this.updateInput();
   }
 
@@ -31,6 +34,8 @@ export class BudgetComponent implements OnInit {
     this.itineraryService.saveItinerary().subscribe(
       (itineraryData) => {
         console.log('this is it.........:', itineraryData);
+        this.alertService.success(`Itinerary ${this.itineraryObj.info.name} successfully created!`);
+        this.router.navigateByUrl(`/itinerary/${itineraryData.id}`);
       },
       error => {
         console.log('this is the error for post itinerary:', error);

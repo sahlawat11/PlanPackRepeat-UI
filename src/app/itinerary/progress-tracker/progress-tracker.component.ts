@@ -1,5 +1,4 @@
 import { Component, OnInit } from '@angular/core';
-
 import { ItineraryService } from '../itinerary.service';
 import { Itinerary } from 'src/app/models/itinerary';
 import { Router, NavigationEnd, ActivatedRoute } from '@angular/router';
@@ -17,9 +16,6 @@ export class ProgressTrackerComponent implements OnInit {
   constructor(private itineraryService: ItineraryService, private router: Router, private activatedRoute: ActivatedRoute) { }
 
   ngOnInit() {
-    setInterval(() => {
-      console.log(this.orderRoute);
-    }, 2000);
     this.init();
     this.initActivateRoute();
   }
@@ -35,17 +31,9 @@ export class ProgressTrackerComponent implements OnInit {
   });
   }
 
-  // init(): void {
-  //   this.itineraryService.itineraryStream.subscribe(
-  //     (data: Itinerary) => {
-  //       console.log('These are the updates received: progress', data);
-  //       this.itineraryobj = data;
-  //     }
-  //   );
-  // }
-
-  goToStep() {
-    console.log('This has been called');
+  goToStep(step: string) {
+    console.log('This has been called', step);
+    this.router.navigateByUrl(`/itinerary/create-itinerary/${step}`);
   }
 
   init(): void {
@@ -60,7 +48,6 @@ export class ProgressTrackerComponent implements OnInit {
   }
 
   get updatedTrackerOptions() {
-    console.log('**********......', this.itineraryService.trackerOptions);
     return this.itineraryService.trackerOptions;
   }
 

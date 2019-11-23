@@ -8,24 +8,20 @@ import { ProgressTrackerComponent } from './progress-tracker/progress-tracker.co
 import { SummaryComponent } from './summary/summary.component';
 import { ItineraryBaseComponent } from './itinerary-base/itinerary-base.component';
 import { BudgetComponent } from './budget/budget.component';
+import { DetailsComponent } from './details/details.component';
 
 const createItineraryRoutes: Routes = [
 
+  { path: ':id', component: DetailsComponent},
   { path: '', component: ItineraryBaseComponent,
   children: [
     { path: '', component: ProgressTrackerComponent, outlet: 'progress tracker' },
     { path: '', component: SummaryComponent, outlet: 'summary'},
-    { path: 'info', component: InfoComponent },
-    { path: 'destinations', component: DistinationsComponent },
-    { path: 'budget', component: BudgetComponent }
+    { path: 'create-itinerary/info', component: InfoComponent },
+    { path: 'create-itinerary/destinations', component: DistinationsComponent },
+    { path: 'create-itinerary/budget', component: BudgetComponent },
   ]
 }
-// ,
-//   {
-//     path: '',
-//     pathMatch: 'full',
-//     redirectTo: 'info'
-//   }
 ];
 
 @NgModule({

@@ -1,8 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Info } from '../../models/itinerary';
 import { ItineraryService } from '../itinerary.service';
+import { Subscription } from 'rxjs';
 
 
 @Component({
@@ -10,7 +11,7 @@ import { ItineraryService } from '../itinerary.service';
   templateUrl: './info.component.html',
   styleUrls: ['./info.component.scss']
 })
-export class InfoComponent implements OnInit {
+export class InfoComponent implements OnInit, OnDestroy {
 
   itineraryInfoForm = new FormGroup({
     name: new FormControl('', Validators.required),
@@ -27,16 +28,18 @@ export class InfoComponent implements OnInit {
   isFormValid: boolean;
   today: string;
   itineraryUpdateTimeout: any;
+  subscriptions = new Subscription();
 
   constructor(private router: Router, private itineraryService: ItineraryService) { }
 
   ngOnInit() {
-    this.itineraryInfoForm.valueChanges.subscribe((data) => {
+    debugger;
+    this.subscriptions.add(this.itineraryInfoForm.valueChanges.subscribe((data) => {
       this.updateInput();
       this.isFormValid = this.itineraryInfoForm.valid;
-    });
+    }));
     this.setTodaysDate();
-    if (this.itineraryService.itineraryObj){
+    if (this.itineraryService.itineraryObj) {
       console.log('************** setting the object from service:', this.itineraryService.itineraryObj);
       this.itineraryInfo = this.itineraryService.itineraryObj.info;
     }
@@ -50,8 +53,13 @@ export class InfoComponent implements OnInit {
       endDate: this.itineraryInfoForm.value.endDate,
       visiblity: this.itineraryInfoForm.value.visibility
     };
-    this.itineraryService.itineraryObj = {
-      info: this.itineraryInfo
+    debugger;
+    if (typeof this.itineraryService.itineraryObj === 'undefined') {
+      this.itineraryService.itineraryObj = {
+        info: this.itineraryInfo
+      }
+    } else {
+      this.itineraryService.itineraryObj.info = this.itineraryInfo;
     }
     this.router.navigateByUrl('itinerary/create-itinerary/destinations');
   }
@@ -75,8 +83,12 @@ export class InfoComponent implements OnInit {
       endDate: this.itineraryInfoForm.value.endDate,
       visiblity: this.itineraryInfoForm.value.visibility
     };
-    this.itineraryService.itineraryObj = {
-      info: this.itineraryInfo
+    if (typeof this.itineraryService.itineraryObj === 'undefined') {
+      this.itineraryService.itineraryObj = {
+        info: this.itineraryInfo
+      }
+    } else {
+      this.itineraryService.itineraryObj.info = this.itineraryInfo;
     }
   }
 
@@ -92,6 +104,10 @@ export class InfoComponent implements OnInit {
       mm = '0' + mm;
     }
     this.today = yyyy + '-' + mm + '-' + dd;
+  }
+
+  ngOnDestroy() {
+    this.subscriptions.unsubscribe();
   }
 
 }

@@ -42,5 +42,6 @@ export interface BackendDestination {
     imgUrl?: string;
     latitude: string | null;
     longitude: string | null;
+    source: string;
 }
   

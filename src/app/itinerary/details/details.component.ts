@@ -1,36 +1,71 @@
-import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Router, ActivatedRoute } from '@angular/router';
 
 import { ItineraryService } from '../itinerary.service';
+import { Subscription } from 'rxjs';
+import { LoadingService } from '../../shared/loading/loading.service';
 
 @Component({
   selector: 'app-details',
   templateUrl: './details.component.html',
   styleUrls: ['./details.component.scss']
 })
-export class DetailsComponent implements OnInit {
+export class DetailsComponent implements OnInit, OnDestroy {
 
   itineraryId: string;
   itineraryDetails: any;
+  isLikeRequestPending: boolean;
+  subscriptions = new Subscription();
 
-  constructor(private activatedRoute: ActivatedRoute, private itineraryService: ItineraryService) { }
+  constructor(private router: Router, private activatedRoute: ActivatedRoute, private itineraryService: ItineraryService, private loadingService: LoadingService) { }
 
   ngOnInit() {
-    console.log('THIS PAGE HAS BEEN EXECUTED');
-    this.activatedRoute.params.subscribe((params: any) => {
+    this.subscriptions.add(this.activatedRoute.params.subscribe((params: any) => {
       this.itineraryId = params.id;
       console.log('this is the params:', params, this.itineraryId);
-    });
+    }));
     this.getItineraryDetails();
   }
 
   getItineraryDetails() {
-    this.itineraryService.getItineraryDetails(this.itineraryId).subscribe(
+    this.subscriptions.add(this.itineraryService.getItineraryDetails(this.itineraryId).subscribe(
       (data: any) => {
         console.log('********* these are the details:', data);
         this.itineraryDetails = data;
       }
-    );
+    ));
+  }
+
+  editItinerary() {
+    console.log('Edit has been clicked');
+    this.itineraryService.editItinerary = true;
+    this.itineraryService.itineraryObj = this.itineraryService.getUiItineraryModelFromRaw(this.itineraryDetails);
+    debugger;
+    this.router.navigateByUrl('itinerary/edit-itinerary/info');
+  }
+
+  likeItinerary() {
+    if (!this.isLikeRequestPending) {
+      this.loadingService.enableLoadingMask();
+      this.isLikeRequestPending = true;
+      this.itineraryDetails.likes++;
+      this.itineraryService.updateItinerary(this.itineraryDetails.id, this.itineraryDetails).subscribe(
+        (data) => {
+          console.log('The itinerary has been updated:', data);
+          this.itineraryDetails = data;
+          this.isLikeRequestPending = false;
+          this.loadingService.disableLoadingMask();
+        },
+        (error) => {
+          this.isLikeRequestPending = false;
+          console.error('An error has occurred:', error);
+        }
+      );
+    }
+  }
+
+  ngOnDestroy() {
+    this.subscriptions.unsubscribe();
   }
 
 }

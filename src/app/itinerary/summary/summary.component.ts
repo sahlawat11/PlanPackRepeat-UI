@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ItineraryService } from '../itinerary.service';
 import { Itinerary } from '../../models/itinerary';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-summary',
@@ -10,6 +11,7 @@ import { Itinerary } from '../../models/itinerary';
 export class SummaryComponent implements OnInit {
 
   itineraryobj: Itinerary;
+  subscriptions = new Subscription();
 
   constructor(private itineraryService: ItineraryService) { }
 
@@ -18,12 +20,12 @@ export class SummaryComponent implements OnInit {
   }
 
   init(): void {
-    this.itineraryService.itineraryStream.subscribe(
+    this.subscriptions.add(this.itineraryService.itineraryStream.subscribe(
       (data: Itinerary) => {
         console.log('These are the updates received: summary', data);
         this.itineraryobj = data;
       }
-    );
+    ));
   }
 
 }

@@ -1,7 +1,16 @@
 <div *ngIf="itineraryDetails" class="container">
     <!-- Page Heading -->
     <div class="d-sm-flex align-items-center justify-content-between mb-4">
-        <h1 class="h4 mb-0 text-gray-800">Itinerary Details</h1>
+        <h1 class="h4 mb-0 text-gray-800">Itinerary Details 
+            <span (click)="editItinerary()" class="edit"><i class="fa fa-pencil text-gray-800" aria-hidden="true"></i></span>        
+        </h1>
+        <div class="status" [ngClass]="{'public': itineraryDetails.public, 'private': !itineraryDetails.public}">{{itineraryDetails.public ? 'Public' : 'Private'}}</div> 
+
+        <div (click)="likeItinerary()" class="like">
+            <i class="fa fa-heart" aria-hidden="true"></i>
+            <span *ngIf="itineraryDetails?.likes > 0" class="number">{{ itineraryDetails.likes }}</span>
+        </div>
+
     </div>
     <div class="row" id="home">
 
@@ -15,7 +24,7 @@
                         </div>
                         <div class="custom-margin margin-0 col mr-2">
                             <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">Budget </div>
-                            <div class="h5 mb-0 font-weight-bold text-gray-800">$1000</div>
+                            <div class="h5 mb-0 font-weight-bold text-gray-800">${{itineraryDetails.budgetId}}</div>
                         </div>
                     </div>
                 </div>

@@ -16,6 +16,7 @@ export class ItineraryService {
   onSaveMapsLocationsStream = this.onSaveMapsLocationsSubject.asObservable();
 
   savedDestinations: Array<Destinations> = [];
+  editItinerary: boolean;
 
   trackerOptions = [
     {
@@ -139,7 +140,8 @@ export class ItineraryService {
         status: destination.status,
         imgUrl: '',
         latitude: destination.latitude ? destination.latitude.toString() : null,
-        longitude: destination.longitude ? destination.longitude.toString() : null
+        longitude: destination.longitude ? destination.longitude.toString() : null,
+        source: destination.source
       }
       payload.destinations.push(dest);
     });
@@ -149,8 +151,54 @@ export class ItineraryService {
     return this.httpClient.post(`http://travelapp-env-1.ey2unjuyh7.us-east-1.elasticbeanstalk.com/itinerary/createItinerary`, payload);
   }
 
+
+  getUiItineraryModelFromRaw(rawItineraryObj: any) {
+    console.log('this is the raw object:', rawItineraryObj);
+    debugger;
+    const itineraryObjTemp =  {
+      info: {
+        name: rawItineraryObj.itineraryName,
+        startDate: this.getDateHtmlDate(rawItineraryObj.startDate),
+        endDate: this.getDateHtmlDate(rawItineraryObj.endDate),
+        visiblity: rawItineraryObj.public ? 'Public' : 'Private',
+      },
+      destinations: [],
+      budget: rawItineraryObj.budgetId
+    };
+
+    rawItineraryObj.destinations.forEach((destination) => {
+      const destObj: Destinations = {
+        name: destination.destName,
+        streetAddress: destination.address,
+        date: this.getDateHtmlDate(destination.plannedTime),
+        time: this.getDateHtmlTime(destination.plannedTime),
+        latitude: destination.latitude,
+        longitude: destination.longitude,
+        status: destination.status,
+        source: destination.source
+      }
+      itineraryObjTemp.destinations.push(destObj);
+    });
+    debugger;
+    return itineraryObjTemp;
+  }
+
   getItineraryDetails(itineraryId: string) {
     return this.httpClient.get(`http://travelapp-env-1.ey2unjuyh7.us-east-1.elasticbeanstalk.com/itinerary/getItineraryById/${itineraryId}`);
+  }
+
+  getDateHtmlDate(date): string {
+    const dateObj = new Date(date);
+    return dateObj.getFullYear() + '-' + dateObj.getMonth() + '-' + dateObj.getDate();
+  }
+
+  getDateHtmlTime(date): string {
+    const dateObj = new Date(date);
+    return dateObj.getHours() + ':' + dateObj.getMinutes()
+  }
+
+  updateItinerary(itineraryId: string, payload: any): Observable<any> {
+    return this.httpClient.put(`http://travelapp-env-1.ey2unjuyh7.us-east-1.elasticbeanstalk.com/itinerary/${itineraryId}`, payload);
   }
 
 

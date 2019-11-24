@@ -1,17 +1,17 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ItineraryService } from '../itinerary.service';
 import { Destinations } from '../../models/itinerary';
-import { LoadingService } from '../../shared/loading/loading.service';
-import { Destination } from 'src/app/models/carouselmodels';
+import { Subscription } from 'rxjs';
+import { skip } from 'rxjs/operators';
 
 @Component({
   selector: 'app-distinations',
   templateUrl: './distinations.component.html',
   styleUrls: ['./distinations.component.scss']
 })
-export class DistinationsComponent implements OnInit {
+export class DistinationsComponent implements OnInit, OnDestroy {
 
   itineraryDestinationsForm = new FormGroup({
     name: new FormControl('', Validators.required),
@@ -25,6 +25,7 @@ export class DistinationsComponent implements OnInit {
   isCollapsed = false;
   destinationsArr: Array<Destinations> = [];
   dialogRef: any;
+  subscriptions = new Subscription();
 
   constructor(
     private router: Router,
@@ -34,9 +35,15 @@ export class DistinationsComponent implements OnInit {
 
   ngOnInit() {
     this.validateItineraryObj();
-    this.itineraryDestinationsForm.valueChanges.subscribe((data) => {
+    this.subscriptions.add(this.itineraryDestinationsForm.valueChanges.pipe(skip(1)).subscribe((data) => {
+      debugger;
       this.updateInput();
-    });
+    }));
+    if (this.itineraryService.itineraryObj && this.itineraryService.itineraryObj.destinations) {
+      debugger;
+      this.itineraryService.savedDestinations = this.itineraryService.itineraryObj.destinations;
+      console.log('THESE ARE THE DESTINATIONS THAT HAVE BEEN SET:', this.itineraryService.savedDestinations);
+    }
   }
 
   updateInput() {
@@ -88,7 +95,7 @@ setItineraryObj() {
     this.dialogRef = event;
   }
 
-  updateDestinationMetadata(destinationObj: Destination, attr: string, value) {
+  updateDestinationMetadata(destinationObj: Destinations, attr: string, value) {
     destinationObj[attr] = value;
   }
 
@@ -99,5 +106,9 @@ setItineraryObj() {
 
   get isFormValid() {
     return this.itineraryService.isDestinationPageValid();
+  }
+
+  ngOnDestroy() {
+    this.subscriptions.unsubscribe();
   }
 }

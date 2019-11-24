@@ -1,17 +1,19 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
 import { ItineraryService } from '../itinerary.service';
 import { ToastrService } from 'ngx-toastr';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-budget',
   templateUrl: './budget.component.html',
   styleUrls: ['./budget.component.scss']
 })
-export class BudgetComponent implements OnInit {
+export class BudgetComponent implements OnInit, OnDestroy {
 
   itineraryUpdateTimeout: any;
   tripBudget: number;
+  subscriptions = new Subscription();
 
   constructor(private itineraryService: ItineraryService, private alertService: ToastrService, private router: Router) { }
 
@@ -31,7 +33,7 @@ export class BudgetComponent implements OnInit {
 
   createItinerary() {
     console.log('************************* ajhadsfjgdshfsdgf:', this.itineraryService.itineraryObj);
-    this.itineraryService.saveItinerary().subscribe(
+    this.subscriptions.add(this.itineraryService.saveItinerary().subscribe(
       (itineraryData) => {
         console.log('this is it.........:', itineraryData);
         this.alertService.success(`Itinerary ${this.itineraryObj.info.name} successfully created!`);
@@ -40,7 +42,7 @@ export class BudgetComponent implements OnInit {
       error => {
         console.log('this is the error for post itinerary:', error);
       }
-    );
+    ));
   }
 
 
@@ -52,6 +54,10 @@ export class BudgetComponent implements OnInit {
       this.itineraryUpdateTimeout = null;
       this.itineraryService.broadcastUpdates(this.itineraryService.itineraryObj);
   }, 500);
+}
+
+ngOnDestroy() {
+  this.subscriptions.unsubscribe();
 }
 
 }

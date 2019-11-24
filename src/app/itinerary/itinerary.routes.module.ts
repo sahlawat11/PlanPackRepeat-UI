@@ -20,6 +20,9 @@ const createItineraryRoutes: Routes = [
     { path: 'create-itinerary/info', component: InfoComponent },
     { path: 'create-itinerary/destinations', component: DistinationsComponent },
     { path: 'create-itinerary/budget', component: BudgetComponent },
+    { path: 'edit-itinerary/info', component: InfoComponent },
+    { path: 'edit-itinerary/destinations', component: DistinationsComponent },
+    { path: 'edit-itinerary/budget', component: BudgetComponent },
   ]
 }
 ];

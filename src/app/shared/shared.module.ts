@@ -2,9 +2,10 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 import { LoadingComponent } from './loading/loading.component';
+import { UploadComponent } from './upload/upload.component';
 
 @NgModule({
-  declarations: [ LoadingComponent ],
+  declarations: [ LoadingComponent, UploadComponent ],
   imports: [
     CommonModule
   ],

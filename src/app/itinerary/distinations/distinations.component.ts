@@ -21,7 +21,6 @@ export class DistinationsComponent implements OnInit, OnDestroy {
   });
   
   itineraryUpdateTimeout: any;
-  // isFormValid: boolean;
   isCollapsed = false;
   destinationsArr: Array<Destinations> = [];
   dialogRef: any;

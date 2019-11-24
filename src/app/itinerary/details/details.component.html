@@ -7,7 +7,7 @@
         <div class="status" [ngClass]="{'public': itineraryDetails.public, 'private': !itineraryDetails.public}">{{itineraryDetails.public ? 'Public' : 'Private'}}</div> 
 
         <div (click)="likeItinerary()" class="like">
-            <i class="fa fa-heart" aria-hidden="true"></i>
+            <i class="fa fa-heart" aria-hidden="true" ></i>
             <span *ngIf="itineraryDetails?.likes > 0" class="number">{{ itineraryDetails.likes }}</span>
         </div>
 
@@ -60,7 +60,7 @@
           <tbody>
             <tr *ngFor="let destination of itineraryDetails.destinations">
               <td>{{ destination?.destName }}</td>
-              <td>{{ destination?.address }}</td>
+              <td>{{ destination?.address }} <span class="maps-icon"><i class="fa fa-map-marker" aria-hidden="true"></i></span></td>
               <td>{{ destination?.plannedTime | date: 'MMM d, y, h:mm a' }}</td>
             </tr>
           </tbody>

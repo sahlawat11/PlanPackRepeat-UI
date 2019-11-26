@@ -1,14 +1,21 @@
 <button
-    class="btn btn-success uploader-btn"
-    [disabled]="!selectedFiles"
-    (click)="upload()"
-  >
-    Upload
-  </button>
+  class="btn btn-success uploader-btn"
+  [disabled]="!selectedFiles"
+  (click)="upload()"
+>
+  Upload
+</button>
+
+<!-- <div class="progress-bar-container">
+  <div class="progress-bar" *ngFor="let item of arrayOne(numberOfFiles); let i = index;">
+      {{ 'File ' + i }}: &nbsp;
+    <progress id="{{'file'+i}}" max="100" [value]="70"> {{fileUploadProgress[files.name]}}% </progress>
+  </div>
+</div> -->
 
 <div class="container uploader-container">
   <label class="btn btn-default">
-    <input type="file" (change)="selectFile($event)" multiple/>
+    <input type="file" (change)="selectFile($event)" multiple />
   </label>
 </div>
 

@@ -1,5 +1,7 @@
 import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 
+import * as _ from 'lodash';
+
 import { UploaderService } from './uploader.service';
 import S3 from 'aws-sdk/clients/s3';
 import { s3Credentials } from '../../models/auth_config';
@@ -15,8 +17,10 @@ export class UploaderComponent implements OnInit {
   selectedFiles: FileList;
   uploadCounter = 0;
   selectedFilesSource: Array<string> = [];
+  fileUploadProgress = {};
+  numberOfFiles = 0;
+  // fileUploadProgress: Array<any> = [];
   @Output() completedUploadEvent = new EventEmitter<Array<string>>();
-
 
   constructor(private uploaderService: UploaderService, private alertService: ToastrService) {}
 
@@ -24,8 +28,9 @@ export class UploaderComponent implements OnInit {
 
   upload() {
     const files = this.selectedFiles;
+    this.numberOfFiles = this.selectedFiles.length;
     for (let i = 0; i < files.length; i++) {
-      let file = files.item(i);
+      const file = files.item(i);
       this.uploadFile(file, files.length);
     }
   }
@@ -67,7 +72,8 @@ export class UploaderComponent implements OnInit {
 
     // for upload progress
     bucket.upload(params).on('httpUploadProgress', (evt) => {
-          console.log(evt.loaded + ' of ' + evt.total + ' Bytes');
+          console.log(evt.loaded + ' of ' + evt.total + ' Bytes', evt);
+          this.fileUploadProgress[evt['key']] = Math.floor((evt.loaded / evt.total) * 100);
       }).send((err, data) => {
           if (err) {
               console.log('There was an error uploading your file: ', err);
@@ -76,5 +82,9 @@ export class UploaderComponent implements OnInit {
           console.log('Successfully uploaded file.', data);
           return true;
       });
+  }
+
+  arrayOne(n: number): any[] {
+    return Array(n);
   }
 }

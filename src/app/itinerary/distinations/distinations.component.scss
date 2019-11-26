@@ -19,11 +19,11 @@ span {
 //     margin-left: 28%;
 // }
 
-.next-btn {
-    position: relative;
-    left: 50%;
-    width: 90px;
-}
+// .next-btn {
+//     position: relative;
+//     left: 50%;
+//     width: 90px;
+// }
 
 // .previous-btn {
 //     // position: relative;
@@ -66,6 +66,7 @@ span {
     .title {
         color: rgba(54, 57, 60, 0.6);
         font-size: 18px;
+        margin-bottom: -15px;
     }
 }
 .form-group {
@@ -78,4 +79,23 @@ span {
     &.long-field {
         width: 500px;
     }
+}
+
+.previous, .next {
+    width: 140px !important;
+    padding: 15px 30px !important;
+}
+
+.fa-trash {
+    color: #869aa7;
+    position: relative;
+    bottom: 1px;
+    font-size: 15px;
+    &:hover {
+        color: black;
+    }
+}
+
+.input[type="text"] {
+    background-color: white !important;
 }

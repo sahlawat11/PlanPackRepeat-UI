@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpResponse } from '@angular/common/http';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { BehaviorSubject, Observable, ReplaySubject } from 'rxjs';
 import { Itinerary, Destinations, BackendDestination, BackendItinerary } from '../models/itinerary';
 import { UserService } from '../services/user.service';
 
@@ -9,8 +9,8 @@ import { UserService } from '../services/user.service';
 })
 export class ItineraryService {
 
-  private itinerarySubject: BehaviorSubject<Itinerary> = new BehaviorSubject(<Itinerary>{});
-  public onSaveMapsLocationsSubject: BehaviorSubject<boolean> = new BehaviorSubject(false);
+  private itinerarySubject: ReplaySubject<Itinerary> = new ReplaySubject();
+  public onSaveMapsLocationsSubject: ReplaySubject<boolean> = new ReplaySubject();
 
   itineraryStream = this.itinerarySubject.asObservable();
   onSaveMapsLocationsStream = this.onSaveMapsLocationsSubject.asObservable();
@@ -77,8 +77,8 @@ export class ItineraryService {
           if (destination.date !== "" &&
               destination.name &&
               destination.source &&
-              destination.streetAddress !== "" &&
-              destination.time !== "") {
+              destination.streetAddress !== '' &&
+              destination.time !== '') {
                 // debugger;
                 isValid = true;
               } else {
@@ -86,9 +86,9 @@ export class ItineraryService {
                 isValid = false;
                 break;
               }
-        };
-          option.stepCompleted = isValid;
-          option.stepReady = true;
+        }
+        option.stepCompleted = isValid;
+        option.stepReady = true;
       }
 
       if (option.step === 'budget' && this.itineraryObj.budget) {
@@ -116,12 +116,13 @@ export class ItineraryService {
 
   broadcastUpdates(itineraryData: any): void {
     this.itineraryObj = itineraryData;
+    // debugger;
     this.itinerarySubject.next(itineraryData);
   }
 
   saveItinerary(): Observable<any> {
     console.log('This is the itinerary object:', this.itineraryObj, this.userService.userEmail);
-    debugger;
+    // debugger;
     const payload: BackendItinerary = {
       itineraryName: this.itineraryObj.info.name,
       startDate: this.itineraryObj.info.startDate,

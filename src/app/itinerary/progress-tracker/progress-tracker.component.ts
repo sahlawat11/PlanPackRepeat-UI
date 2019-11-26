@@ -25,7 +25,6 @@ export class ProgressTrackerComponent implements OnInit, OnDestroy {
   initActivateRoute() {
     this.orderRoute = this.router.url;
     this.subscriptions.add(this.router.events.subscribe((val) => {
-      // see also 
       if (val instanceof NavigationEnd) {
         this.orderRoute = val.url;
       }

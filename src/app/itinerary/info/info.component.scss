@@ -10,10 +10,6 @@ form {
     border-radius: 5px;
 }
 
-// .form-container {
-//     margin-left: 28%;
-// }
-
 .next-btn {
     position: relative;
     left: 50%;
@@ -38,4 +34,13 @@ form {
 .visibility-container {
     margin-left: 0;
     margin-bottom: 50px;
+}
+
+.previous, .next {
+    width: 140px;
+    padding: 15px 30px !important;
+}
+
+.private-radio {
+    margin-top: 10px;
 }

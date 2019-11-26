@@ -18,8 +18,6 @@
                     </div>
                 </div>
 
-
-
                 <div *ngFor="let destinationObj of savedDestinations; let i = index" class="destination-form">
                     <div class="title"><span>Destination {{ i + 1}}</span> &nbsp; <span
                             (click)="removeDestination(i)"><i class="fa fa-trash cursor-pointer" aria-hidden="true"></i>
@@ -60,8 +58,8 @@
                 </div>
 
             </div>
-            <button [routerLink]="'/itinerary/create-itinerary/info'" class="btn btn-primary submit previous-btn">Previous</button>
-            <button [routerLink]="'/itinerary/create-itinerary/budget'" type="submit" class="btn btn-primary submit next-btn" [disabled]="!isFormValid"
+            <button [routerLink]="'/itinerary/create-itinerary/info'" class="btn btn-primary submit previous">Previous</button>
+            <button [routerLink]="'/itinerary/create-itinerary/budget'" type="submit" class="btn btn-primary submit next pull-right" [disabled]="!isFormValid"
                 [ngClass]="{'disabled': !isFormValid}">Next</button>
         </div>
         <!-- </form> -->

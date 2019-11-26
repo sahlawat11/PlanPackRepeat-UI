@@ -34,7 +34,7 @@ export class DistinationsComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.validateItineraryObj();
-    this.subscriptions.add(this.itineraryDestinationsForm.valueChanges.pipe(skip(1)).subscribe((data) => {
+    this.subscriptions.add(this.itineraryDestinationsForm.valueChanges.subscribe((data) => {
       this.updateInput();
     }));
     if (this.itineraryService.itineraryObj && this.itineraryService.itineraryObj.destinations) {
@@ -65,7 +65,7 @@ setItineraryObj() {
       streetAddress: '',
       date: '',
       time: '',
-      source: "manual",
+      source: 'manual',
       latitude: null,
       longitude: null
     };
@@ -78,7 +78,8 @@ setItineraryObj() {
   }
 
   validateItineraryObj() {
-    if (typeof this.itineraryService.itineraryObj === 'undefined') {
+    if (typeof this.itineraryService.itineraryObj === 'undefined' ||
+    typeof this.itineraryService.itineraryObj.info === 'undefined') {
       this.router.navigateByUrl('/itinerary/create-itinerary/info');
     }
   }
@@ -97,7 +98,6 @@ setItineraryObj() {
   }
 
   get savedDestinations(): Array<Destinations> {
-    console.log('************** THIS IS A TEST FOR THESE VALUES:', this.itineraryService.savedDestinations);
     return this.itineraryService.savedDestinations;
   }
 

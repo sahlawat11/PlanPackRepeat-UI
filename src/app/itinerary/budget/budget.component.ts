@@ -18,7 +18,15 @@ export class BudgetComponent implements OnInit, OnDestroy {
   constructor(private itineraryService: ItineraryService, private alertService: ToastrService, private router: Router) { }
 
   ngOnInit() {
+    this.validateItineraryObj();
     this.tripBudget = this.itineraryService.itineraryObj.budget;
+  }
+
+  validateItineraryObj() {
+    if (typeof this.itineraryService.itineraryObj === 'undefined' ||
+    typeof this.itineraryService.itineraryObj.destinations === 'undefined') {
+      this.router.navigateByUrl('/itinerary/create-itinerary/info');
+    }
   }
 
   get itineraryObj() {
@@ -31,7 +39,6 @@ export class BudgetComponent implements OnInit, OnDestroy {
   }
 
   createItinerary() {
-    console.log('************************* ajhadsfjgdshfsdgf:', this.itineraryService.itineraryObj);
     this.subscriptions.add(this.itineraryService.saveItinerary().subscribe(
       (itineraryData) => {
         console.log('this is it.........:', itineraryData);
@@ -56,7 +63,6 @@ export class BudgetComponent implements OnInit, OnDestroy {
 }
 
 addPicturesSource(uploadedFilesSource: Array<string>) {
-  debugger;
   console.log('***************', uploadedFilesSource);
   uploadedFilesSource.forEach((fileSource: string) => {
     if (typeof this.itineraryObj.photos !== 'undefined') {

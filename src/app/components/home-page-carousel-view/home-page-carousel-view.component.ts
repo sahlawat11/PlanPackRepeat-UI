@@ -1,24 +1,32 @@
-import { MessageService } from 'src/app/services/message.service';
 import { PagerService } from './../../services/pager.service';
 
 import { Itinerary, Destination } from './../../models/carouselmodels';
 import { CarouselViewService } from './../../services/carousel-view.service';
 import { Component, OnInit } from '@angular/core';
-import {jsonString} from '../../../mockjson/retrieveitinerary'
-import { error } from 'util';
+import { UserService } from '../../services/user.service';
+import { ItineraryService } from '../../itinerary/itinerary.service';
+
 @Component({
   selector: 'app-home-page-carousel-view',
   templateUrl: './home-page-carousel-view.component.html',
   styleUrls: ['./home-page-carousel-view.component.css']
 })
 export class HomePageCarouselViewComponent implements OnInit {
-    filteredItinerary: Itinerary[] = [];
-    pager: any = {};
-    pagedItems: any[];
-  constructor(private carouselService: CarouselViewService, private pagerService:PagerService, private messageService:MessageService) { }
-    allitineraries :  Itinerary[] = [];
+
+  filteredItinerary: Itinerary[] = [];
+  pager: any = {};
+  pagedItems: any[];
+
+  constructor(private carouselService: CarouselViewService, private pagerService:PagerService,
+    private userService: UserService, private itineraryService: ItineraryService) { }
+    allitineraries: Itinerary[] = [];
 
   ngOnInit() {
+    this.initCarousal();
+    this.getUserItineraries();
+  }
+
+  initCarousal() {
     this.carouselService.getItineraryInfoDashboard('saransh@gmail.com', true).subscribe(
       (result : Array<any> ) => {
             const value_list= []
@@ -39,34 +47,21 @@ export class HomePageCarouselViewComponent implements OnInit {
       );
   }
 
+  getUserItineraries() {
+    console.log('********** checking this out:', this.userService.userEmail);
+    this.itineraryService.getUserItineraries(this.userService.userEmail).subscribe(
+      (data: any) => {
+        console.log('THESE ARE THE USER ITINERARIES:', data);
+      },
+      (error: any) => {
+        console.log('Error occurred while fetching the user itineraries:', error);
+      });
+  }
+
   setPage(page: number) {
     this.pager = this.pagerService.getPager(this.allitineraries.length, page);
     this.pagedItems = this.allitineraries.slice(this.pager.startIndex, this.pager.endIndex + 1);
-    console.log("pagedItems are",this.pagedItems)
+    console.log('pagedItems are', this.pagedItems)
 }
 
-  getDetails(){
-     /*
-     this.messageService.getMessage().subscribe(textboxreader=>{
-        console.log("value of the text is ",textboxreader.text)
-        if(textboxreader.text){
-          this.pager = this.pagerService.getPager(this.allitineraries.length, 1);
-          this.pagedItems = this.allitineraries.slice(this.pager.startIndex, this.pager.endIndex + 1);
-          return this.pagedItems;
-        }else{
-          console.log("data empty ")
-        }
-        console.log("data received is =>=> ",textboxreader.text)
-        this.filteredItinerary = this.allitineraries.filter(v => v.getItineraryName() === textboxreader.text);
-        this.pager = this.pagerService.getPager(this.filteredItinerary.length, 1);
-        this.pagedItems = this.filteredItinerary.slice(this.pager.startIndex, this.pager.endIndex + 1);
-        console.log("Page Items",this.pagedItems)
-        //return this.pagedItems;
-        return this.pagedItems;
-     }, failure => {
-
-     })
-    */
-
-  }
 }

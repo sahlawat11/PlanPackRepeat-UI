@@ -5,8 +5,6 @@ import { CallbackComponent } from './pages/callback/callback.component';
 import { AuthGuard } from './auth/auth.guard';
 import { ProfileComponent } from './pages/profile/profile.component';
 import { LoginComponent } from './components/login/login.component';
-import { GoogleMapsComponent } from './components/google-maps/google-maps.component';
-import { ItineraryModule } from './itinerary/itinerary.module';
 
 const routes: Routes = [
   {

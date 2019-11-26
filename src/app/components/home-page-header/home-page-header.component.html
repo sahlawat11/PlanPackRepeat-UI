@@ -3,7 +3,7 @@
         <div class="row">
             <div class="col-sm-3">
             <div class="navbar-header">
-                <div class="navbar-brand">
+                <div class="navbar-brand" (click)="navigateToHome()">
                     <h2>PlanPackRepeat</h2><span>plan your itinerary</span>
                 </div>
 
@@ -17,13 +17,14 @@
             <div id="navbar" class="collapse navbar-collapse navbar-right">
 
                 <ul class="nav navbar-nav">
-                    <li class="active"><a href="#">Home</a></li>
-                    <li><a [routerLink]="'/itinerary/create-itinerary/info'">New Itinerary</a></li>
-                    <li><a href="dashboard.html">dashboard</a></li>
-                    <li><a href="">Sign out</a></li>
+                    <!-- <ng-container *ngIf="authService.loggedIn; else userNotLoggedIn"> -->
+                    <li><a [routerLink]="'/dashboard'" [ngClass]="{'disabled': !authService.loggedIn}">Home</a></li>
+                    <li><a [routerLink]="'/itinerary/create-itinerary/info'" [ngClass]="{'disabled': !authService.loggedIn}">New Itinerary</a></li>
+                    <li><a [routerLink]="'/dashboard'" [ngClass]="{'disabled': !authService.loggedIn}">dashboard</a></li>
+                    <li *ngIf="authService.loggedIn"><a (click)="authService.logout()">Sign out</a></li>
+                    <li *ngIf="!authService.loggedIn"><a (click)="authService.login()">Sign in</a></li>
                 </ul>
             </div>
-            <!--/.nav-collapse -->
         </div>
       </div>
     </div>

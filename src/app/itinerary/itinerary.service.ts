@@ -205,5 +205,10 @@ export class ItineraryService {
     return this.httpClient.put(`http://travelapp-env-1.ey2unjuyh7.us-east-1.elasticbeanstalk.com/itinerary/${itineraryId}`, payload);
   }
 
+  getUserItineraries(userEmail: string): Observable<any> {
+    // tslint:disable-next-line: max-line-length
+    return this.httpClient.get(`http://travelapp-env-1.ey2unjuyh7.us-east-1.elasticbeanstalk.com/itinerary/getItineraryByEmail/${userEmail}`);
+  }
+
 
 }

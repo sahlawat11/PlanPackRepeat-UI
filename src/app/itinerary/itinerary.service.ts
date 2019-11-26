@@ -21,6 +21,7 @@ export class ItineraryService {
   trackerOptions = [
     {
       step: 'info',
+      displayName: 'info',
       stepReady: true,
       section: 'info-progress',
       stepCompleted: false,
@@ -28,6 +29,7 @@ export class ItineraryService {
     },
     {
       step: 'destinations',
+      displayName: 'destinations',
       stepReady: false,
       section: 'destinations-progress',
       stepCompleted: false,
@@ -35,6 +37,7 @@ export class ItineraryService {
     },
     {
       step: 'budget',
+      displayName: 'budget & pictures',
       stepReady: false,
       section: 'budget-progress',
       stepCompleted: false,
@@ -93,7 +96,7 @@ export class ItineraryService {
           option.stepCompleted = true;
           option.stepReady = true;
         }
-        
+
       }
     }
     console.log('THIS IS IT (****************):', this.trackerOptions);
@@ -118,6 +121,7 @@ export class ItineraryService {
 
   saveItinerary(): Observable<any> {
     console.log('This is the itinerary object:', this.itineraryObj, this.userService.userEmail);
+    debugger;
     const payload: BackendItinerary = {
       itineraryName: this.itineraryObj.info.name,
       startDate: this.itineraryObj.info.startDate,
@@ -128,8 +132,9 @@ export class ItineraryService {
       budgetId: this.itineraryObj.budget,
       destinations: [],
       active: true,
-      public: true ? this.itineraryObj.info.visiblity === 'public' : false
-    }
+      public: true ? this.itineraryObj.info.visiblity === 'public' : false,
+      pictures: Array.from(this.itineraryObj.photos)
+    };
 
     this.itineraryObj.destinations.forEach((destination: Destinations) => {
       const dest: BackendDestination = {
@@ -142,7 +147,7 @@ export class ItineraryService {
         latitude: destination.latitude ? destination.latitude.toString() : null,
         longitude: destination.longitude ? destination.longitude.toString() : null,
         source: destination.source
-      }
+      };
       payload.destinations.push(dest);
     });
 
@@ -154,7 +159,6 @@ export class ItineraryService {
 
   getUiItineraryModelFromRaw(rawItineraryObj: any) {
     console.log('this is the raw object:', rawItineraryObj);
-    debugger;
     const itineraryObjTemp =  {
       info: {
         name: rawItineraryObj.itineraryName,
@@ -176,10 +180,9 @@ export class ItineraryService {
         longitude: destination.longitude,
         status: destination.status,
         source: destination.source
-      }
+      };
       itineraryObjTemp.destinations.push(destObj);
     });
-    debugger;
     return itineraryObjTemp;
   }
 
@@ -194,7 +197,7 @@ export class ItineraryService {
 
   getDateHtmlTime(date): string {
     const dateObj = new Date(date);
-    return dateObj.getHours() + ':' + dateObj.getMinutes()
+    return dateObj.getHours() + ':' + dateObj.getMinutes();
   }
 
   updateItinerary(itineraryId: string, payload: any): Observable<any> {

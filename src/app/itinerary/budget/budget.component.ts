@@ -26,7 +26,6 @@ export class BudgetComponent implements OnInit, OnDestroy {
   }
 
   updateBudget(value: number) {
-    
     this.itineraryService.itineraryObj.budget = value;
     this.updateInput();
   }
@@ -54,6 +53,19 @@ export class BudgetComponent implements OnInit, OnDestroy {
       this.itineraryUpdateTimeout = null;
       this.itineraryService.broadcastUpdates(this.itineraryService.itineraryObj);
   }, 500);
+}
+
+addPicturesSource(uploadedFilesSource: Array<string>) {
+  debugger;
+  console.log('***************', uploadedFilesSource);
+  uploadedFilesSource.forEach((fileSource: string) => {
+    if (typeof this.itineraryObj.photos !== 'undefined') {
+      this.itineraryObj.photos.add(fileSource);
+    } else {
+      this.itineraryObj.photos = new Set();
+      this.itineraryObj.photos.add(fileSource);
+    }
+  });
 }
 
 ngOnDestroy() {

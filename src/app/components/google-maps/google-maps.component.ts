@@ -48,9 +48,10 @@ export class GoogleMapsComponent implements OnInit {
               this.destinationCreationCounter--;
               const streetAddress = data;
               this.itineraryService.savedDestinations.push(
-                { latitude: location.lat, longitude: location.lng, streetAddress: streetAddress, source: 'maps', name: '', date: '', time: ''}
+                { latitude: location.lat, longitude: location.lng,
+                  streetAddress: streetAddress, source: 'maps', name: '', date: '', time: ''}
               );
-              // console.log('PUSHED THIS ITEM:', index);
+              console.log('DESTINATION COUNTER.............:', this.destinationCreationCounter);
               if (this.destinationCreationCounter === 0) {  // last location in the array
                 this.loadingService.disableLoadingMask();
                 this.dialogRef.next(false);
@@ -75,7 +76,7 @@ export class GoogleMapsComponent implements OnInit {
     this.mapsAPILoader.load().then(() => {
       this.setCurrentLocation();
       this.geoCoder = new google.maps.Geocoder();
-      
+
       const autocomplete = new google.maps.places.Autocomplete(this.searchElementRef.nativeElement, {
         types: ['address']
       });

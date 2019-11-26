@@ -11,12 +11,12 @@ export class LoadingService {
   constructor() { }
 
   enableLoadingMask(message?: string): void {
-    setTimeout(() => {
-      this.showLoadingMask = true;
+    // setTimeout(() => {
+    this.showLoadingMask = true;
     if (typeof message !== 'undefined') {
       this.loadingMessage = message;
     }
-    }, 500);
+    // }, 500);
   }
 
   disableLoadingMask(): void {

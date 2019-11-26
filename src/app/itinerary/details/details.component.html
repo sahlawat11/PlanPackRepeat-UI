@@ -65,6 +65,18 @@
             </tr>
           </tbody>
         </table>
+
+        <div class="photos">
+            <div class="title">Photos</div>
+            <!-- <div class="name">{{ itineraryDetails.endDate | date: 'fullDate' }}</div> -->
+            <div class="row">
+            <div class="photo-container" *ngFor="let photoSource of itineraryDetails.pictures">
+                <div class="col-md-6">
+                    <img class="photo-img" [src]="photoSource" />
+                </div>
+            </div>
+        </div>
+        </div>
 </div>
 
  

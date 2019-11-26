@@ -40,7 +40,6 @@ export class DetailsComponent implements OnInit, OnDestroy {
     console.log('Edit has been clicked');
     this.itineraryService.editItinerary = true;
     this.itineraryService.itineraryObj = this.itineraryService.getUiItineraryModelFromRaw(this.itineraryDetails);
-    debugger;
     this.router.navigateByUrl('itinerary/edit-itinerary/info');
   }
 

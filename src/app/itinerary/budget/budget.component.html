@@ -3,7 +3,21 @@
         Trip Budget:
         <input [ngModel]="tripBudget" (ngModelChange)="updateBudget($event)" type="number" required
             [placeholder]="'Enter the trip budget'" /> $
-    </div>
+    
+            <div class="photos-uploader">
+                Photos:
+                <app-uploader (completedUploadEvent)="addPicturesSource($event)"></app-uploader>
+            </div>
+
+            <div class="photos-container row">
+                <ng-container *ngFor="let picture of itineraryObj?.photos">
+                    <div class="col-md-6">
+                        <img [src]="picture" />
+                    </div>
+                </ng-container>
+            </div>
+
+        </div>
 
     <button (click)="createItinerary()" class="btn btn-primary pull-right">Create Itinerary</button>
     <button class="btn btn-primary pull-left" [routerLink]="'/itinerary/create-itinerary/destinations'">Previous</button>

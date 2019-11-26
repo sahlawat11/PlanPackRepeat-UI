@@ -19,7 +19,7 @@ export class DistinationsComponent implements OnInit, OnDestroy {
     date: new FormControl('', Validators.required),
     time: new FormControl('', Validators.required)
   });
-  
+
   itineraryUpdateTimeout: any;
   isCollapsed = false;
   destinationsArr: Array<Destinations> = [];
@@ -35,11 +35,9 @@ export class DistinationsComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.validateItineraryObj();
     this.subscriptions.add(this.itineraryDestinationsForm.valueChanges.pipe(skip(1)).subscribe((data) => {
-      debugger;
       this.updateInput();
     }));
     if (this.itineraryService.itineraryObj && this.itineraryService.itineraryObj.destinations) {
-      debugger;
       this.itineraryService.savedDestinations = this.itineraryService.itineraryObj.destinations;
       console.log('THESE ARE THE DESTINATIONS THAT HAVE BEEN SET:', this.itineraryService.savedDestinations);
     }
@@ -53,8 +51,8 @@ export class DistinationsComponent implements OnInit, OnDestroy {
       this.itineraryUpdateTimeout = null;
       this.setItineraryObj();
       console.log('Update input has been called:', this.itineraryDestinationsForm.value);
-      this.itineraryService.broadcastUpdates(this.itineraryService.itineraryObj)
-  }, 500)
+      this.itineraryService.broadcastUpdates(this.itineraryService.itineraryObj);
+  }, 500);
 }
 
 setItineraryObj() {

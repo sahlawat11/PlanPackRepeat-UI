@@ -33,7 +33,6 @@ export class InfoComponent implements OnInit, OnDestroy {
   constructor(private router: Router, private itineraryService: ItineraryService) { }
 
   ngOnInit() {
-    debugger;
     this.subscriptions.add(this.itineraryInfoForm.valueChanges.subscribe((data) => {
       this.updateInput();
       this.isFormValid = this.itineraryInfoForm.valid;
@@ -53,7 +52,6 @@ export class InfoComponent implements OnInit, OnDestroy {
       endDate: this.itineraryInfoForm.value.endDate,
       visiblity: this.itineraryInfoForm.value.visibility
     };
-    debugger;
     if (typeof this.itineraryService.itineraryObj === 'undefined') {
       this.itineraryService.itineraryObj = {
         info: this.itineraryInfo

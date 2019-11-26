@@ -9,7 +9,7 @@
                     <label class="section-{{item.step}}">
                         <button
                             [ngClass]="{'route-highlight': orderRoute === 'create-itinerary/'+item.step, 'completed': item.stepReady}"
-                            (click)="goToStep(item.step)">{{item.step | uppercase}}</button>
+                            (click)="goToStep(item.step)">{{item.displayName | uppercase}}</button>
                     </label>
                 </div>
             </div>

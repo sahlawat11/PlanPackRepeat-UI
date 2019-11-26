@@ -1,0 +1,22 @@
+<button
+    class="btn btn-success uploader-btn"
+    [disabled]="!selectedFiles"
+    (click)="upload()"
+  >
+    Upload
+  </button>
+
+<div class="container uploader-container">
+  <label class="btn btn-default">
+    <input type="file" (change)="selectFile($event)" multiple/>
+  </label>
+</div>
+
+<!-- <div class="upload-btn-wrapper">
+  <button class="btn">Upload a file</button>
+  <input type="file" name="myfile" (change)="selectFile($event)" />
+</div> -->
+
+<!-- <div class="photos">
+    <img src="https://plan-pack-repeat.s3.us-east-2.amazonaws.com/Screen+Shot+2019-11-19+at+8.54.24+PM.png" />
+</div> -->

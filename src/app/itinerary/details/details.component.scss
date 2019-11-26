@@ -33,7 +33,7 @@
     border-left: .25rem solid #4e73df;
 }
 
-.itinerary-name, .itinerary-date, .itinerary-date {
+.itinerary-name, .itinerary-date, .itinerary-date, .photos {
     margin-left: 10px;
     margin-bottom: 20px;
     .title {
@@ -91,4 +91,10 @@
 
 td {
     max-width: 350px;
+}
+
+.photo-img {
+    max-height: 250px;
+    max-width: 435px;
+    margin-top: 20px;
 }

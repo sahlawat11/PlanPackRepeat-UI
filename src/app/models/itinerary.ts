@@ -3,13 +3,14 @@ export interface Itinerary {
     info: Info;
     destinations?: Array<Destinations> | null;
     budget?: number;
+    photos?: Set<string> | null;
 }
 
 export interface Info {
     name: string;
     startDate: string;
     endDate: string;
-    visiblity: string
+    visiblity: string;
 }
 
 export interface Destinations {
@@ -19,8 +20,8 @@ export interface Destinations {
     longitude: number | null;
     date: string;
     time: string;
-    status?: "travelled" | "wishlist";
-    source?: "maps" | "manual"
+    status?: 'travelled' | 'wishlist';
+    source?: 'maps' | 'manual';
 }
 
 export interface BackendItinerary {
@@ -32,6 +33,8 @@ export interface BackendItinerary {
     destinations?: (BackendDestination)[] | null;
     active?: boolean;
     public?: boolean;
+    pictures?: Array<string> | null;
+    visibilityKey?: string | null;
 }
 
 export interface BackendDestination {
@@ -44,4 +47,3 @@ export interface BackendDestination {
     longitude: string | null;
     source: string;
 }
-  

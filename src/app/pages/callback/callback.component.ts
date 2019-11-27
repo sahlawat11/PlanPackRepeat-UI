@@ -15,7 +15,6 @@ export class CallbackComponent implements OnInit {
     this.loadingService.enableLoadingMask();
     setTimeout(() => {
       this.auth.handleAuthCallback();
-
     }, 1000);
   }
 

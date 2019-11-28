@@ -18,6 +18,12 @@ module.exports = function (config) {
     coverageIstanbulReporter: {
       dir: require('path').join(__dirname, './coverage/login-demo'),
       reports: ['html', 'lcovonly', 'text-summary'],
+      customLaunchers: {
+        ChromeHeadlessNoSandbox: {
+          base: 'ChromeHeadless',
+          flags: ['--no-sandbox']
+        }
+      },
       fixWebpackSourcePaths: true
     },
     reporters: ['progress', 'kjhtml'],
@@ -25,7 +31,13 @@ module.exports = function (config) {
     colors: true,
     logLevel: config.LOG_INFO,
     autoWatch: true,
-    browsers: ['Chrome'],
+    browsers: ['Chrome, ChromeHeadless, ChromeHeadless_without_security'],
+    customLaunchers: {
+      ChromeHeadless_without_security: {
+        base: 'ChromeHeadless',
+        flags: ['--disable-web-security']
+      }
+    },
     singleRun: false,
     restartOnFileChange: true
   });

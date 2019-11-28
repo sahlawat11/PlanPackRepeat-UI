@@ -20,4 +20,4 @@ install:
   - npm install
 
 script:
-  - npm run build -- --watch=false --no-progress --browsers=ChromeHeadlessNoSandbox
+  - npm run build --prod

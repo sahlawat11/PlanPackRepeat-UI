@@ -2,7 +2,7 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { ItineraryBaseComponent } from './itinerary-base.component';
 
-describe('ItineraryBaseComponent', () => {
+xdescribe('ItineraryBaseComponent', () => {
   let component: ItineraryBaseComponent;
   let fixture: ComponentFixture<ItineraryBaseComponent>;
 

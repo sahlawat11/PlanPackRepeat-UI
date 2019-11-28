@@ -4,7 +4,7 @@ import { hljsLanguages } from 'src/app/app.module';
 
 import { ProfileComponent } from './profile.component';
 
-describe('ProfileComponent', () => {
+xdescribe('ProfileComponent', () => {
   let component: ProfileComponent;
   let fixture: ComponentFixture<ProfileComponent>;
 

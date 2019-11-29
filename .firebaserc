@@ -1,5 +1,6 @@
 {
   "projects": {
-    "default": "planpackrepeat-ui-c6c23"
+    "default": "planpackrepeat-ui-c6c23",
+    "development": "planpackrepeat-ui-c6c23"
   }
 }

@@ -9,7 +9,6 @@ before_script:
 script:
   - npm install
   - npm run build --prod
-  - firebase use default
   - firebase deploy --only hosting --token "1//0dacifTJOMAgACgYIARAAGA0SNwF-L9IrcEEx514QYp9l7EbaRWxt6SOS3UT2ujQL3w-8T3A-Ipbvs1s4Zv7XpPSsDzcH_IqPkqg"
 branches:
   only:

@@ -9,6 +9,7 @@ before_script:
 script:
 - npm install
 - npm run build
+- firebase login
 - firebase use default
 - firebase deploy --only hosting --token "1//0doQs4FiL1D_ZCgYIARAAGA0SNwF-L9IrN-bj-LRG5IyxnpiJzvUGyAv2CgM8wTG_BTy9YE2LMbqVxAWf6OlPx1h4OA5htMGaXJw"
 env:

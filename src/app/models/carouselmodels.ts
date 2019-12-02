@@ -1,5 +1,5 @@
 export class Itinerary{
-  constructor(private itineraryId?: String , private itineraryName?: String, private destinations?: Destination[] ) {
+  constructor(private itineraryId?: String , private itineraryName?: String, private pictures?: Array<string>, private destinations?: Destination[] ) {
 
   }
 

@@ -4,6 +4,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { ItineraryService } from '../itinerary.service';
 import { Subscription } from 'rxjs';
 import { LoadingService } from '../../shared/loading/loading.service';
+import { UserService } from '../../services/user.service';
 
 @Component({
   selector: 'app-details',
@@ -15,11 +16,15 @@ export class DetailsComponent implements OnInit, OnDestroy {
   itineraryId: string;
   itineraryDetails: any;
   isLikeRequestPending: boolean;
+  userEmail: string;
   subscriptions = new Subscription();
 
-  constructor(private router: Router, private activatedRoute: ActivatedRoute, private itineraryService: ItineraryService, private loadingService: LoadingService) { }
+  constructor(private router: Router, private activatedRoute: ActivatedRoute,
+    private itineraryService: ItineraryService, private loadingService: LoadingService,
+    private userService: UserService) { }
 
   ngOnInit() {
+    this.userEmail = this.userService.userEmail;
     this.subscriptions.add(this.activatedRoute.params.subscribe((params: any) => {
       this.itineraryId = params.id;
       console.log('this is the params:', params, this.itineraryId);

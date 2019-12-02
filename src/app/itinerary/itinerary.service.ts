@@ -133,7 +133,7 @@ export class ItineraryService {
       budgetId: this.itineraryObj.budget,
       destinations: [],
       active: true,
-      public: true ? this.itineraryObj.info.visiblity === 'public' : false,
+      public: this.itineraryObj.info.visiblity === 'Public' ? true : false,
       pictures: Array.from(this.itineraryObj.photos)
     };
 

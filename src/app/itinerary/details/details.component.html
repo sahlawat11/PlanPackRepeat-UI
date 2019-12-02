@@ -2,7 +2,7 @@
     <!-- Page Heading -->
     <div class="d-sm-flex align-items-center justify-content-between mb-4">
         <h1 class="h4 mb-0 text-gray-800">Itinerary Details 
-            <span (click)="editItinerary()" class="edit"><i class="fa fa-pencil text-gray-800" aria-hidden="true"></i></span>        
+            <span (click)="editItinerary()" class="edit"><i class="fa fa-pencil text-gray-800" aria-hidden="true"></i></span>     
         </h1>
         <div class="status" [ngClass]="{'public': itineraryDetails.public, 'private': !itineraryDetails.public}">{{itineraryDetails.public ? 'Public' : 'Private'}}</div> 
 

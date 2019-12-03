@@ -139,8 +139,7 @@ export class ItineraryService {
       const dest: BackendDestination = {
         destName: destination.name,
         address: destination.streetAddress,
-        // plannedTime: new Date(`${destination.date} ${destination.time}`),
-        plannedTime: '2019-10-23 09:00:00',
+        plannedTime: `${destination.date} ${destination.time}:00`,
         status: destination.status,
         imgUrl: '',
         latitude: destination.latitude ? destination.latitude.toString() : null,

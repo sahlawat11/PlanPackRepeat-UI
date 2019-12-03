@@ -17,12 +17,12 @@ export class UserService {
 
   getUserInfo(email: string): Observable<any> {
       this.userEmail = email;
-      return this.authHttp.get(`http://travelapp-env-1.ey2unjuyh7.us-east-1.elasticbeanstalk.com/users/getUserByEmail/${email}`);
+      return this.authHttp.get(`https://travelapp-env-1.ey2unjuyh7.us-east-1.elasticbeanstalk.com/users/getUserByEmail/${email}`);
   }
 
   createUser(userInfo: NewUser) {
     console.log('this is the user info:', userInfo);
-    return this.authHttp.post(`http://travelapp-env-1.ey2unjuyh7.us-east-1.elasticbeanstalk.com/users/createuser`, userInfo);
+    return this.authHttp.post(`https://travelapp-env-1.ey2unjuyh7.us-east-1.elasticbeanstalk.com/users/createuser`, userInfo);
   }
 
   setUserEmail(userEmail: string) {

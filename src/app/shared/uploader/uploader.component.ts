@@ -6,6 +6,7 @@ import { UploaderService } from './uploader.service';
 import S3 from 'aws-sdk/clients/s3';
 import { s3Credentials } from '../../models/auth_config';
 import { ToastrService } from 'ngx-toastr';
+import { LoadingService } from '../loading/loading.service';
 
 @Component({
   selector: 'app-uploader',
@@ -19,10 +20,9 @@ export class UploaderComponent implements OnInit {
   selectedFilesSource: Array<string> = [];
   fileUploadProgress = {};
   numberOfFiles = 0;
-  // fileUploadProgress: Array<any> = [];
   @Output() completedUploadEvent = new EventEmitter<Array<string>>();
 
-  constructor(private uploaderService: UploaderService, private alertService: ToastrService) {}
+  constructor(private uploaderService: UploaderService, private alertService: ToastrService, private loadingService: LoadingService) {}
 
   ngOnInit() {}
 
@@ -40,6 +40,7 @@ export class UploaderComponent implements OnInit {
   }
 
   uploadFile(file, totalFiles: number) {
+    this.loadingService.enableLoadingMask();
     this.uploadCounter++;
     const contentType = file.type;
     const bucket = new S3({
@@ -57,6 +58,7 @@ export class UploaderComponent implements OnInit {
     bucket.upload(params, (err, data) => {
       if (err) {
         console.log('There was an error uploading your file: ', err);
+        this.loadingService.disableLoadingMask();
         return false;
       }
       this.uploadCounter--;
@@ -67,6 +69,7 @@ export class UploaderComponent implements OnInit {
       }
       console.log('Successfully uploaded file.', data);
       this.selectedFilesSource.push(data.Location);
+      this.loadingService.disableLoadingMask();
       return true;
     });
 

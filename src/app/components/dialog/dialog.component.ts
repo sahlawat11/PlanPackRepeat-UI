@@ -24,12 +24,7 @@ export class DialogComponent implements OnInit, AfterViewInit {
   constructor(private itineraryService: ItineraryService) { }
 
   ngOnInit() {
-    // setTimeout(() => {
-    //   this.googleDialogIsOpen = true;
-    //   console.log('THIS HAS RUN AFTER SETTIMEOUT:', this.googleDialogIsOpen);
-    // }, 5000);
     this.dialogRefStream.subscribe((data: any) => {
-      console.log('*************************:', data);
       this.googleDialogIsOpen = data;
     });
   }

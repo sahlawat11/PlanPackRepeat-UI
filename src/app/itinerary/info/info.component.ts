@@ -39,7 +39,6 @@ export class InfoComponent implements OnInit, OnDestroy {
     }));
     this.setTodaysDate();
     if (this.itineraryService.itineraryObj) {
-      console.log('************** setting the object from service:', this.itineraryService.itineraryObj);
       this.itineraryInfo = this.itineraryService.itineraryObj.info;
     }
   }

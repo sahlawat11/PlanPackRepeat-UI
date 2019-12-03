@@ -2,11 +2,13 @@ import { PagerService } from './../../services/pager.service';
 
 import { Itinerary, Destination } from './../../models/carouselmodels';
 import { CarouselViewService } from './../../services/carousel-view.service';
+import { LoadingService } from '../../shared/loading/loading.service';
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { UserService } from '../../services/user.service';
 import { ItineraryService } from '../../itinerary/itinerary.service';
-
+import { ToastrService } from 'ngx-toastr';
+import * as _ from 'lodash';
 
 @Component({
   selector: 'app-home-page-carousel-view',
@@ -19,6 +21,8 @@ export class HomePageCarouselViewComponent implements OnInit {
   pager: any = {};
   pagedItems: any[];
   userItineraries: Array<any> = [];
+  activeTab: 'My' | 'All' = 'My'
+  allitineraries: Itinerary[] = [];
   // uiUserItinerarues: Array<any> = [];
 
   constructor(
@@ -26,13 +30,14 @@ export class HomePageCarouselViewComponent implements OnInit {
     private pagerService: PagerService,
     private userService: UserService,
     private itineraryService: ItineraryService,
-    private router: Router
+    private router: Router,
+    private loadingService: LoadingService,
+    private alertService: ToastrService
   ) {}
-  allitineraries: Itinerary[] = [];
 
   ngOnInit() {
-    this.initCarousal();
-    // this.getUserItineraries();
+    // this.initCarousal();
+    this.getUserItineraries();
   }
 
   initCarousal() {
@@ -68,7 +73,7 @@ export class HomePageCarouselViewComponent implements OnInit {
   }
 
   getUserItineraries() {
-    console.log('********** checking this out:', this.userService.userEmail);
+    this.loadingService.enableLoadingMask();
     this.itineraryService
       .getUserItineraries(this.userService.userEmail)
       .subscribe(
@@ -77,30 +82,53 @@ export class HomePageCarouselViewComponent implements OnInit {
           // this.userItineraries.push(data);
           this.parseRawItineraryModelToUIModel(data);
           this.pagedItems = this.userItineraries.concat(this.pagedItems);
-          // this.pagedItems = this.userItineraries;
-          console.log('###################:', this.pagedItems);
+          this.loadingService.disableLoadingMask();
+          this.alertService.success('Successfully loaded your itineraries!');
         },
         (error: any) => {
           console.log(
             'Error occurred while fetching the user itineraries:',
             error
           );
+          this.loadingService.disableLoadingMask();
+          this.alertService.error('Sorry, an error occurred. Please refresh and try again.');
         }
       );
   }
 
+
+  getAllUsersItineraries() {
+    this.loadingService.enableLoadingMask();
+    this.itineraryService
+      .getAllItineraries(this.userService.userEmail)
+      .subscribe(
+        (data: any) => {
+          console.log('THESE ARE ALL ITINERARIES:', data);
+          this.parseRawItineraryModelToUIModel(data);
+          this.pagedItems = this.userItineraries.concat(this.pagedItems);
+          // let tempPagedItems = this.pagedItems.filter(item => item.public);
+          // this.pagedItems = tempPagedItems;
+          this.loadingService.disableLoadingMask();
+          this.alertService.success('Successfully loaded all itineraries!');
+        },
+        (error: any) => {
+          console.log(
+            'Error occurred while fetching the user itineraries:',
+            error
+          );
+          this.loadingService.disableLoadingMask();
+          this.alertService.error('Sorry, an error occurred. Please refresh and try again.');
+        }
+      );
+  }
+
+
   setPage(page: number) {
     this.pager = this.pagerService.getPager(this.allitineraries.length, page);
-    // this.pagedItems = this.allitineraries.slice(
-    //   this.pager.startIndex,
-    //   this.pager.endIndex + 1
-    // );
-    this.pagedItems = this.allitineraries;
-    console.log('pagedItems are*******************', JSON.stringify(this.pagedItems));
+    // this.pagedItems = this.allitineraries;
   }
 
   parseRawItineraryModelToUIModel(userItineraries: Array<any>) {
-    console.log('Before parsing the data:', userItineraries);
     userItineraries.forEach((itinerary: any) => {
       const uiHomePageItinObj = {
         itineraryId: itinerary.id,
@@ -108,10 +136,16 @@ export class HomePageCarouselViewComponent implements OnInit {
         destinations: itinerary.destinations,
         pictures: itinerary.pictures,
         likes: itinerary.likes,
-        tripDuration: this.getNumberOfDays(itinerary.startDate, itinerary.endDate)
+        tripDuration: this.getNumberOfDays(itinerary.startDate, itinerary.endDate),
+        public: itinerary.public,
+        budgetId: itinerary.budgetId
       }
-      this.userItineraries = this.userItineraries.concat([uiHomePageItinObj]).reverse();
+      this.userItineraries = this.userItineraries.concat([uiHomePageItinObj]);
     });
+    this.userItineraries.sort((a, b) => {
+      return a['likes'] - b['likes']; 
+    });
+    this.userItineraries = this.userItineraries.reverse();
   }
 
 
@@ -130,6 +164,30 @@ getNumberOfDays(date1, date2) {
   }
 }
 
+getAllItineraries() {
+  if (this.activeTab === 'All') {
+    return;
+  }
+  this.activeTab = 'All';
+  this.resetItinerariesArrays();
+  this.getAllUsersItineraries();
+}
+
+getMyItineraries() {
+  if (this.activeTab === 'My') {
+    return;
+  }
+  this.activeTab = 'My';
+  this.resetItinerariesArrays();
+  this.getUserItineraries();
+}
+
+resetItinerariesArrays() {
+  this.pagedItems = [];
+  this.allitineraries = [];
+  this.userItineraries = [];
+}
+
 goToItineraryDetails(id: string) {
   if (id) {
     this.router.navigateByUrl(`/itinerary/${id}`);
@@ -137,13 +195,3 @@ goToItineraryDetails(id: string) {
 }
 
 }
-
-// parseRawDestinationsModelToUIModel(destinations: Array<any>) {
-//   let resultDest = [];
-//   destinations.forEach((destination: any) => {
-//     const destTempObj = {
-//       destinationName: destination.destName,
-
-//     }
-//   });
-// }

@@ -24,7 +24,8 @@ const createItineraryRoutes: Routes = [
     { path: 'edit-itinerary/destinations', component: DistinationsComponent },
     { path: 'edit-itinerary/budget', component: BudgetComponent },
   ]
-}
+},
+{ path: ':id/:visibilityKey', component: DetailsComponent },
 ];
 
 @NgModule({

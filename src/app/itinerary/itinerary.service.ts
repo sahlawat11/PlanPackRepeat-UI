@@ -92,14 +92,13 @@ export class ItineraryService {
       }
 
       if (option.step === 'budget' && this.itineraryObj.budget) {
-        if (this.itineraryObj.budget > 0) {
+        if (this.itineraryObj.budget > 0 && this.itineraryObj.photos && this.itineraryObj.photos.size > 0) {
           option.stepCompleted = true;
           option.stepReady = true;
         }
 
       }
     }
-    console.log('THIS IS IT (****************):', this.trackerOptions);
   }
 }
 
@@ -127,14 +126,13 @@ export class ItineraryService {
       itineraryName: this.itineraryObj.info.name,
       startDate: this.itineraryObj.info.startDate,
       endDate: this.itineraryObj.info.endDate,
-      // startDate: '2019-11-28',
-      // endDate: '2019-11-30',
       email: this.userService.userEmail,
       budgetId: this.itineraryObj.budget,
       destinations: [],
       active: true,
       public: this.itineraryObj.info.visiblity === 'Public' ? true : false,
-      pictures: Array.from(this.itineraryObj.photos)
+      pictures: Array.from(this.itineraryObj.photos),
+      visibilityKey: `e${Date.now().toString()}x`
     };
 
     this.itineraryObj.destinations.forEach((destination: Destinations) => {
@@ -151,8 +149,6 @@ export class ItineraryService {
       };
       payload.destinations.push(dest);
     });
-
-    console.log('***************** this is the stuff I am submitting:', payload);
 
     return this.httpClient.post(`http://travelapp-env-1.ey2unjuyh7.us-east-1.elasticbeanstalk.com/itinerary/createItinerary`, payload);
   }
@@ -208,6 +204,11 @@ export class ItineraryService {
   getUserItineraries(userEmail: string): Observable<any> {
     // tslint:disable-next-line: max-line-length
     return this.httpClient.get(`http://travelapp-env-1.ey2unjuyh7.us-east-1.elasticbeanstalk.com/itinerary/getItineraryByEmail/${userEmail}`);
+  }
+
+  getAllItineraries(userEmail: string): Observable<any> {
+    // tslint:disable-next-line: max-line-length
+    return this.httpClient.get(`http://travelapp-env-1.ey2unjuyh7.us-east-1.elasticbeanstalk.com/itinerary/getAllItineraries`);
   }
 
 

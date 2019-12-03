@@ -71,8 +71,8 @@ export class AuthService {
     checkAuth$.subscribe((response: { [key: string]: any } | boolean) => {
       // If authenticated, response will be user object
       // If not authenticated, response will be 'false'
-      console.log(response);
       this.userService.userEmail = response['email'];
+      this.userService.setUserEmail(this.userService.userEmail);
       this.loggedIn = !!response;
     });
   }

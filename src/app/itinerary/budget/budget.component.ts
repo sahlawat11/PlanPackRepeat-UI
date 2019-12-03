@@ -41,12 +41,13 @@ export class BudgetComponent implements OnInit, OnDestroy {
   createItinerary() {
     this.subscriptions.add(this.itineraryService.saveItinerary().subscribe(
       (itineraryData) => {
-        console.log('this is it.........:', itineraryData);
         this.alertService.success(`Itinerary ${this.itineraryObj.info.name} successfully created!`);
+        delete this.itineraryService.itineraryObj;
         this.router.navigateByUrl(`/itinerary/${itineraryData.id}`);
       },
       error => {
         console.log('this is the error for post itinerary:', error);
+        this.alertService.error('Sorry your itinerary could not be created. Please try again.');
       }
     ));
   }
@@ -63,7 +64,6 @@ export class BudgetComponent implements OnInit, OnDestroy {
 }
 
 addPicturesSource(uploadedFilesSource: Array<string>) {
-  console.log('***************', uploadedFilesSource);
   uploadedFilesSource.forEach((fileSource: string) => {
     if (typeof this.itineraryObj.photos !== 'undefined') {
       this.itineraryObj.photos.add(fileSource);

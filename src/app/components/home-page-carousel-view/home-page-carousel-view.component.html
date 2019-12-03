@@ -9,32 +9,45 @@
   </div>
 
   <div class="row">
-      <ul *ngIf="pager.pages && pager.pages.length" class="pagination pull-right">
-          <li [ngClass]="{disabled:pager.currentPage === 1}">
-              <a (click)="setPage(1)">First</a>
-          </li>
-          <li [ngClass]="{disabled:pager.currentPage === 1}">
-              <a (click)="setPage(pager.currentPage - 1)">Previous</a>
-          </li>
-          <li *ngFor="let page of pager.pages" [ngClass]="{active:pager.currentPage === page}">
-              <a (click)="setPage(page)">{{page}}</a>
-          </li>
-          <li [ngClass]="{disabled:pager.currentPage === pager.totalPages}">
-              <a (click)="setPage(pager.currentPage + 1)">Next</a>
-          </li>
-          <li [ngClass]="{disabled:pager.currentPage === pager.totalPages}">
-              <a (click)="setPage(pager.totalPages)">Last</a>
-          </li>
-      </ul>
+
+    <ul class="pagination pull-left">
+        <li [ngClass]="{active: activeTab === 'All'}">
+            <a class="public-tab" (click)="getAllItineraries()">All Itineraries</a>
+        </li>
+        <li [ngClass]="{active: activeTab === 'My'}">
+            <a class="private-tab" (click)="getMyItineraries()">My Itineraries</a>
+        </li>
+    </ul>
+
+
+    <ul *ngIf="pager.pages && pager.pages.length" class="pagination pull-right">
+        <li [ngClass]="{disabled:pager.currentPage === 1}">
+            <a (click)="setPage(1)">First</a>
+        </li>
+        <li [ngClass]="{disabled:pager.currentPage === 1}">
+            <a (click)="setPage(pager.currentPage - 1)">Previous</a>
+        </li>
+        <li *ngFor="let page of pager.pages" [ngClass]="{active:pager.currentPage === page}">
+            <a (click)="setPage(page)">{{page}}</a>
+        </li>
+        <li [ngClass]="{disabled:pager.currentPage === pager.totalPages}">
+            <a (click)="setPage(pager.currentPage + 1)">Next</a>
+        </li>
+        <li [ngClass]="{disabled:pager.currentPage === pager.totalPages}">
+            <a (click)="setPage(pager.totalPages)">Last</a>
+        </li>
+    </ul>
   </div>
- <div class="row">
+ <div class="row" *ngIf="pagedItems?.length > 0">
     <div *ngFor="let item of pagedItems; let i = index"  class="col-sm-4" style="height:50%">
-        <div [ngClass]="{'itinerary-container': !item.itineraryId}"  [attr.id]="'myCarousel'+i" class="carousel slide" data-pause="true">
+        <ng-container *ngIf="item">
+        <div [ngClass]="{'itinerary-container': !item?.itineraryId}"  [attr.id]="'myCarousel'+i" class="carousel slide" data-pause="true">
             <ol class="carousel-indicators">
                 <li *ngFor="let picture of item.pictures; let j = index" [attr.data-target]= "'myCarousel'+ i" [attr.data-slide-to]="j" ></li>
             </ol>
             <div class="carousel-inner" role="listbox">
                 <div  *ngFor="let picture of item.pictures; let j = index" [ngClass]="j == 0 ? 'item active': 'item'" style="height:auto">
+                <a (click)="goToItineraryDetails(item.itineraryId)" class='btn btn-success' [ngClass]="{'public': item.public, 'private': !item.public}" style="width:100%">{{item.itineraryName}}</a>
                     <img [attr.src]="picture" [attr.alt]="" style="width:100%; height:350px">
                     <!-- <div class="carousel-caption" style="align:bottom">
                         {{destination.destinationName}}
@@ -48,9 +61,10 @@
                     <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
                     <span class="sr-only">Next</span>
                 </a>
-                <a (click)="goToItineraryDetails(item.itineraryId)" class='btn btn-success' style="width:100%"><ng-container *ngIf="item.tripDuration">{{item.tripDuration}} days &nbsp;&nbsp;|&nbsp;&nbsp; </ng-container> {{item.itineraryName}} &nbsp;&nbsp;|&nbsp;&nbsp; <i class="fa fa-heart" aria-hidden="true" ></i> {{item.likes || 0}}</a>
+                <a (click)="goToItineraryDetails(item.itineraryId)" class='btn btn-success' [ngClass]="{'public': item.public, 'private': !item.public}" style="width:100%"><ng-container *ngIf="item.tripDuration">{{item.tripDuration}} days &nbsp;&nbsp;|&nbsp;&nbsp; </ng-container> <i class="fa fa-heart" [ngClass]="{'public': item.public, 'private': !item.public}" aria-hidden="true" ></i> {{item.likes || 0}} &nbsp;&nbsp; | &nbsp;&nbsp;${{item.budgetId}}</a>
             </div>
         </div>
+    </ng-container>
         <br/>
     </div>
 </div>

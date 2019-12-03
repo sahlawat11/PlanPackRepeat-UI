@@ -23,7 +23,6 @@ export class HomePageCarouselViewComponent implements OnInit {
   userItineraries: Array<any> = [];
   activeTab: 'My' | 'All' = 'My'
   allitineraries: Itinerary[] = [];
-  // uiUserItinerarues: Array<any> = [];
 
   constructor(
     private carouselService: CarouselViewService,
@@ -96,18 +95,17 @@ export class HomePageCarouselViewComponent implements OnInit {
       );
   }
 
-
   getAllUsersItineraries() {
     this.loadingService.enableLoadingMask();
     this.itineraryService
       .getAllItineraries(this.userService.userEmail)
       .subscribe(
         (data: any) => {
-          console.log('THESE ARE ALL ITINERARIES:', data);
           this.parseRawItineraryModelToUIModel(data);
-          this.pagedItems = this.userItineraries.concat(this.pagedItems);
-          // let tempPagedItems = this.pagedItems.filter(item => item.public);
-          // this.pagedItems = tempPagedItems;
+          let allitsTest = _.filter(this.userItineraries, (itin: any) => {
+            return itin.public;
+          });
+          this.pagedItems = allitsTest;
           this.loadingService.disableLoadingMask();
           this.alertService.success('Successfully loaded all itineraries!');
         },
@@ -125,7 +123,6 @@ export class HomePageCarouselViewComponent implements OnInit {
 
   setPage(page: number) {
     this.pager = this.pagerService.getPager(this.allitineraries.length, page);
-    // this.pagedItems = this.allitineraries;
   }
 
   parseRawItineraryModelToUIModel(userItineraries: Array<any>) {

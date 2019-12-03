@@ -79,10 +79,8 @@ export class ItineraryService {
               destination.source &&
               destination.streetAddress !== '' &&
               destination.time !== '') {
-                // debugger;
                 isValid = true;
               } else {
-                // debugger;
                 isValid = false;
                 break;
               }
@@ -92,7 +90,7 @@ export class ItineraryService {
       }
 
       if (option.step === 'budget' && this.itineraryObj.budget) {
-        if (this.itineraryObj.budget > 0 && this.itineraryObj.photos && this.itineraryObj.photos.size > 0) {
+        if (this.itineraryObj.budget > 0) {
           option.stepCompleted = true;
           option.stepReady = true;
         }

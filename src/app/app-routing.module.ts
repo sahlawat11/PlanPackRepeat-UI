@@ -14,23 +14,16 @@ const routes: Routes = [
   {
     path: 'profile',
     component: ProfileComponent,
-    canActivate: [AuthGuard]
+    // canActivate: [AuthGuard]
   },
   {
     path: 'dashboard',
     component: HomeComponent,
-    canActivate: [AuthGuard]
+    // canActivate: [AuthGuard]
   },
   { path: 'itinerary',
-    // children: [
-    //   { path: '', loadChildren: './itinerary/itinerary.module#ItineraryModule' }
-    // ]
     loadChildren: () => import('./itinerary/itinerary.module').then(m => m.ItineraryModule)
   },
-  // {
-  //   path: 'create-itinerary',
-  //   component: GoogleMapsComponent
-  // },
   {
     path: 'login',
     component: LoginComponent
@@ -41,9 +34,6 @@ const routes: Routes = [
     pathMatch: 'full'
   },
   { path: 'create-itinerary',
-    // children: [
-    //   { path: '', loadChildren: './itinerary/itinerary.module#ItineraryModule' }
-    // ]
     loadChildren: () => import('./itinerary/itinerary.module').then(m => m.ItineraryModule)
   },
 

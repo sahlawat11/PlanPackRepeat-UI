@@ -6116,6 +6116,13 @@ body #myCarousel .slider_btn .btn {
 body #myCarousel .carousel-inner {
 	height: 600px;
 }
+
+@media screen and (max-width: 375px) {
+  body #myCarousel .carousel-inner {
+    height: 450px;
+  }
+}
+
 body #myCarousel .item {
 	background-position: 50% 50%;
 	background-repeat: no-repeat;
@@ -6207,23 +6214,25 @@ body #myCarousel .carousel-caption .btn {
 	padding: 12px 30px;
 }
 }
+
 @media screen and (max-width: 380px) {
-body #myCarousel .carousel-caption .carousel-caption {
-	top: 12%;
-}
-body #myCarousel .carousel-caption h1.banner_heading {
-	font-size: 26px;
-	font-weight: bolder;
-	margin-bottom: 20px;
-}
-body #myCarousel .carousel-caption p.banner_txt {
-	font-size: 16px;
-	line-height: 26px;
-}
-body #myCarousel .carousel-caption .btn {
-	padding: 12px 30px;
-	margin: 5px 5px;
-}
+  body #myCarousel .carousel-caption .carousel-caption {
+    top: 12%;
+  }
+
+  body #myCarousel .carousel-caption h1.banner_heading {
+    margin-bottom: 20px;
+  }
+
+  body #myCarousel .carousel-caption p.banner_txt {
+    font-size: 16px;
+    line-height: 26px;
+  }
+
+  body #myCarousel .carousel-caption .btn {
+    padding: 12px 30px;
+    margin: 5px 5px;
+  }
 }
 @keyframes slide-up {
 from {

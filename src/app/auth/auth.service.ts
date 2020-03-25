@@ -32,7 +32,12 @@ export class AuthService {
   // from: Convert that resulting promise into an observable
   isAuthenticated$ = this.auth0Client$.pipe(
     concatMap((client: Auth0Client) => from(client.isAuthenticated())),
-    tap(res => this.loggedIn = res)
+    tap(res => {
+      // debugger;
+      console.log('cookie.....:', document.cookie);
+      // return this.loggedIn = document.cookie.includes('auth0.is.authenticated=true');
+      return this.loggedIn = res
+    })
   );
   handleRedirectCallback$ = this.auth0Client$.pipe(
     concatMap((client: Auth0Client) => from(client.handleRedirectCallback()))
@@ -43,7 +48,13 @@ export class AuthService {
   // Create a local property for login status
   loggedIn: boolean = null;
 
-  constructor(private router: Router, private userService: UserService) { }
+  constructor(private router: Router, private userService: UserService) {
+    // debugger;
+    // this.auth0Client$.subscribe((data) => {
+    //   console.log('this is a check for client:', data);
+
+    // });
+  }
 
   // When calling, options can be passed if desired
   // https://auth0.github.io/auth0-spa-js/classes/auth0client.html#getuser

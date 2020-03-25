@@ -9,7 +9,6 @@ import {
 import { Observable } from 'rxjs';
 import { AuthService } from './auth.service';
 import { tap } from 'rxjs/operators';
-// import { url } from 'inspector';
 
 @Injectable({
   providedIn: 'root'
@@ -24,9 +23,13 @@ export class AuthGuard implements CanActivate {
   ): Observable<boolean> | Promise<boolean|UrlTree> | boolean {
     return this.auth.isAuthenticated$.pipe(
       tap(loggedIn => {
+        console.log('this is it:', this.auth, this.auth.loggedIn);
+        debugger;
         if (!loggedIn) {
-          this.router.navigateByUrl('/login');
+          // this.router.navigateByUrl('/login');
+          return true;
         }
+        return true;
       })
     );
   }

@@ -19,7 +19,7 @@ const routes: Routes = [
   {
     path: 'dashboard',
     component: HomeComponent,
-    // canActivate: [AuthGuard]
+    canActivate: [AuthGuard]
   },
   { path: 'itinerary',
     loadChildren: () => import('./itinerary/itinerary.module').then(m => m.ItineraryModule)

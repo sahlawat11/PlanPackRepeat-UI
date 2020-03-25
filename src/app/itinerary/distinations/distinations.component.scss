@@ -73,11 +73,11 @@ span {
     margin-bottom: 0;
 }
 .name, .address, .date, .time {
-    height: 30px;
-    width: 250px;
-    font-size: 12px;
     &.long-field {
         width: 500px;
+      @media screen and (min-width: 375px) {
+        width: 100%;
+      }
     }
 }
 
@@ -85,6 +85,10 @@ span {
     width: 140px !important;
     padding: 15px 30px !important;
     margin-bottom: 100px;
+
+  @media screen and (max-width: 375px) {
+    margin-bottom: 30px;
+  }
 }
 
 .fa-trash {

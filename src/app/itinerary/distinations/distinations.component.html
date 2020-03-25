@@ -24,26 +24,29 @@
                         </span></div>
                     <br />
                     <div class="form-group">
-                        <label>Name <span class="red">*</span>
-                            <input #name type="text" class="form-control name long-field" formControlName="name"
-                                id="nameInput" ([ngModel])="destinationObj.name" (ngModelChange)="updateDestinationMetadata(destinationObj, 'name', name.value)" [value]="destinationObj.name"
-                                placeholder="Enter itinerary name" required>
+                        <label for="nameInput">Name <span class="red">*</span>
+
                         </label>
+                      <input #name type="text" class="form-control name long-field" formControlName="name"
+                             id="nameInput" ([ngModel])="destinationObj.name" (ngModelChange)="updateDestinationMetadata(destinationObj, 'name', name.value)" [value]="destinationObj.name"
+                             placeholder="Enter itinerary name" required>
                     </div>
                     <div class="form-group">
-                        <label>Street Address <span class="red">*</span>
-                            <input #streetAddress type="text" class="form-control address long-field"
-                                formControlName="streetAddress" id="startDateInput"
-                                [value]="destinationObj.streetAddress" ([ngModel])="destinationObj.streetAddress" (ngModelChange)="updateDestinationMetadata(destinationObj, 'streetAddress', streetAddress.value)"
-                                placeholder="Address" required>
+                        <label for="startDateInput">Street Address <span class="red">*</span>
+
                         </label>
+                      <input #streetAddress type="text" class="form-control address long-field"
+                             formControlName="streetAddress" id="startDateInput"
+                             [value]="destinationObj.streetAddress" ([ngModel])="destinationObj.streetAddress" (ngModelChange)="updateDestinationMetadata(destinationObj, 'streetAddress', streetAddress.value)"
+                             placeholder="Address" required>
                     </div>
 
                     <div class="form-group">
-                        <label>Date <span class="red">*</span>
-                            <input type="date" #dateFeild class="form-control date" formControlName="date" id="endDateInput"
-                                [ngModel]="destinationObj.date" (ngModelChange)="updateDestinationMetadata(destinationObj, 'date', dateFeild.value)" required>
+                        <label for="endDateInput">Date <span class="red">*</span>
+
                         </label>
+                      <input type="date" #dateFeild class="form-control date" formControlName="date" id="endDateInput"
+                             [ngModel]="destinationObj.date" (ngModelChange)="updateDestinationMetadata(destinationObj, 'date', dateFeild.value)" required>
                     </div>
 
                     <div class="form-group">

@@ -53,6 +53,11 @@
         position: relative;
         top: 8px;
         margin: 0;
+
+        @media screen and (max-width: 375px) {
+          width: 80px;
+        }
+
         &.copy, &.graphics, &.requestType {
           width: 224px;
         }
@@ -77,6 +82,10 @@
         }
         label {
           width: 100%;
+
+          @media screen and (max-width: 375px) {
+            display: none;
+          }
         }
         label>button {
           &:hover {
@@ -200,4 +209,3 @@
       }
     }
   }
-   

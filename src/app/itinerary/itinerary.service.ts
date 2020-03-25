@@ -129,7 +129,7 @@ export class ItineraryService {
       destinations: [],
       active: true,
       public: this.itineraryObj.info.visiblity === 'Public' ? true : false,
-      pictures: Array.from(this.itineraryObj.photos),
+      pictures: this.itineraryObj.photos ? Array.from(this.itineraryObj.photos) : [],
       visibilityKey: `e${Date.now().toString()}x`
     };
 

@@ -26,15 +26,23 @@
     </div>
   </div>
 
-  <div class="navigation-footer">
-    <button (click)="createItinerary()" class="btn btn-primary pull-right next">
-      Create Itinerary
-    </button>
-    <button
-      class="btn btn-primary pull-left"
-      [routerLink]="'/itinerary/create-itinerary/destinations'"
-    >
-      Previous
-    </button>
+  <div class="row">
+    <div class="col-xs-12">
+      <div class="navigation-footer row">
+        <div class="col-md-6 col-xs-12">
+          <button (click)="createItinerary()" class="btn btn-primary next">
+            Create Itinerary
+          </button>
+        </div>
+        <div class="col-md-6 col-xs-12">
+          <button
+            class="btn btn-primary previous-button"
+            [routerLink]="'/itinerary/create-itinerary/destinations'"
+          >
+            Previous
+          </button>
+        </div>
+      </div>
+    </div>
   </div>
 </div>

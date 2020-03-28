@@ -147,7 +147,7 @@ export class ItineraryService {
       payload.destinations.push(dest);
     });
 
-    return this.httpClient.post(`http://travelapp-env-1.ey2unjuyh7.us-east-1.elasticbeanstalk.com/itinerary/createItinerary`, payload);
+    return this.httpClient.post(`https://travelapp-boot.cfapps.io/itinerary/createItinerary`, payload);
   }
 
 
@@ -181,7 +181,7 @@ export class ItineraryService {
   }
 
   getItineraryDetails(itineraryId: string) {
-    return this.httpClient.get(`http://travelapp-env-1.ey2unjuyh7.us-east-1.elasticbeanstalk.com/itinerary/getItineraryById/${itineraryId}`);
+    return this.httpClient.get(`https://travelapp-boot.cfapps.io/itinerary/getItineraryById/${itineraryId}`);
   }
 
   getDateHtmlDate(date): string {
@@ -195,17 +195,17 @@ export class ItineraryService {
   }
 
   updateItinerary(itineraryId: string, payload: any): Observable<any> {
-    return this.httpClient.put(`http://travelapp-env-1.ey2unjuyh7.us-east-1.elasticbeanstalk.com/itinerary/${itineraryId}`, payload);
+    return this.httpClient.put(`https://travelapp-boot.cfapps.io/itinerary/${itineraryId}`, payload);
   }
 
   getUserItineraries(userEmail: string): Observable<any> {
     // tslint:disable-next-line: max-line-length
-    return this.httpClient.get(`http://travelapp-env-1.ey2unjuyh7.us-east-1.elasticbeanstalk.com/itinerary/getItineraryByEmail/${userEmail}`);
+    return this.httpClient.get(`https://travelapp-boot.cfapps.io/itinerary/getItineraryByEmail/${userEmail}`);
   }
 
   getAllItineraries(userEmail: string): Observable<any> {
     // tslint:disable-next-line: max-line-length
-    return this.httpClient.get(`http://travelapp-env-1.ey2unjuyh7.us-east-1.elasticbeanstalk.com/itinerary/getAllItineraries`);
+    return this.httpClient.get(`https://travelapp-boot.cfapps.io/itinerary/getAllItineraries`);
   }
 
 

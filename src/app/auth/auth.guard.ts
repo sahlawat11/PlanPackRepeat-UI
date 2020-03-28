@@ -23,11 +23,9 @@ export class AuthGuard implements CanActivate {
   ): Observable<boolean> | Promise<boolean|UrlTree> | boolean {
     return this.auth.isAuthenticated$.pipe(
       tap(loggedIn => {
-        console.log('this is it:', this.auth, this.auth.loggedIn);
-        debugger;
+        // debugger;
         if (!loggedIn) {
-          // this.router.navigateByUrl('/login');
-          return true;
+          this.router.navigateByUrl('/login');
         }
         return true;
       })

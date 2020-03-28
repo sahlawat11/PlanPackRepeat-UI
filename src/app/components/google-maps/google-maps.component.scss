@@ -1,10 +1,5 @@
-agm-map { 
-    height: 500px; 
-    width: 1200px; /* height is required */ 
+agm-map {
+    height: 500px;
+    width: 100%;
     position: relative;
-    left: 10%;
-}
-
-.agm-map-container {
-    margin-left: -125px;
 }

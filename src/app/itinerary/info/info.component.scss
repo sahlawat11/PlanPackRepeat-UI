@@ -3,7 +3,11 @@ form {
 }
 
 .name {
-    width: 500px;
+  width: 500px;
+
+  @media screen and (min-width: 375px) {
+    width: 100%;
+  }
 }
 
 .submit {
@@ -40,6 +44,10 @@ form {
     width: 140px;
     padding: 15px 30px !important;
     margin-bottom: 100px;
+
+  @media screen and (max-width: 375px) {
+    margin-bottom: 30px;
+  }
 }
 
 .private-radio {

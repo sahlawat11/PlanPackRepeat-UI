@@ -3,6 +3,10 @@
     padding: 10px;
     color: #869aa7;
     font-size: 14px;
+
+  @media screen and (min-width: 375px) {
+    margin-bottom: 25px;
+  }
     .header {
         .title {
             font-size: 18px;

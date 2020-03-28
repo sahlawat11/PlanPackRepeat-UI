@@ -13,11 +13,15 @@
   </div>
 </div> -->
 
-<div class="container uploader-container">
-  <label class="btn btn-default">
-    <input type="file" (change)="selectFile($event)" multiple />
-  </label>
+<div class="row">
+  <div class="col-xs-12">
+    <div class="container uploader-container">
+      <label class="btn btn-default"></label>
+      <input type="file" (change)="selectFile($event)" multiple />
+    </div>
+  </div>
 </div>
+
 
 <!-- <div class="upload-btn-wrapper">
   <button class="btn">Upload a file</button>

@@ -21,6 +21,7 @@ export class DetailsComponent implements OnInit, OnDestroy {
   visibilityKey: string;
   visibilityKeyId: string;
   showVisibilityKey = false;
+  itineraryLikes: string[] = [];
   subscriptions = new Subscription();
 
   constructor(private router: Router, private activatedRoute: ActivatedRoute,
@@ -35,6 +36,12 @@ export class DetailsComponent implements OnInit, OnDestroy {
         this.itineraryId = params.id;
         this.visibilityKeyId = params.visibilityKey;
         this.getItineraryDetails();
+        this.itineraryService.getItineraryLikes(this.itineraryId).subscribe(
+          (likeItiUpdateData: any) => {
+            console.log('Itinerary likes:', likeItiUpdateData);
+            this.itineraryLikes = likeItiUpdateData.listOfUsers;
+          }
+        );
       }));
     });
   }
@@ -81,23 +88,30 @@ export class DetailsComponent implements OnInit, OnDestroy {
     this.router.navigateByUrl('itinerary/edit-itinerary/info');
   }
 
-  likeItinerary() {
+  toggleLikeItinerary() {
     if (!this.isLikeRequestPending) {
       this.loadingService.enableLoadingMask();
       this.isLikeRequestPending = true;
-      this.itineraryDetails.likes++;
-      this.itineraryService.updateItinerary(this.itineraryDetails.id, this.itineraryDetails).subscribe(
-        (data) => {
-          console.log('The itinerary has been updated:', data);
-          this.itineraryDetails = data;
-          this.isLikeRequestPending = false;
-          this.loadingService.disableLoadingMask();
-        },
-        (error) => {
-          this.isLikeRequestPending = false;
-          console.error('An error has occurred:', error);
-        }
-      );
+      const isLiked = this.itineraryLikes.includes(this.userEmail);
+      if (isLiked) {
+        /**
+         * unlike code
+         */
+        this.loadingService.disableLoadingMask();
+      } else {
+        this.itineraryService.likeItinerary(this.itineraryDetails.id, this.userEmail).subscribe(
+          likeItiData => {
+            console.log('Successfully liked the itinerary:', likeItiData);
+            this.itineraryService.getItineraryLikes(this.itineraryDetails.id).subscribe(
+              (likeItiUpdateData: any) => {
+                console.log('Itinerary likes:', likeItiUpdateData);
+                this.loadingService.disableLoadingMask();
+                this.itineraryLikes = likeItiUpdateData.listOfUsers;
+              }
+            );
+          }
+        );
+      }
     }
   }
 

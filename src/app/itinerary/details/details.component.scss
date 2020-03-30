@@ -65,8 +65,13 @@
     cursor: pointer;
     margin-top: 5px;
     i {
-        color: red;
         font-size: 15px;
+    }
+    .fa-heart {
+        color: red;
+    }
+    .fa-heart-o {
+        color: black;
     }
     .number {
         margin-left: 5px;

@@ -9,18 +9,33 @@ import { ToastrService } from 'ngx-toastr';
   styleUrls: ['./profile.component.css']
 })
 export class ProfileComponent implements OnInit {
-  profileJson: string = null;
+
+  pageMode = PageMode;
+  pageType = PageMode.EDIT;
 
   constructor(public auth: AuthService, private loadingService: LoadingService, private alerts: ToastrService) { }
 
   ngOnInit() {
+    this.loadingService.enableLoadingMask();
     this.auth.userProfile$.subscribe(
       profile => {
-        this.loadingService.enableLoadingMask();
-        this.alerts.success('Success! Your profile has been loaded!');
+        // this.alerts.success('Success! Your profile has been loaded!');
+        console.log('THIS IS A MESSAGE:', profile);
         this.loadingService.disableLoadingMask();
-        this.profileJson = JSON.stringify(profile, null, 2)
   });
 }
 
+editProfile(): void {
+  console.log('Edit profile has been clicked', this.pageType);
+  this.pageType = this.pageMode.EDIT;
+}
+
+saveProfile(): void {
+  this.alerts.success("Your changes are saved!")
+  console.log('Saved the profile.');
+}
+}
+
+enum PageMode {
+  EDIT, READ
 }

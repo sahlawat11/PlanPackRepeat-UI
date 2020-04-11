@@ -35,8 +35,8 @@
 }
 
 .super-user {
-  font-size: 14px;
-  color: red;
+  font-size: 16px;
+  color: #777777 !important;
 }
 
 a {
@@ -85,12 +85,16 @@ img:hover {
   opacity: 1;
 }
 
+.modal {
+  margin-top: 216px;
+}
+
 .emoticon-container {
   text-align: center;
   margin-bottom: 20px;
   font-size: 75px;
 }
-.fa-smile-o {
+.fa-smile-o, .fa-user {
   color: #777777 !important;
 }
 
@@ -101,10 +105,8 @@ a {
   color: #4285F4;
 } */
 
-
-.super-user {
-  color: #777777 !important;
-  font-size: 30px;
+.helper-text {
+  text-align: center;
 }
 
 #fName, #lName, #email, #phone {
@@ -114,6 +116,26 @@ a {
 
 .edit-form {
   margin-top: 50px;
+}
+
+.modal-footer {
+  text-align: center;
+}
+
+.btn-custom {
+  width: 100px;
+  height: 35px;
+}
+
+.btn-primary {
+  padding: 10px 30px !important;
+}
+
+.btn-success {
+  background-color: #5cb85c !important;
+  font-size: 16px;
+  border: none;
+  padding: 8px 25px;
 }
 
 textarea {

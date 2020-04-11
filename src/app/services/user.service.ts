@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, ReplaySubject } from 'rxjs';
-import { NewUser } from '../models/new-user';
+import { User } from '../models/new-user';
 
 @Injectable({
   providedIn: 'root'
@@ -22,7 +22,12 @@ export class UserService {
 
   createUser(userInfo: NewUser) {
     console.log('this is the user info:', userInfo);
-    return this.authHttp.post(`https://travelapp-env-1.ey2unjuyh7.us-east-1.elasticbeanstalk.com/users/createuser`, userInfo);
+    return this.authHttp.post(`https://travelapp-boot.cfapps.io/users/createuser`, userInfo);
+  }
+
+  updateUser(userInfo: User) {
+    console.log('Updating:', userInfo);
+    return this.authHttp.put(`https://travelapp-boot.cfapps.io/users/${userInfo.id}`, userInfo);
   }
 
   setUserEmail(userEmail: string) {

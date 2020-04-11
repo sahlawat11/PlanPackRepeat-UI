@@ -6,6 +6,8 @@ export interface User {
     mobileNumber?: string;
     profileImageUrl?: string;
     id?: string;
+    favtDest?: string;
+    smdetails?: []
 
     // constructor(firstName: string, lastName: string, email: string) {
     //     this.firstName = firstName;

@@ -17,10 +17,10 @@ export class UserService {
 
   getUserInfo(email: string): Observable<any> {
       this.userEmail = email;
-      return this.authHttp.get(`https://travelapp-env-1.ey2unjuyh7.us-east-1.elasticbeanstalk.com/users/getUserByEmail/${email}`);
+      return this.authHttp.get(`https://travelapp-boot.cfapps.io/users/getUserByEmail/${email}`);
   }
 
-  createUser(userInfo: NewUser) {
+  createUser(userInfo: User) {
     console.log('this is the user info:', userInfo);
     return this.authHttp.post(`https://travelapp-boot.cfapps.io/users/createuser`, userInfo);
   }

@@ -19,7 +19,7 @@ export class CarouselViewService {
         console.log(jsonString)
         return of(jsonString);
       } else {
-        return this.authHttp.get(`http://travelapp-env-1.ey2unjuyh7.us-east-1.elasticbeanstalk.com/itinerary/getItineraryByEmail/saransh%40gmail.com`);
+        return this.authHttp.get(`https://travelapp-boot.cfapps.io/users/getUserByEmail/saransh%40gmail.com`);
       }
 
   }

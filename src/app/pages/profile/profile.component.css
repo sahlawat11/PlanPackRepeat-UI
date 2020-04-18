@@ -15,7 +15,7 @@
   margin-top: 50px;
   padding: 50px;
 }
-/* 
+/*
 .card:hover {
   opacity: 0.2;
 
@@ -53,9 +53,14 @@ img {
   height: 150px;
   width: 150px;
   cursor: pointer;
+  margin-left: 7%;
 }
 img:hover {
   opacity: 0.5;
+}
+
+.input-upload {
+  display: none;
 }
 
 .about-me {

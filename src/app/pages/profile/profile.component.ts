@@ -40,9 +40,12 @@ export class ProfileComponent implements OnInit, AfterViewInit {
 }
 
 ngAfterViewInit() {
-  if (!this.isNewUser) {
+  /**
+   * this should only be triggered if the user is a new user
+   */
+  // if (this.isNewUser) {
     this.alerts.info("Welcome! To continue, please complete your profile.");
-  }
+  // }
 }
 
 initUserProfile(): void {

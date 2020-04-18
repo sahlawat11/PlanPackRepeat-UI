@@ -7,10 +7,19 @@
       </div>
     </div>
 
-    <img
+
+    <app-uploader [renderParentContent]="true">
+      <img
       [src]="profile.picture"
+      (click)="fileUploader.click()"
       class="rounded-circle img-fluid profile-picture mb-3 mb-md-0"
     />
+    <input #fileUploader class="input-upload" type="file" />
+    </app-uploader>
+  <!-- <img
+      [src]="profile.picture"
+      class="rounded-circle img-fluid profile-picture mb-3 mb-md-0"
+    /> -->
     <!-- <h1>{{profile.name}}</h1> -->
 
     <ng-container *ngIf="pageType === pageMode.READ && !isNewUser; else editProfileContent">

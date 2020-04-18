@@ -4,32 +4,35 @@ import { MapsAPILoader, MouseEvent, PolylineManager, GoogleMapsAPIWrapper } from
 import { LoadingService } from '../../shared/loading/loading.service';
 import { ItineraryService } from '../../itinerary/itinerary.service';
 import { Observable, Subject, ReplaySubject } from 'rxjs';
-import { Destinations } from '../../models/itinerary';
 
 @Component({
   selector: 'app-google-maps',
   templateUrl: './google-maps.component.html',
   styleUrls: ['./google-maps.component.scss'],
-  providers: [PolylineManager, GoogleMapsAPIWrapper]
+  providers: [PolylineManager, GoogleMapsAPIWrapper],
 })
 export class GoogleMapsComponent implements OnInit {
-
   selectedLocations = [];
+  selectedMapCoordinates = [];
 
-  title: string = 'AGM project';
+  title = 'AGM project';
   latitude: number;
   longitude: number;
   zoom: number;
   address: string;
   mapLoaded: boolean;
-  destinationCreationCounter = 0;
-  private geoCoder;
+  private geoCoder: google.maps.Geocoder;
 
-  @ViewChild('search', {static: false}) searchElementRef: ElementRef;
+  @ViewChild('search', { static: false }) searchElementRef: ElementRef;
   @Input() dialogRef: ReplaySubject<any>;
 
-  constructor(private mapsAPILoader: MapsAPILoader, polylineManager: PolylineManager,
-    private ngZone: NgZone, private loadingService: LoadingService, private itineraryService: ItineraryService) { }
+  constructor(
+    private mapsAPILoader: MapsAPILoader,
+    polylineManager: PolylineManager,
+    private ngZone: NgZone,
+    private loadingService: LoadingService,
+    private itineraryService: ItineraryService
+  ) {}
 
   ngOnInit() {
     this.initOnSaveEventSubscription();
@@ -37,39 +40,28 @@ export class GoogleMapsComponent implements OnInit {
   }
 
   initOnSaveEventSubscription(): void {
-    this.itineraryService.onSaveMapsLocationsStream.subscribe((data: boolean) => {
-      if (!!data) {
-        this.loadingService.enableLoadingMask('Saving');
-        console.log('The itinerary has been saved, fetching street address and pix now.', data);
-        if (this.selectedLocations.length > 0) {
-          for (const location of this.selectedLocations) {
-            this.destinationCreationCounter++;
-            this.getAddressFromCoordinates(location.lat, location.lng).subscribe((data: string | null) => {
-              this.destinationCreationCounter--;
-              const streetAddress = data;
-              this.itineraryService.savedDestinations.push(
-                { latitude: location.lat, longitude: location.lng,
-                  streetAddress: streetAddress, source: 'maps', name: '', date: '', time: ''}
-              );
-              console.log('DESTINATION COUNTER.............:', this.destinationCreationCounter);
-              if (this.destinationCreationCounter === 0) {  // last location in the array
-                this.loadingService.disableLoadingMask();
-                this.dialogRef.next(false);
-              }
-              });
+    this.itineraryService.onSaveMapsLocationsStream.subscribe(
+      (data: boolean) => {
+        if (!!data) {
+          this.loadingService.enableLoadingMask('Saving');
+          console.log(
+            'The itinerary has been saved, fetching street address and pix now.',
+            data
+          );
+          if (this.selectedLocations.length > 0) {
+            this.itineraryService.savedDestinations = this.selectedLocations;
           }
-        } else {
+
           this.loadingService.disableLoadingMask();
           this.dialogRef.next(false);
         }
-      }
       },
       (error: any) => {
         console.log('Error occurred on save event.', error);
         this.loadingService.disableLoadingMask();
-    });
+      }
+    );
   }
-
 
   loadGoogleMaps(): void {
     this.loadingService.enableLoadingMask('Loading Google Maps');
@@ -77,9 +69,12 @@ export class GoogleMapsComponent implements OnInit {
       this.setCurrentLocation();
       this.geoCoder = new google.maps.Geocoder();
 
-      const autocomplete = new google.maps.places.Autocomplete(this.searchElementRef.nativeElement, {
-        types: ['address']
-      });
+      const autocomplete = new google.maps.places.Autocomplete(
+        this.searchElementRef.nativeElement,
+        {
+          types: ['address'],
+        }
+      );
       autocomplete.addListener('place_changed', () => {
         this.ngZone.run(() => {
           console.log('this is running right now');
@@ -99,8 +94,8 @@ export class GoogleMapsComponent implements OnInit {
     });
   }
 
-   // Get Current Location Coordinates
-   private setCurrentLocation() {
+  // Get Current Location Coordinates
+  private setCurrentLocation() {
     if ('geolocation' in navigator) {
       navigator.geolocation.getCurrentPosition((position) => {
         this.latitude = position.coords.latitude;
@@ -118,37 +113,44 @@ export class GoogleMapsComponent implements OnInit {
     this.getAddress(this.latitude, this.longitude);
   }
 
-  getAddress(latitude, longitude) {
-    this.geoCoder.geocode({ 'location': { lat: latitude, lng: longitude } }, (results, status) => {
-      if (status === 'OK') {
-        if (results[0]) {
-          this.zoom = 12;
-          this.address = results[0].formatted_address;
-          this.loadingService.disableLoadingMask();
+  getAddress(latitude: number, longitude: number) {
+    this.geoCoder.geocode(
+      { location: { lat: latitude, lng: longitude } },
+      (results, status) => {
+        if (status === google.maps.GeocoderStatus.OK) {
+          if (results[0]) {
+            this.zoom = 12;
+            this.address = results[0].formatted_address;
+            this.loadingService.disableLoadingMask();
+          } else {
+            console.error('No results found');
+            this.loadingService.disableLoadingMask();
+          }
         } else {
-          console.error('No results found');
+          console.error('Geocoder failed due to: ' + status);
           this.loadingService.disableLoadingMask();
         }
-      } else {
-        console.error('Geocoder failed due to: ' + status);
-        this.loadingService.disableLoadingMask();
       }
-
-    });
+    );
   }
 
-  getAddressFromCoordinates(latitude, longitude): Observable<any> {
+  getAddressFromCoordinates(
+    latitude: number,
+    longitude: number
+  ): Observable<any> {
     const streetAddressSubject = new Subject<any>();
-    this.geoCoder.geocode({ 'location': { lat: latitude, lng: longitude } }, (results, status) => {
-      if (status === 'OK') {
+    const location = new google.maps.LatLng(latitude, longitude);
+    this.geoCoder.geocode({ location }, (results, status) => {
+        if (status === google.maps.GeocoderStatus.OK) {
           const address = this.getStreetAddress(results);
           streetAddressSubject.next(address);
           return address;
-      } else {
-        console.error('Geocoder failed due to: ' + status);
-        streetAddressSubject.next(null);
+        } else {
+          console.error('Geocoder failed due to: ' + status);
+          streetAddressSubject.next(null);
+        }
       }
-    });
+    );
     return streetAddressSubject.asObservable();
   }
 
@@ -157,7 +159,7 @@ export class GoogleMapsComponent implements OnInit {
     let locationStreetAddress: string;
     if (locationResults.length > 0) {
       for (const location of locationResults) {
-        if (location.types.indexOf("street_address") > -1) {
+        if (location.types.indexOf('street_address') > -1) {
           locationStreetAddress = location.formatted_address;
         }
       }
@@ -166,9 +168,27 @@ export class GoogleMapsComponent implements OnInit {
   }
 
   selectLocation(event: any) {
-    this.selectedLocations.push(
-      { lat: event.coords.lat, lng: event.coords.lng }
-    );
+    let currentAddress = {};
+    this.selectedMapCoordinates.push({
+      latitude: event.coords.lat,
+      longitude: event.coords.lng,
+    });
+    this.getAddressFromCoordinates(
+      event.coords.lat,
+      event.coords.lng
+    ).subscribe((response: string | null) => {
+      const streetAddress = response;
+      currentAddress = {
+        latitude: event.coords.lat,
+        longitude: event.coords.lng,
+        streetAddress,
+        source: 'maps',
+        name: '',
+        date: '',
+        time: '',
+      };
+      this.selectedLocations.push(currentAddress);
+    });
   }
 
   removeLocation(location: any) {
@@ -181,17 +201,18 @@ export class GoogleMapsComponent implements OnInit {
   get savedDestinations() {
     return this.itineraryService.savedDestinations;
   }
- 
 }
 
 
 
-// use the Complex Ploylines: https://developers-dot-devsite-v2-prod.appspot.com/maps/documentation/javascript/examples/polyline-complex
-  // deconsting a vertix: https://developers-dot-devsite-v2-prod.appspot.com/maps/documentation/javascript/examples/deconste-vertex-menu
-  // use this: https://developers-dot-devsite-v2-prod.appspot.com/maps/documentation/javascript/examples/aerial-simple
+// use the Complex Polylines: https://developers-dot-devsite-v2-prod.appspot.com/maps/documentation/javascript/examples/polyline-complex
+// deconstructing a vertix: https://developers-dot-devsite-v2-prod.appspot.com/maps/documentation/javascript/examples/deconste-vertex-menu
+// use this: https://developers-dot-devsite-v2-prod.appspot.com/maps/documentation/javascript/examples/aerial-simple
 
-  // Finding the address using lats and logs: https://developers-dot-devsite-v2-prod.appspot.com/maps/documentation/javascript/examples/geocoding-reverse
-  // if someone wants to check the directions: https://developers-dot-devsite-v2-prod.appspot.com/maps/documentation/javascript/examples/directions-panel
-  // draggable directions: https://developers-dot-devsite-v2-prod.appspot.com/maps/documentation/javascript/examples/directions-draggable
-  // toggle street view: https://developers-dot-devsite-v2-prod.appspot.com/maps/documentation/javascript/examples/streetview-overlays
+// tslint:disable-next-line: max-line-length
+// Finding the address using lats and logs: https://developers-dot-devsite-v2-prod.appspot.com/maps/documentation/javascript/examples/geocoding-reverse
+// tslint:disable-next-line: max-line-length
+// if someone wants to check the directions: https://developers-dot-devsite-v2-prod.appspot.com/maps/documentation/javascript/examples/directions-panel
+// draggable directions: https://developers-dot-devsite-v2-prod.appspot.com/maps/documentation/javascript/examples/directions-draggable
+// toggle street view: https://developers-dot-devsite-v2-prod.appspot.com/maps/documentation/javascript/examples/streetview-overlays
 

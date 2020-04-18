@@ -202,6 +202,10 @@ export class ItineraryService {
     return this.httpClient.post(`https://travelapp-boot.cfapps.io/notification/saveUserLiking/${email}/${itineraryId}?email=${email}&itineraryId=${itineraryId}`, {});
   }
 
+  unlikeItinerary(itineraryId: string, email: string) {
+    return this.httpClient.post(`https://travelapp-boot.cfapps.io/notification/saveUserUnLiking/${email}/${itineraryId}?email=${email}&itineraryId=${itineraryId}`, {});
+  }
+
   getItineraryLikes(itineraryId: string) {
     return this.httpClient.get(`https://travelapp-boot.cfapps.io/notification/getUsersLikeCountByItinerary/${itineraryId}`);
   }

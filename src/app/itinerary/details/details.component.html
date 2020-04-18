@@ -13,7 +13,7 @@
             <ng-template #noLikes>
               <i class="fa fa-heart-o" aria-hidden="true"></i>
             </ng-template>
-            <span *ngIf="itineraryDetails?.likes > 0" class="number">{{ itineraryDetails.likes }}</span>
+            <span *ngIf="itineraryLikes.length > 0" class="number">{{ itineraryLikes.length}}</span>
         </div>
 
     </div>

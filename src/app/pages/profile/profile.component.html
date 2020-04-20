@@ -14,8 +14,7 @@
           class="btn btn-success"
           data-toggle="modal"
           data-target="#saveChangesModal"
-          (click)="saveUserProfile($event)"
-          [disabled]="!ngProfileForm?.valid"
+          [disabled]="!isFormValid()"
         >
           Save
         </button>
@@ -35,7 +34,7 @@
     <ng-container *ngIf="userInfo || isNewUser">
       <ng-container
         *ngIf="
-          pageType === pageMode.READ && !isNewUser;
+          pageType === pageMode.READ;
           else editProfileContent
         "
       >
@@ -54,7 +53,7 @@
 
       <ng-template #editProfileContent>
         <div class="edit-form">
-          <form #ngProfileForm>
+          <form #ngProfileForm="ngForm">
             <div class="form-group">
               <label for="fName">First Name:</label>
               <input

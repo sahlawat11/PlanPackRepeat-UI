@@ -21,7 +21,7 @@ export class HomePageCarouselViewComponent implements OnInit {
   pager: any = {};
   pagedItems: any[];
   userItineraries: Array<any> = [];
-  activeTab: 'My' | 'All' = 'My'
+  activeTab: 'My' | 'All' = 'All'
   allitineraries: Itinerary[] = [];
 
   constructor(
@@ -35,8 +35,7 @@ export class HomePageCarouselViewComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    // this.initCarousal();
-    this.getUserItineraries();
+    this.getAllUsersItineraries();
   }
 
   initCarousal() {
@@ -61,7 +60,6 @@ export class HomePageCarouselViewComponent implements OnInit {
             value_list.push(iti);
           });
           this.allitineraries = value_list;
-          console.log(this.allitineraries);
           this.setPage(1);
           this.getUserItineraries();
         },
@@ -77,8 +75,6 @@ export class HomePageCarouselViewComponent implements OnInit {
       .getUserItineraries(this.userService.userEmail)
       .subscribe(
         (data: any) => {
-          console.log('THESE ARE THE USER ITINERARIES:', data);
-          // this.userItineraries.push(data);
           this.parseRawItineraryModelToUIModel(data);
           this.pagedItems = this.userItineraries.concat(this.pagedItems);
           this.loadingService.disableLoadingMask();
@@ -98,7 +94,7 @@ export class HomePageCarouselViewComponent implements OnInit {
   getAllUsersItineraries() {
     this.loadingService.enableLoadingMask();
     this.itineraryService
-      .getAllItineraries(this.userService.userEmail)
+      .getAllItineraries()
       .subscribe(
         (data: any) => {
           this.parseRawItineraryModelToUIModel(data);
@@ -140,14 +136,13 @@ export class HomePageCarouselViewComponent implements OnInit {
       this.userItineraries = this.userItineraries.concat([uiHomePageItinObj]);
     });
     this.userItineraries.sort((a, b) => {
-      return a['likes'] - b['likes']; 
+      return a['likes'] - b['likes'];
     });
     this.userItineraries = this.userItineraries.reverse();
   }
 
 
 getNumberOfDays(date1, date2) {
-  console.log('startd date:', date1, date2);
   const dateObj1 = new Date(date1);
   const dateObj2 = new Date(date2);
 

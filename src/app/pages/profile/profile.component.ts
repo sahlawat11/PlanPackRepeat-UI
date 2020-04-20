@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, AfterViewInit, ElementRef } from '@angular/core';
+import { Component, OnInit, AfterViewInit, ElementRef } from '@angular/core';
 import { AuthService } from 'src/app/auth/auth.service';
 import { UserService } from '../../services/user.service';
 import { LoadingService } from '../../shared/loading/loading.service';
@@ -11,8 +11,6 @@ import { User } from 'src/app/models/new-user';
   styleUrls: ['./profile.component.css']
 })
 export class ProfileComponent implements OnInit, AfterViewInit {
-
-  @ViewChild('fName', { static: false }) fName: ElementRef<any>;
 
   userInfo: User;
   pageMode = PageMode;
@@ -46,7 +44,6 @@ ngAfterViewInit() {
    * this should only be triggered if the user is a new user
    */
   if (!this.auth.checkIfTheUserIsExisting) {
-    this.alerts.info("Welcome! To continue, please complete your profile.");
     this.pageType = this.pageMode.EDIT;
   } else {
     this.pageType = this.pageMode.READ;
@@ -60,12 +57,14 @@ initUserProfile(): void {
     console.log('this is the user info:', data);
     this.isNewUser = false;
     this.userInfo = data;
+    this.pageType = this.pageMode.READ;
     this.loadingService.disableLoadingMask();
   },
   (error) => {
     console.log('Error:', error);
     if (error.status === 404) {
       this.isNewUser = true;
+      this.alerts.info("Welcome! To continue, please complete your profile.");
       this.pageType = this.pageMode.EDIT;
     } else {
       this.alerts.error('Error: Please try again by refreshing your browser.');
@@ -93,8 +92,7 @@ saveProfile(): void {
 }
 
 completeProfileSetup(isSuperUser: boolean): void {
-  console.log('Completing user setup');
-  if (!this.auth.checkIfTheUserIsExisting) {
+  if (this.auth.checkIfTheUserIsExisting || this.isNewUser) {
     this.profileForm.adminUser = isSuperUser;
     console.log(this.profileForm);
     this.createNewUser();
@@ -120,6 +118,7 @@ createNewUser() {
       this.loadingService.disableLoadingMask();
       this.alerts.success('Changes successfully saved!');
       this.pageType = this.pageMode.READ;
+      this.userInfo = newUserData;
     },
     (error) => {
       this.alerts.error('An error occurred! Try saving again.');
@@ -130,11 +129,6 @@ createNewUser() {
 }
 
 saveUserProfile(event) {
-  if (!this.isFormValid()) {
-    this.alerts.error('Please complete the form.');
-    event.preventDefault();
-    return;
-  }
   const newUser: User =  {
     firstName: this.profileForm.fName,
     lastName: this.profileForm.lName,
@@ -157,21 +151,11 @@ saveUserProfile(event) {
 }
 
 isFormValid(): boolean {
-  for (let key in this.profileForm) {
-    if (this.profileForm.hasOwnProperty(key)) {
-      console.log('****************:', this.profileForm, key);
-      if (typeof this.profileForm[key] === 'string' && (this.profileForm[key] === '' || this.profileForm[key].trim() === '')) {
-        return false;
-      }
-    }
-  }
-  return true;
+  return (this.profileForm.fName.trim() !== '' &&
+          this.profileForm.lName.trim() !== '' &&
+          this.profileForm.bio.trim() !== '' &&
+          this.profileForm.phone.trim() !== '')
 }
-
-// get isNewUser() {
-//   return this.auth.checkIfTheUserIsExisting;
-// }
-
 }
 
 enum PageMode {

@@ -3,7 +3,7 @@
       <div class="section-heading text-center">
           <div class="col-md-12 col-xs-12">
               <h1>Top <span>Itineraries</span></h1>
-              <p class="subheading">We picked the top 6 itineraries for you!</p>
+              <p class="subheading">We picked the top itineraries for you!</p>
           </div>
       </div>
   </div>
@@ -50,9 +50,7 @@
                 <div  *ngFor="let picture of item.pictures; let j = index" [ngClass]="j == 0 ? 'item active': 'item'" style="height:auto">
                 <a (click)="goToItineraryDetails(item.itineraryId)" class='btn btn-success' [ngClass]="{'public': item.public, 'private': !item.public}" style="width:100%">{{item.itineraryName}}</a>
                     <img [attr.src]="picture" [attr.alt]="" style="width:100%; height:350px">
-                    <!-- <div class="carousel-caption" style="align:bottom">
-                        {{destination.destinationName}}
-                    </div> -->
+
                 </div>
                 <a class="left carousel-control" [attr.href]="'#myCarousel'+i" role="button" data-slide="prev">
                     <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>

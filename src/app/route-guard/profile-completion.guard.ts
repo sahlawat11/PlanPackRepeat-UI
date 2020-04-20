@@ -23,40 +23,25 @@ export class ProfileCompletionGuard implements CanActivate {
     state: RouterStateSnapshot
   ): Observable<boolean> | Promise<boolean|UrlTree> | boolean {
     let userEmail: string;
-    // return this.auth.userProfile$.pipe(map(
-    //   userInfo => {
-    //     userEmail = userInfo.email;
-    //     debugger;
-    //     this.userService.getUserInfo(userEmail).pipe(map(
-    //       localUserInfoRef => {
-    //         if (!localUserInfoRef.firstName || !localUserInfoRef.lastName) {
-    //           debugger;
-    //           this.router.navigateByUrl('/profile');
-    //           return false;
-    //         }
-    //         return true;
-    //       }
-    //     ));
-    //   }));
-
+    return true;
     return this.userService.getUserInfo('contact.saransh29@gmail.com').pipe(map(
           localUserInfoRef => {
+            debugger;
             if (!localUserInfoRef.firstName || !localUserInfoRef.lastName) {
-              debugger;
-              this.router.navigateByUrl('/profile');
+              this.navigateToProfilePage()
               return false;
             }
             return true;
+          },
+          error => {
+            debugger;
+            this.navigateToProfilePage()
+            return false;
           }
         ));
-
   }
 
-    // pipe(
-    //   tap(loggedIn => {
-    //     if (!loggedIn) {
-    //       this.router.navigateByUrl('/login');
-    //     }
-    //   })
-    // );
+  private navigateToProfilePage(): void {
+    this.router.navigateByUrl('/profile');
+  }
   }

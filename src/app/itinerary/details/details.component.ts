@@ -94,10 +94,18 @@ export class DetailsComponent implements OnInit, OnDestroy {
       this.isLikeRequestPending = true;
       const isLiked = this.itineraryLikes.includes(this.userEmail);
       if (isLiked) {
-        /**
-         * unlike code
-         */
-        this.loadingService.disableLoadingMask();
+        this.itineraryService.unlikeItinerary(this.itineraryDetails.id, this.userEmail).subscribe(
+          likeItiData => {
+            console.log('Successfully unliked the itinerary:', likeItiData);
+            this.itineraryService.getItineraryLikes(this.itineraryDetails.id).subscribe(
+              (likeItiUpdateData: any) => {
+                console.log('Itinerary likes:', likeItiUpdateData);
+                this.loadingService.disableLoadingMask();
+                this.itineraryLikes = likeItiUpdateData.listOfUsers;
+              }
+            );
+          }
+        );
       } else {
         this.itineraryService.likeItinerary(this.itineraryDetails.id, this.userEmail).subscribe(
           likeItiData => {
@@ -113,6 +121,7 @@ export class DetailsComponent implements OnInit, OnDestroy {
         );
       }
     }
+    this.isLikeRequestPending = false;
   }
 
   ngOnDestroy() {

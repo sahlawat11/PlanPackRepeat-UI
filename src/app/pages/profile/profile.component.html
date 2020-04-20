@@ -2,91 +2,144 @@
   <ng-container *ngIf="auth.userProfile$ | async as profile">
     <div class="col-6 offset-4" id="test">
       <div class="pull-right">
-        <button *ngIf="pageType === pageMode.READ" class="btn btn-primary" (click)="editProfile()">Edit</button>
-        <button *ngIf="pageType === pageMode.EDIT" class="btn btn-success" data-toggle="modal" data-target="#saveChangesModal">Save</button>
+        <button
+          *ngIf="pageType === pageMode.READ"
+          class="btn btn-primary"
+          (click)="editProfile()"
+        >
+          Edit
+        </button>
+        <button
+          *ngIf="pageType === pageMode.EDIT"
+          class="btn btn-success"
+          data-toggle="modal"
+          data-target="#saveChangesModal"
+          (click)="saveUserProfile($event)"
+          [disabled]="!ngProfileForm?.valid"
+        >
+          Save
+        </button>
       </div>
     </div>
-
 
     <app-uploader [renderParentContent]="true">
       <img
-      [src]="profile.picture"
-      (click)="fileUploader.click()"
-      class="rounded-circle img-fluid profile-picture mb-3 mb-md-0"
-    />
-    <input #fileUploader class="input-upload" type="file" />
+        #profileImage
+        [src]="profile.picture"
+        (click)="fileUploader.click()"
+        class="rounded-circle img-fluid profile-picture mb-3 mb-md-0"
+        (error)="profileImage.src = 'assets/default-thumbnail.jpg'"
+      />
+      <input #fileUploader class="input-upload" type="file" />
     </app-uploader>
-  <!-- <img
-      [src]="profile.picture"
-      class="rounded-circle img-fluid profile-picture mb-3 mb-md-0"
-    /> -->
-    <!-- <h1>{{profile.name}}</h1> -->
+    <ng-container *ngIf="userInfo || isNewUser">
+      <ng-container
+        *ngIf="
+          pageType === pageMode.READ && !isNewUser;
+          else editProfileContent
+        "
+      >
+        <h1>{{ userInfo?.firstName }} {{ userInfo?.lastName }}</h1>
 
-    <ng-container *ngIf="pageType === pageMode.READ && !isNewUser; else editProfileContent">
-      <h1>Saransh Ahlawat</h1>
+        <p class="about-me">
+          {{ userInfo?.biography }}
+        </p>
+        <hr />
+        <h4>Contact:</h4>
+        <p *ngIf="userInfo?.mobileNumber">
+          Phone#: {{ userInfo?.mobileNumber }}
+        </p>
+        <p *ngIf="userInfo?.email">Email: {{ userInfo?.email }}</p>
+      </ng-container>
 
-      <p class="about-me">
-        Whole wound wrote at whose to style in. Figure ye innate former do so
-        we. Shutters but sir yourself provided you required his. So neither
-        related he am do believe. Nothing but you hundred had use regular. Fat
-        sportsmen arranging preferred can. Busy paid like is oh. Dinner our ask
-        talent her age hardly. Neglected collected an attention listening do
-        abilities. Greatly cottage thought fortune no mention he. Of mr
-        certainty arranging am smallness by conveying. Him plate you allow built
-        grave. Sigh sang nay sex high yet door game. She dissimilar was
-        favourable unreserved nay expression contrasted saw. Past her find she
-        like bore pain open. Shy lose need eyes son not shot. Jennings removing
-        are his eat dashwood. Middleton as pretended listening he smallness
-        perceived. Now his but two green spoil drift.
-      </p>
+      <ng-template #editProfileContent>
+        <div class="edit-form">
+          <form #ngProfileForm>
+            <div class="form-group">
+              <label for="fName">First Name:</label>
+              <input
+                type="text"
+                class="form-control"
+                id="fName"
+                #fName
+                [(ngModel)]="profileForm.fName"
+                name="fName"
+                required
+              />
+            </div>
+            <div class="form-group">
+              <label for="lName">Last Name:</label>
+              <input
+                type="text"
+                class="form-control"
+                id="lName"
+                [(ngModel)]="profileForm.lName"
+                name="lName"
+                required
+              />
+            </div>
+            <div class="form-group">
+              <label for="email">Email address:</label>
+              <input
+                type="email"
+                class="form-control"
+                id="email"
+                [value]="profile.email"
+                [disabled]="true"
+                [(ngModel)]="profileForm.email"
+                name="email"
+                required
+              />
+            </div>
+            <div class="form-group">
+              <label for="phone">Phone:</label>
+              <input
+                type="tel"
+                class="form-control"
+                id="phone"
+                [(ngModel)]="profileForm.phone"
+                name="phone"
+                required
+              />
+            </div>
+            <div class="form-group">
+              <label for="bio">Biography:</label>
+              <textarea
+                class="form-control"
+                id="bio"
+                [(ngModel)]="profileForm.bio"
+                name="bio"
+                required
+              ></textarea>
+            </div>
+            <div class="checkbox form-group" *ngIf="!isNewUser">
+              <label
+                ><input
+                  type="checkbox"
+                  [(ngModel)]="profileForm.adminUser"
+                  name="adminUser"
+                />
+                <i
+                  ><span class="super-user">*Sign up as a super user</span></i
+                ></label
+              >
+            </div>
+          </form>
+        </div>
+      </ng-template>
     </ng-container>
-
-    <ng-template #editProfileContent>
-      <div class="edit-form">
-      <div class="form-group">
-        <label for="fName">First Name:</label>
-        <input type="text" class="form-control" id="fName" #fName [(ngModel)]="profileForm.fName"/>
-      </div>
-      <div class="form-group">
-        <label for="lName">Last Name:</label>
-        <input type="text" class="form-control" id="lName" [(ngModel)]="profileForm.lName"/>
-      </div>
-      <div class="form-group">
-        <label for="email">Email address:</label>
-        <input
-          type="email"
-          class="form-control"
-          id="email"
-          [value]="profile.email"
-          [disabled]="true"
-          [(ngModel)]="profileForm.email"
-        />
-      </div>
-      <div class="form-group">
-        <label for="phone">Phone:</label>
-        <input type="tel" class="form-control" id="phone" [(ngModel)]="profileForm.phone"/>
-      </div>
-      <div class="form-group">
-        <label for="bio">Biography:</label>
-        <textarea class="form-control" id="bio" [(ngModel)]="profileForm.bio"></textarea>
-      </div>
-      <div class="checkbox">
-        <label
-          ><input type="checkbox" [(ngModel)]="profileForm.superUser"/>
-          <i><span class="super-user">*Sign up as a super user</span></i></label>
-      </div>
-    </div>
-    </ng-template>
   </ng-container>
 </div>
 
 <!-- Modal -->
-<div id="saveChangesModal" class="modal fade" role="dialog">
+<div #saveChangesModal id="saveChangesModal" class="modal fade" role="dialog">
   <div class="modal-dialog">
     <!-- Modal content-->
     <div class="modal-content">
       <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <button type="button" class="close" data-dismiss="modal">
+          &times;
+        </button>
         <h4 class="modal-title">Sign up as a Super User?</h4>
       </div>
       <div class="modal-body">
@@ -94,13 +147,29 @@
           <i class="fa fa-user fa-4" aria-hidden="true"></i>
         </p>
         <p class="helper-text">Thanks for completing your profile! <br /></p>
-        <p class="helper-text">Would you like to sign-up as a Super User to receive latest software updates and participate in UAT testing program?</p>
+        <p class="helper-text">
+          Would you like to sign-up as a Super User to receive latest software
+          updates and participate in UAT testing program?
+        </p>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-success btn-custom" data-dismiss="modal" (click)="completeProfileSetup(true)">Yes</button>
-        <button type="button" class="btn btn-danger btn-custom" data-dismiss="modal" (click)="completeProfileSetup(false)">No</button>
+        <button
+          type="button"
+          class="btn btn-success btn-custom"
+          data-dismiss="modal"
+          (click)="completeProfileSetup(true)"
+        >
+          Yes
+        </button>
+        <button
+          type="button"
+          class="btn btn-danger btn-custom"
+          data-dismiss="modal"
+          (click)="completeProfileSetup(false)"
+        >
+          No
+        </button>
       </div>
     </div>
-
   </div>
 </div>

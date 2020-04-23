@@ -61,7 +61,7 @@
                     <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
                     <span class="sr-only">Next</span>
                 </a>
-                <a (click)="goToItineraryDetails(item.itineraryId)" class='btn btn-success' [ngClass]="{'public': item.public, 'private': !item.public}" style="width:100%"><ng-container *ngIf="item.tripDuration">{{item.tripDuration}} days &nbsp;&nbsp;|&nbsp;&nbsp; </ng-container> <i class="fa fa-heart" [ngClass]="{'public': item.public, 'private': !item.public}" aria-hidden="true" ></i> {{item.likes || 0}} &nbsp;&nbsp; | &nbsp;&nbsp;${{item.budgetId}}</a>
+                <a (click)="goToItineraryDetails(item.itineraryId)" class='btn btn-success' [ngClass]="{'public': item.public, 'private': !item.public}" style="width:100%"><ng-container *ngIf="item.tripDuration">{{item.tripDuration}} days &nbsp;&nbsp;|&nbsp;&nbsp; </ng-container> <i class="fa fa-heart" [ngClass]="{'public': item.public, 'private': !item.public}" aria-hidden="true" ></i> {{item.likeList || 0}} &nbsp;&nbsp; | &nbsp;&nbsp;${{item.budgetId}}</a>
             </div>
         </div>
     </ng-container>

@@ -5,7 +5,7 @@ export const authOCredentials = {
 };
 
 export const s3Credentials = {
-  accessKeyId: `AKIAXIN65FVKEWAZTQV5`, 
-  secretAccessKey: `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`,
-  region: `us-east-1`
+  accessKeyId: `AKIAYVFCNJZXW252HIDU`,
+  secretAccessKey: `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`,
+  region: `us-east-2`
 };

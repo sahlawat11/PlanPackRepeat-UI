@@ -214,7 +214,7 @@ export class ItineraryService {
     return this.httpClient.get(`https://travelapp-boot.cfapps.io/itinerary/getItineraryByEmail/${userEmail}`);
   }
 
-  getAllItineraries(userEmail: string): Observable<any> {
+  getAllItineraries(): Observable<any> {
     // tslint:disable-next-line: max-line-length
     return this.httpClient.get(`https://travelapp-boot.cfapps.io/itinerary/getAllItineraries`);
   }

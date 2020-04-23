@@ -1,4 +1,4 @@
-import { Component, OnInit, Output, EventEmitter } from '@angular/core';
+import { Component, Input, OnInit, Output, EventEmitter } from '@angular/core';
 
 import * as _ from 'lodash';
 
@@ -21,6 +21,7 @@ export class UploaderComponent implements OnInit {
   fileUploadProgress = {};
   numberOfFiles = 0;
   @Output() completedUploadEvent = new EventEmitter<Array<string>>();
+  @Input() renderParentContent: boolean;
 
   constructor(private uploaderService: UploaderService, private alertService: ToastrService, private loadingService: LoadingService) {}
 

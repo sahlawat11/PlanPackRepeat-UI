@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthService } from 'src/app/auth/auth.service';
 import { UserService } from '../../services/user.service';
-import { NewUser } from '../../models/new-user';
+import { User } from '../../models/new-user';
 import { ToastrService } from 'ngx-toastr';
 import { LoadingService } from '../../shared/loading/loading.service';
 
@@ -30,22 +30,7 @@ export class HeroComponent implements OnInit {
               }, (error) => {
                 if (error.status === 404) {
                   console.error('An error occurred while creating the new user:', error);
-                  const newUser: NewUser =  {
-                    firstName: profile.given_name,
-                    lastName: profile.family_name,
-                    email: profile.email
-                  };
-                  this.userService.createUser(newUser).subscribe(
-                    (newUserData: NewUser) => {
-                      this.alerts.success('Welcome to Plan Pack Repeat!');
-                      this.loadingService.disableLoadingMask();
-                    },
-                    (error) => {
-                      this.alerts.error('An error occurred! Please logout and login again.');
-                      console.error('An error occurred while creating the new user:', error);
-                      this.loadingService.disableLoadingMask();
-                    }
-                  );
+
                 }
               }
             );

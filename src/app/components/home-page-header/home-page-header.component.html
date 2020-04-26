@@ -19,7 +19,7 @@
           <li><a [routerLink]="'/dashboard'" [ngClass]="{'disabled': !authService.loggedIn}">Home</a></li>
           <li><a [routerLink]="'/itinerary/create-itinerary/info'" [ngClass]="{'disabled': !authService.loggedIn}">New
             Itinerary</a></li>
-          <!-- <li><a [routerLink]="'/dashboard'" [ngClass]="{'disabled': !authService.loggedIn}">dashboard</a></li> -->
+          <li><a [routerLink]="'/profile'" [ngClass]="{'disabled': !authService.loggedIn}">Profile</a></li>
           <li *ngIf="authService.loggedIn"><a (click)="authService.logout()">Sign out</a></li>
           <li *ngIf="!authService.loggedIn"><a (click)="authService.login()">Sign in</a></li>
         </ul>

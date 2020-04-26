@@ -131,7 +131,11 @@ export class HomePageCarouselViewComponent implements OnInit {
         likes: itinerary.likes,
         tripDuration: this.getNumberOfDays(itinerary.startDate, itinerary.endDate),
         public: itinerary.public,
-        budgetId: itinerary.budgetId
+        budgetId: itinerary.budgetId,
+        likeList: this.checkNull(itinerary.likesDetails)
+        
+
+
       }
       this.userItineraries = this.userItineraries.concat([uiHomePageItinObj]);
     });
@@ -141,6 +145,15 @@ export class HomePageCarouselViewComponent implements OnInit {
     this.userItineraries = this.userItineraries.reverse();
   }
 
+checkNull(likesDetails){
+  if(likesDetails == null || likesDetails.listOfUsers == null){
+    return 0
+  } else {
+    const listOfUsers = likesDetails.listOfUsers
+    return listOfUsers.length
+  }
+
+}
 
 getNumberOfDays(date1, date2) {
   const dateObj1 = new Date(date1);

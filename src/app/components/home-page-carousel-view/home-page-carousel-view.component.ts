@@ -3,19 +3,20 @@ import { PagerService } from './../../services/pager.service';
 import { Itinerary, Destination } from './../../models/carouselmodels';
 import { CarouselViewService } from './../../services/carousel-view.service';
 import { LoadingService } from '../../shared/loading/loading.service';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
 import { UserService } from '../../services/user.service';
 import { ItineraryService } from '../../itinerary/itinerary.service';
 import { ToastrService } from 'ngx-toastr';
 import * as _ from 'lodash';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-home-page-carousel-view',
   templateUrl: './home-page-carousel-view.component.html',
   styleUrls: ['./home-page-carousel-view.component.scss']
 })
-export class HomePageCarouselViewComponent implements OnInit {
+export class HomePageCarouselViewComponent implements OnInit, OnDestroy {
 
   filteredItinerary: Itinerary[] = [];
   pager: any = {};
@@ -23,6 +24,7 @@ export class HomePageCarouselViewComponent implements OnInit {
   userItineraries: Array<any> = [];
   activeTab: 'My' | 'All' = 'All'
   allitineraries: Itinerary[] = [];
+  componentSubscriptions = new Subscription();
 
   constructor(
     private carouselService: CarouselViewService,
@@ -39,7 +41,7 @@ export class HomePageCarouselViewComponent implements OnInit {
   }
 
   initCarousal() {
-    this.carouselService
+    this.componentSubscriptions.add(this.carouselService
       .getItineraryInfoDashboard('saransh@gmail.com', true)
       .subscribe(
         (result: Array<any>) => {
@@ -66,12 +68,12 @@ export class HomePageCarouselViewComponent implements OnInit {
         error => {
           console.log('erroor is ', error);
         }
-      );
+      ));
   }
 
   getUserItineraries() {
     this.loadingService.enableLoadingMask();
-    this.itineraryService
+    this.componentSubscriptions.add(this.itineraryService
       .getUserItineraries(this.userService.userEmail)
       .subscribe(
         (data: any) => {
@@ -88,12 +90,12 @@ export class HomePageCarouselViewComponent implements OnInit {
           this.loadingService.disableLoadingMask();
           this.alertService.error('Sorry, an error occurred. Please refresh and try again.');
         }
-      );
+      ));
   }
 
   getAllUsersItineraries() {
     this.loadingService.enableLoadingMask();
-    this.itineraryService
+    this.componentSubscriptions.add(this.itineraryService
       .getAllItineraries()
       .subscribe(
         (data: any) => {
@@ -113,7 +115,7 @@ export class HomePageCarouselViewComponent implements OnInit {
           this.loadingService.disableLoadingMask();
           this.alertService.error('Sorry, an error occurred. Please refresh and try again.');
         }
-      );
+      ));
   }
 
 
@@ -184,6 +186,10 @@ goToItineraryDetails(id: string) {
   if (id) {
     this.router.navigateByUrl(`/itinerary/${id}`);
   }
+}
+
+ngOnDestroy() {
+  this.componentSubscriptions.unsubscribe();
 }
 
 }

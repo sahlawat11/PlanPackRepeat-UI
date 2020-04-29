@@ -26,6 +26,18 @@
   float: right;
 }
 
+.super-user-label {
+  border: 1px solid #159eee;
+  color: #159eee;
+  width: 90px;
+  margin: auto;
+  font-size: 12px;
+}
+
+.blue {
+  color: #159eee !important;
+}
+
 .title {
   color: grey;
   font-size: 18px;
@@ -100,8 +112,8 @@ img:hover {
   margin-bottom: 20px;
   font-size: 75px;
 }
-.fa-smile-o, .fa-user {
-  color: #777777 !important;
+.fa-smile-o, .fa-user, .fa-floppy-o {
+  color: #777777;
 }
 
 a {

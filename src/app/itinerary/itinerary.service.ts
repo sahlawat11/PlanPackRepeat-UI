@@ -113,13 +113,10 @@ export class ItineraryService {
 
   broadcastUpdates(itineraryData: any): void {
     this.itineraryObj = itineraryData;
-    // debugger;
     this.itinerarySubject.next(itineraryData);
   }
 
   saveItinerary(): Observable<any> {
-    console.log('This is the itinerary object:', this.itineraryObj, this.userService.userEmail);
-    // debugger;
     const payload: BackendItinerary = {
       itineraryName: this.itineraryObj.info.name,
       startDate: this.itineraryObj.info.startDate,
@@ -130,7 +127,7 @@ export class ItineraryService {
       active: true,
       public: this.itineraryObj.info.visiblity === 'Public' ? true : false,
       pictures: this.itineraryObj.photos ? Array.from(this.itineraryObj.photos) : [],
-      visibilityKey: `e${Date.now().toString()}x`
+      visibilityKey: `p${Date.now().toString()}x`
     };
 
     this.itineraryObj.destinations.forEach((destination: Destinations) => {

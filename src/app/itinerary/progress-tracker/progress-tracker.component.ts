@@ -37,7 +37,6 @@ export class ProgressTrackerComponent implements OnInit, OnDestroy {
   }
 
   init(): void {
-    console.log('THIS IS SET.................');
     this.subscriptions.add(this.itineraryService.itineraryStream.subscribe(
       (data: Itinerary) => {
         console.log('These are the updates received: progress tracker', data);

@@ -1,18 +1,20 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
-import { Router, ActivatedRoute } from '@angular/router';
+import { Component, OnInit, OnDestroy } from "@angular/core";
+import { Router, ActivatedRoute } from "@angular/router";
+import { ItineraryService } from "../itinerary.service";
+import { Subscription } from "rxjs";
+import { LoadingService } from "../../shared/loading/loading.service";
+import { UserService } from "../../services/user.service";
+import { cloneDeep } from "lodash";
+import { ToastrService } from "ngx-toastr";
 
-import { ItineraryService } from '../itinerary.service';
-import { Subscription } from 'rxjs';
-import { LoadingService } from '../../shared/loading/loading.service';
-import { UserService } from '../../services/user.service';
+const HOUR_MILLI_SECONDS = 20000;
 
 @Component({
-  selector: 'app-details',
-  templateUrl: './details.component.html',
-  styleUrls: ['./details.component.scss']
+  selector: "app-details",
+  templateUrl: "./details.component.html",
+  styleUrls: ["./details.component.scss"],
 })
 export class DetailsComponent implements OnInit, OnDestroy {
-
   itineraryId: string;
   itineraryDetails: any;
   isLikeRequestPending: boolean;
@@ -24,55 +26,83 @@ export class DetailsComponent implements OnInit, OnDestroy {
   itineraryLikes: string[] = [];
   subscriptions = new Subscription();
 
-  constructor(private router: Router, private activatedRoute: ActivatedRoute,
-    private itineraryService: ItineraryService, private loadingService: LoadingService,
-    private userService: UserService) { }
+  constructor(
+    private alertsService: ToastrService,
+    private activatedRoute: ActivatedRoute,
+    private itineraryService: ItineraryService,
+    private loadingService: LoadingService,
+    private userService: UserService
+  ) {}
 
   ngOnInit() {
     this.loadingService.enableLoadingMask();
-    this.userService.userEmailObservable.subscribe((userEmail: string) => {
-      this.userEmail = userEmail;
-      this.subscriptions.add(this.activatedRoute.params.subscribe((params: any) => {
-        this.itineraryId = params.id;
-        this.visibilityKeyId = params.visibilityKey;
-        this.getItineraryDetails();
-        this.itineraryService.getItineraryLikes(this.itineraryId).subscribe(
-          (likeItiUpdateData: any) => {
-            console.log('Itinerary likes:', likeItiUpdateData);
-            this.itineraryLikes = likeItiUpdateData.listOfUsers;
-          }
+    this.subscriptions.add(
+      this.userService.userEmailObservable.subscribe((userEmail: string) => {
+        this.userEmail = userEmail;
+        this.subscriptions.add(
+          this.activatedRoute.params.subscribe((params: any) => {
+            this.itineraryId = params.id;
+            this.visibilityKeyId = params.visibilityKey;
+            this.getItineraryDetails();
+            this.subscriptions.add(
+              this.itineraryService
+                .getItineraryLikes(this.itineraryId)
+                .subscribe((likeItiUpdateData: any) => {
+                  console.log("Itinerary likes:", likeItiUpdateData);
+                  this.itineraryLikes = likeItiUpdateData.listOfUsers;
+                })
+            );
+          })
         );
-      }));
-    });
+      })
+    );
   }
 
   getItineraryDetails() {
-    this.subscriptions.add(this.itineraryService.getItineraryDetails(this.itineraryId).subscribe(
-      (data: any) => {
-        this.loadingService.disableLoadingMask();
-        if (data.email !== this.userEmail && !data.public) {
-          if (typeof this.visibilityKeyId === 'undefined') {
-            this.errorMessage = `This is a private Itinerary. Please request access from the itinerary owner.`;
-            return;
-          } else {
-            this.itineraryDetails = data;
-            this.visibilityKey = this.itineraryDetails.visibilityKey;
-            if (!this.validateVisibilityKey()) {
-              this.errorMessage = `Incorrect Visibility Key.`;
+    this.subscriptions.add(
+      this.itineraryService
+        .getItineraryDetails(this.itineraryId)
+        .subscribe((data: any) => {
+          this.loadingService.disableLoadingMask();
+          if (data.email !== this.userEmail && !data.public) {
+            if (typeof this.visibilityKeyId === "undefined") {
+              this.errorMessage = `This is a private Itinerary. Please request access from the itinerary owner.`;
+              return;
+            } else {
+              this.itineraryDetails = data;
+              this.visibilityKey = this.itineraryDetails.visibilityKey;
+              if (this.isVisibilityKeyExpired(data.visibilityKey)) {
+                this.errorMessage = `The last Visibility Key for this itinerary has been expired. Please request a new one from the itinerary owner.`;
+                return;
+              } else if (!this.validateVisibilityKey()) {
+                this.errorMessage = `Incorrect Visibility Key.`;
+                return;
+              }
               return;
             }
-            return;
           }
-        }
-        this.itineraryDetails = data;
-        this.visibilityKey = this.itineraryDetails.visibilityKey;
-      }
-    ));
+          this.itineraryDetails = data;
+          this.visibilityKey = this.itineraryDetails.visibilityKey;
+        })
+    );
+  }
+
+  isVisibilityKeyExpired(visibilityKeyId) {
+    const itineraryVisibilityKey = visibilityKeyId;
+    if (itineraryVisibilityKey) {
+      const visibilityKeyTimeCode = itineraryVisibilityKey.substring(
+        itineraryVisibilityKey.lastIndexOf("p") + 1,
+        itineraryVisibilityKey.lastIndexOf("x")
+      );
+      const timeEllapsed =
+        new Date().getTime() - parseInt(visibilityKeyTimeCode);
+      return HOUR_MILLI_SECONDS - timeEllapsed < 0;
+    }
+    return true;
   }
 
   validateVisibilityKey() {
     if (this.itineraryDetails.visibilityKey) {
-      debugger;
       if (this.visibilityKeyId === this.itineraryDetails.visibilityKey) {
         return true;
       } else {
@@ -81,51 +111,82 @@ export class DetailsComponent implements OnInit, OnDestroy {
     }
   }
 
-  editItinerary() {
-    console.log('Edit has been clicked');
-    this.itineraryService.editItinerary = true;
-    this.itineraryService.itineraryObj = this.itineraryService.getUiItineraryModelFromRaw(this.itineraryDetails);
-    this.router.navigateByUrl('itinerary/edit-itinerary/info');
-  }
-
   toggleLikeItinerary() {
     if (!this.isLikeRequestPending) {
       this.loadingService.enableLoadingMask();
       this.isLikeRequestPending = true;
       const isLiked = this.itineraryLikes.includes(this.userEmail);
       if (isLiked) {
-        this.itineraryService.unlikeItinerary(this.itineraryDetails.id, this.userEmail).subscribe(
-          likeItiData => {
-            console.log('Successfully unliked the itinerary:', likeItiData);
-            this.itineraryService.getItineraryLikes(this.itineraryDetails.id).subscribe(
-              (likeItiUpdateData: any) => {
-                console.log('Itinerary likes:', likeItiUpdateData);
-                this.loadingService.disableLoadingMask();
-                this.itineraryLikes = likeItiUpdateData.listOfUsers;
-              }
-            );
-          }
+        this.subscriptions.add(
+          this.itineraryService
+            .unlikeItinerary(this.itineraryDetails.id, this.userEmail)
+            .subscribe((likeItiData) => {
+              console.log("Successfully unliked the itinerary:", likeItiData);
+              this.itineraryService
+                .getItineraryLikes(this.itineraryDetails.id)
+                .subscribe((likeItiUpdateData: any) => {
+                  console.log("Itinerary likes:", likeItiUpdateData);
+                  this.loadingService.disableLoadingMask();
+                  this.itineraryLikes = likeItiUpdateData.listOfUsers;
+                });
+            })
         );
       } else {
-        this.itineraryService.likeItinerary(this.itineraryDetails.id, this.userEmail).subscribe(
-          likeItiData => {
-            console.log('Successfully liked the itinerary:', likeItiData);
-            this.itineraryService.getItineraryLikes(this.itineraryDetails.id).subscribe(
-              (likeItiUpdateData: any) => {
-                console.log('Itinerary likes:', likeItiUpdateData);
-                this.loadingService.disableLoadingMask();
-                this.itineraryLikes = likeItiUpdateData.listOfUsers;
-              }
-            );
-          }
+        this.subscriptions.add(
+          this.itineraryService
+            .likeItinerary(this.itineraryDetails.id, this.userEmail)
+            .subscribe((likeItiData) => {
+              console.log("Successfully liked the itinerary:", likeItiData);
+              this.itineraryService
+                .getItineraryLikes(this.itineraryDetails.id)
+                .subscribe((likeItiUpdateData: any) => {
+                  console.log("Itinerary likes:", likeItiUpdateData);
+                  this.loadingService.disableLoadingMask();
+                  this.itineraryLikes = likeItiUpdateData.listOfUsers;
+                });
+            })
         );
       }
     }
     this.isLikeRequestPending = false;
   }
 
+  getNewKey(): string {
+    console.log("generating new key");
+    const newVisibilityKey = `p${new Date().getTime().toString()}x`;
+    console.log("newly generated key:", newVisibilityKey);
+    return newVisibilityKey;
+  }
+
+  updateItinerary(): void {
+    if (this.isVisibilityKeyExpired(this.itineraryDetails.visibilityKey)) {
+      const itinerary = cloneDeep(this.itineraryDetails);
+      // the _id property needs to be deleted in order for Mongo to work as expected
+      itinerary.destinations.forEach(dest => {
+        delete dest["_id"];
+      });
+      debugger;
+      itinerary.visibilityKey = this.getNewKey();
+      this.loadingService.enableLoadingMask();
+      this.itineraryService.updateItinerary(itinerary.id, itinerary).subscribe(
+        (data) => {
+          console.log("itinerary has been successfully updated:", data);
+          this.itineraryDetails.visibilityKey = data.visibilityKey;
+          this.loadingService.disableLoadingMask();
+          this.alertsService.success("New Visibility Key has been generated!");
+        },
+        (error) => {
+          console.log("An error occured:", error);
+          this.loadingService.disableLoadingMask();
+          this.alertsService.error(
+            "Sorry, an error occurred. Please try again."
+          );
+        }
+      );
+    }
+  }
+
   ngOnDestroy() {
     this.subscriptions.unsubscribe();
   }
-
 }

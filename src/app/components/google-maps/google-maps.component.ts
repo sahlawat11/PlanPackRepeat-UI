@@ -1,9 +1,9 @@
 /// <reference types='@types/googlemaps' />
-import { Component, OnInit, ViewChild, ElementRef, NgZone, Input } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, NgZone, Input, OnDestroy } from '@angular/core';
 import { MapsAPILoader, MouseEvent, PolylineManager, GoogleMapsAPIWrapper } from '@agm/core';
 import { LoadingService } from '../../shared/loading/loading.service';
 import { ItineraryService } from '../../itinerary/itinerary.service';
-import { Observable, Subject, ReplaySubject } from 'rxjs';
+import { Observable, Subject, ReplaySubject, Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-google-maps',
@@ -11,7 +11,7 @@ import { Observable, Subject, ReplaySubject } from 'rxjs';
   styleUrls: ['./google-maps.component.scss'],
   providers: [PolylineManager, GoogleMapsAPIWrapper],
 })
-export class GoogleMapsComponent implements OnInit {
+export class GoogleMapsComponent implements OnInit, OnDestroy {
   selectedLocations = [];
   selectedMapCoordinates = [];
 
@@ -21,6 +21,7 @@ export class GoogleMapsComponent implements OnInit {
   zoom: number;
   address: string;
   mapLoaded: boolean;
+  componentSubscription = new Subscription();
   private geoCoder: google.maps.Geocoder;
 
   @ViewChild('search', { static: false }) searchElementRef: ElementRef;
@@ -28,7 +29,6 @@ export class GoogleMapsComponent implements OnInit {
 
   constructor(
     private mapsAPILoader: MapsAPILoader,
-    polylineManager: PolylineManager,
     private ngZone: NgZone,
     private loadingService: LoadingService,
     private itineraryService: ItineraryService
@@ -40,7 +40,7 @@ export class GoogleMapsComponent implements OnInit {
   }
 
   initOnSaveEventSubscription(): void {
-    this.itineraryService.onSaveMapsLocationsStream.subscribe(
+    this.componentSubscription.add(this.itineraryService.onSaveMapsLocationsStream.subscribe(
       (data: boolean) => {
         if (!!data) {
           this.loadingService.enableLoadingMask('Saving');
@@ -60,7 +60,7 @@ export class GoogleMapsComponent implements OnInit {
         console.log('Error occurred on save event.', error);
         this.loadingService.disableLoadingMask();
       }
-    );
+    ));
   }
 
   loadGoogleMaps(): void {
@@ -173,7 +173,7 @@ export class GoogleMapsComponent implements OnInit {
       latitude: event.coords.lat,
       longitude: event.coords.lng,
     });
-    this.getAddressFromCoordinates(
+    this.componentSubscription.add(this.getAddressFromCoordinates(
       event.coords.lat,
       event.coords.lng
     ).subscribe((response: string | null) => {
@@ -188,7 +188,7 @@ export class GoogleMapsComponent implements OnInit {
         time: '',
       };
       this.selectedLocations.push(currentAddress);
-    });
+    }));
   }
 
   removeLocation(location: any) {
@@ -200,5 +200,9 @@ export class GoogleMapsComponent implements OnInit {
 
   get savedDestinations() {
     return this.itineraryService.savedDestinations;
+  }
+
+  ngOnDestroy() {
+    this.componentSubscription.unsubscribe();
   }
 }

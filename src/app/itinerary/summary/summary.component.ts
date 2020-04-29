@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { ItineraryService } from '../itinerary.service';
 import { Itinerary } from '../../models/itinerary';
 import { Subscription } from 'rxjs';
@@ -8,7 +8,7 @@ import { Subscription } from 'rxjs';
   templateUrl: './summary.component.html',
   styleUrls: ['./summary.component.scss']
 })
-export class SummaryComponent implements OnInit {
+export class SummaryComponent implements OnInit, OnDestroy {
 
   itineraryobj: Itinerary;
   subscriptions = new Subscription();
@@ -26,6 +26,10 @@ export class SummaryComponent implements OnInit {
         this.itineraryobj = data;
       }
     ));
+  }
+
+  ngOnDestroy() {
+    this.subscriptions.unsubscribe();
   }
 
 }

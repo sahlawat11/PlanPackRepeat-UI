@@ -162,9 +162,9 @@ export class DetailsComponent implements OnInit, OnDestroy {
     if (this.isVisibilityKeyExpired(this.itineraryDetails.visibilityKey)) {
       const itinerary = cloneDeep(this.itineraryDetails);
       // the _id property needs to be deleted in order for Mongo to work as expected
-      itinerary.destinations.forEach(dest => {
-        delete dest["_id"];
-      });
+      // itinerary.destinations.forEach(dest => {
+      //   delete dest["_id"];
+      // });
       debugger;
       itinerary.visibilityKey = this.getNewKey();
       this.loadingService.enableLoadingMask();

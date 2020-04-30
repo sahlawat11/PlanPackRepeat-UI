@@ -54,8 +54,9 @@ export class ItineraryService {
 
   itineraryObj: Itinerary;
 
-  updateTrackerOptions() {
+  updateTrackerOptions(isSuperUser) {
     console.log('Tracker options have been called:', this.trackerOptions);
+    debugger;
     if (this.itineraryObj) {
     for (const option of this.trackerOptions) {
 
@@ -73,12 +74,12 @@ export class ItineraryService {
       if (option.step === 'destinations' && this.itineraryObj.destinations) {
         let isValid = false;
         for (const destination of this.itineraryObj.destinations) {
-          // debugger;
           if (destination.date !== "" &&
               destination.name &&
               destination.source &&
               destination.streetAddress !== '' &&
-              destination.time !== '') {
+              destination.time !== '' &&
+              (isSuperUser && destination.budget > -1) || (!isSuperUser)) {
                 isValid = true;
               } else {
                 isValid = false;
@@ -112,6 +113,7 @@ export class ItineraryService {
   }
 
   broadcastUpdates(itineraryData: any): void {
+    debugger;
     this.itineraryObj = itineraryData;
     this.itinerarySubject.next(itineraryData);
   }
@@ -139,17 +141,16 @@ export class ItineraryService {
         imgUrl: '',
         latitude: destination.latitude ? destination.latitude.toString() : null,
         longitude: destination.longitude ? destination.longitude.toString() : null,
-        source: destination.source
+        source: destination.source,
+        budget: destination.budget
       };
       payload.destinations.push(dest);
     });
-
     return this.httpClient.post(`https://travelapp-boot.cfapps.io/itinerary/createItinerary`, payload);
   }
 
 
   getUiItineraryModelFromRaw(rawItineraryObj: any) {
-    console.log('this is the raw object:', rawItineraryObj);
     const itineraryObjTemp =  {
       info: {
         name: rawItineraryObj.itineraryName,

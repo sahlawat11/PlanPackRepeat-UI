@@ -37,7 +37,7 @@ span {
 }
 
 .red {
-    color: red;
+    color: red !important;
 }
 
 .visibility-container {
@@ -79,6 +79,10 @@ span {
         width: 100%;
       }
     }
+}
+
+.budget {
+  width: 17%;
 }
 
 .previous, .next {

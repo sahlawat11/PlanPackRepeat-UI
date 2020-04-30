@@ -6,6 +6,7 @@ import { LoadingService } from "../../shared/loading/loading.service";
 import { UserService } from "../../services/user.service";
 import { cloneDeep } from "lodash";
 import { ToastrService } from "ngx-toastr";
+import { userInfo } from 'os';
 
 const HOUR_MILLI_SECONDS = 20000;
 
@@ -19,6 +20,7 @@ export class DetailsComponent implements OnInit, OnDestroy {
   itineraryDetails: any;
   isLikeRequestPending: boolean;
   userEmail: string;
+  userInfo: any;
   errorMessage: string;
   visibilityKey: string;
   visibilityKeyId: string;
@@ -39,6 +41,15 @@ export class DetailsComponent implements OnInit, OnDestroy {
     this.subscriptions.add(
       this.userService.userEmailObservable.subscribe((userEmail: string) => {
         this.userEmail = userEmail;
+        this.userService.getUserInfo(this.userEmail).subscribe(
+          userInfo => {
+            this.userInfo = userInfo;
+            this.userService.isSuperUser = userInfo.adminUser;
+          },
+          error => {
+            console.log('Error:', error);
+          }
+        );
         this.subscriptions.add(
           this.activatedRoute.params.subscribe((params: any) => {
             this.itineraryId = params.id;
@@ -162,10 +173,11 @@ export class DetailsComponent implements OnInit, OnDestroy {
     if (this.isVisibilityKeyExpired(this.itineraryDetails.visibilityKey)) {
       const itinerary = cloneDeep(this.itineraryDetails);
       // the _id property needs to be deleted in order for Mongo to work as expected
-      // itinerary.destinations.forEach(dest => {
-      //   delete dest["_id"];
-      // });
-      debugger;
+      itinerary.destinations.forEach(dest => {
+        delete dest["_id"];
+        dest["_id"] = dest["id"];
+        delete dest["id"];
+      });
       itinerary.visibilityKey = this.getNewKey();
       this.loadingService.enableLoadingMask();
       this.itineraryService.updateItinerary(itinerary.id, itinerary).subscribe(

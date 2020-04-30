@@ -34,6 +34,7 @@ export class InfoComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.subscriptions.add(this.itineraryInfoForm.valueChanges.subscribe((data) => {
+      debugger;
       this.updateInput();
       this.isFormValid = this.itineraryInfoForm.valid;
     }));

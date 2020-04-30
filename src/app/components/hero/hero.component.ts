@@ -28,6 +28,7 @@ export class HeroComponent implements OnInit, OnDestroy {
             this.componentSubscription.add(this.userService.getUserInfo(profile.email).subscribe(
               (userData) => {
                 this.alerts.success('Welcome to Plan Pack Repeat!');
+                this.userService.isSuperUser = userData.adminUser;
                 this.loadingService.disableLoadingMask();
               }, (error) => {
                 if (error.status === 404) {

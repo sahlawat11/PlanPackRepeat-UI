@@ -4,7 +4,7 @@ import { Router } from '@angular/router';
 import { ItineraryService } from '../itinerary.service';
 import { Destinations } from '../../models/itinerary';
 import { Subscription } from 'rxjs';
-import { skip } from 'rxjs/operators';
+import { UserService } from '../../services/user.service';
 
 @Component({
   selector: 'app-distinations',
@@ -17,29 +17,40 @@ export class DistinationsComponent implements OnInit, OnDestroy {
     name: new FormControl('', Validators.required),
     streetAddress: new FormControl('', Validators.required),
     date: new FormControl('', Validators.required),
-    time: new FormControl('', Validators.required)
+    time: new FormControl('', Validators.required),
+    budget: new FormControl('', Validators.required)
   });
 
   itineraryUpdateTimeout: any;
   isCollapsed = false;
   destinationsArr: Array<Destinations> = [];
   dialogRef: any;
+  isAdminUser: boolean;
   subscriptions = new Subscription();
 
   constructor(
     private router: Router,
     private itineraryService: ItineraryService,
+    private userService: UserService
   ) {
   }
 
   ngOnInit() {
+    this.userService.getUserInfo(this.userService.userEmail).subscribe(
+      (userInfo) => {
+        this.userService.isSuperUser = userInfo.adminUser;
+        this.isAdminUser = userInfo.adminUser;
+      },
+      (error) => {
+        console.log('Error occured:', error);
+      }
+    );
     this.validateItineraryObj();
     this.subscriptions.add(this.itineraryDestinationsForm.valueChanges.subscribe((data) => {
       this.updateInput();
     }));
     if (this.itineraryService.itineraryObj && this.itineraryService.itineraryObj.destinations) {
       this.itineraryService.savedDestinations = this.itineraryService.itineraryObj.destinations;
-      console.log('THESE ARE THE DESTINATIONS THAT HAVE BEEN SET:', this.itineraryService.savedDestinations);
     }
   }
 
@@ -67,7 +78,8 @@ setItineraryObj() {
       time: '',
       source: 'manual',
       latitude: null,
-      longitude: null
+      longitude: null,
+      budget: 0
     };
     this.itineraryService.savedDestinations.push(destObj);
     this.itineraryService.broadcastUpdates(this.itineraryService.itineraryObj);
@@ -95,6 +107,13 @@ setItineraryObj() {
 
   updateDestinationMetadata(destinationObj: Destinations, attr: string, value) {
     destinationObj[attr] = value;
+  }
+
+  onBudgetChange(value, destinationObj) {
+    console.log('this is the value and destination:', value, destinationObj);
+    if (value > -1) {
+      destinationObj.budget = value;
+    }
   }
 
   get savedDestinations(): Array<Destinations> {

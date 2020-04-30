@@ -77,7 +77,6 @@ export class GoogleMapsComponent implements OnInit, OnDestroy {
       );
       autocomplete.addListener('place_changed', () => {
         this.ngZone.run(() => {
-          console.log('this is running right now');
           // get the place result
           const place: google.maps.places.PlaceResult = autocomplete.getPlace();
           // verify result
@@ -155,7 +154,6 @@ export class GoogleMapsComponent implements OnInit, OnDestroy {
   }
 
   getStreetAddress(locationResults: Array<any>) {
-    console.log('THESE ARE ALL THE LOCATIONS:', locationResults);
     let locationStreetAddress: string;
     if (locationResults.length > 0) {
       for (const location of locationResults) {
@@ -186,6 +184,7 @@ export class GoogleMapsComponent implements OnInit, OnDestroy {
         name: '',
         date: '',
         time: '',
+        budget: 0
       };
       this.selectedLocations.push(currentAddress);
     }));

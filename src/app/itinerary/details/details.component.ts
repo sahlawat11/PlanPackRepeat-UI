@@ -198,6 +198,18 @@ export class DetailsComponent implements OnInit, OnDestroy {
     }
   }
 
+  getTripBudget(): string {
+    let result = '0';
+    if (this.userInfo.adminUser) {
+      this.itineraryDetails.destinations.forEach(destination => {
+        result = (parseInt(this.itineraryDetails.budgetId) + parseInt(destination.budget)).toString();
+      });
+    } else {
+      result = this.itineraryDetails.budgetId;
+    }
+    return result;
+  }
+
   ngOnDestroy() {
     this.subscriptions.unsubscribe();
   }

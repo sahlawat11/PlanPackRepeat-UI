@@ -56,7 +56,6 @@ export class ItineraryService {
 
   updateTrackerOptions(isSuperUser) {
     console.log('Tracker options have been called:', this.trackerOptions);
-    debugger;
     if (this.itineraryObj) {
     for (const option of this.trackerOptions) {
 
@@ -113,12 +112,12 @@ export class ItineraryService {
   }
 
   broadcastUpdates(itineraryData: any): void {
-    debugger;
     this.itineraryObj = itineraryData;
     this.itinerarySubject.next(itineraryData);
   }
 
   saveItinerary(): Observable<any> {
+    debugger;
     const payload: BackendItinerary = {
       itineraryName: this.itineraryObj.info.name,
       startDate: this.itineraryObj.info.startDate,
@@ -146,6 +145,7 @@ export class ItineraryService {
       };
       payload.destinations.push(dest);
     });
+    debugger;
     return this.httpClient.post(`https://travelapp-boot.cfapps.io/itinerary/createItinerary`, payload);
   }
 

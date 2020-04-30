@@ -20,15 +20,18 @@ export class ProgressTrackerComponent implements OnInit, OnDestroy {
   constructor(private itineraryService: ItineraryService, private router: Router, private userService: UserService) { }
 
   ngOnInit() {
-    this.userService.getUserInfo(this.userService.userEmail).subscribe(
-      userInfo => {
-        debugger;
-        this.userService.isSuperUser = userInfo.adminUser;
-        this.userInfo = userInfo;
-        this.init();
-      },
-      error => {
-        console.log('Error:', error);
+    this.userService.userEmailObservable.subscribe(
+      userEmail => {
+        this.userService.getUserInfo(userEmail).subscribe(
+          userInfo => {
+            this.userService.isSuperUser = userInfo.adminUser;
+            this.userInfo = userInfo;
+            this.init();
+          },
+          error => {
+            console.log('Error:', error);
+          }
+        );
       }
     );
     this.initActivateRoute();
@@ -51,7 +54,6 @@ export class ProgressTrackerComponent implements OnInit, OnDestroy {
   init(): void {
     this.subscriptions.add(this.itineraryService.itineraryStream.subscribe(
       (data: Itinerary) => {
-        debugger;
         console.log('These are the updates received: progress tracker', data);
         this.itineraryobj = data;
         this.itineraryService.updateTrackerOptions(this.userInfo.adminUser);

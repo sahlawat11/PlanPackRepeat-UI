@@ -54,7 +54,7 @@ export class ItineraryService {
 
   itineraryObj: Itinerary;
 
-  updateTrackerOptions() {
+  updateTrackerOptions(isSuperUser) {
     console.log('Tracker options have been called:', this.trackerOptions);
     if (this.itineraryObj) {
     for (const option of this.trackerOptions) {
@@ -73,12 +73,12 @@ export class ItineraryService {
       if (option.step === 'destinations' && this.itineraryObj.destinations) {
         let isValid = false;
         for (const destination of this.itineraryObj.destinations) {
-          // debugger;
           if (destination.date !== "" &&
               destination.name &&
               destination.source &&
               destination.streetAddress !== '' &&
-              destination.time !== '') {
+              destination.time !== '' &&
+              (isSuperUser && destination.budget > -1) || (!isSuperUser)) {
                 isValid = true;
               } else {
                 isValid = false;
@@ -113,13 +113,11 @@ export class ItineraryService {
 
   broadcastUpdates(itineraryData: any): void {
     this.itineraryObj = itineraryData;
-    // debugger;
     this.itinerarySubject.next(itineraryData);
   }
 
   saveItinerary(): Observable<any> {
-    console.log('This is the itinerary object:', this.itineraryObj, this.userService.userEmail);
-    // debugger;
+    debugger;
     const payload: BackendItinerary = {
       itineraryName: this.itineraryObj.info.name,
       startDate: this.itineraryObj.info.startDate,
@@ -130,7 +128,7 @@ export class ItineraryService {
       active: true,
       public: this.itineraryObj.info.visiblity === 'Public' ? true : false,
       pictures: this.itineraryObj.photos ? Array.from(this.itineraryObj.photos) : [],
-      visibilityKey: `e${Date.now().toString()}x`
+      visibilityKey: `p${Date.now().toString()}x`
     };
 
     this.itineraryObj.destinations.forEach((destination: Destinations) => {
@@ -142,17 +140,17 @@ export class ItineraryService {
         imgUrl: '',
         latitude: destination.latitude ? destination.latitude.toString() : null,
         longitude: destination.longitude ? destination.longitude.toString() : null,
-        source: destination.source
+        source: destination.source,
+        budget: destination.budget
       };
       payload.destinations.push(dest);
     });
-
+    debugger;
     return this.httpClient.post(`https://travelapp-boot.cfapps.io/itinerary/createItinerary`, payload);
   }
 
 
   getUiItineraryModelFromRaw(rawItineraryObj: any) {
-    console.log('this is the raw object:', rawItineraryObj);
     const itineraryObjTemp =  {
       info: {
         name: rawItineraryObj.itineraryName,

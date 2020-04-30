@@ -1,6 +1,5 @@
-import { Component, OnInit, ViewChild, Input, Output, EventEmitter, AfterViewInit } from '@angular/core';
-import { ReplaySubject } from 'rxjs';
-
+import { Component, OnInit, OnDestroy, ViewChild, Input, Output, EventEmitter, AfterViewInit } from '@angular/core';
+import { ReplaySubject, Subscription } from 'rxjs';
 import { ItineraryService } from '../../itinerary/itinerary.service';
 
 @Component({
@@ -9,12 +8,14 @@ import { ItineraryService } from '../../itinerary/itinerary.service';
   styleUrls: ['./dialog.component.scss']
 })
 
-export class DialogComponent implements OnInit, AfterViewInit {
+export class DialogComponent implements OnInit, AfterViewInit, OnDestroy {
 
   @Output() openDialogEvent = new EventEmitter<any>();
   @Input() content: string;
 
   @ViewChild('googleDialog', {static: false}) googleDialog: any;
+
+  componentSubscription = new Subscription();
 
   public dialogRef: ReplaySubject<boolean> = new ReplaySubject(1);
   dialogRefStream = this.dialogRef.asObservable();
@@ -24,9 +25,9 @@ export class DialogComponent implements OnInit, AfterViewInit {
   constructor(private itineraryService: ItineraryService) { }
 
   ngOnInit() {
-    this.dialogRefStream.subscribe((data: any) => {
+    this.componentSubscription.add(this.dialogRefStream.subscribe((data: any) => {
       this.googleDialogIsOpen = data;
-    });
+    }));
   }
 
   ngAfterViewInit(): void {
@@ -35,6 +36,10 @@ export class DialogComponent implements OnInit, AfterViewInit {
 
   saveMapsDestinations(): void {
     this.itineraryService.onSaveMapsLocationsSubject.next(true);
+  }
+
+  ngOnDestroy() {
+    this.componentSubscription.unsubscribe();
   }
 
 }

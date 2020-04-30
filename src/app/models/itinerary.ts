@@ -22,6 +22,7 @@ export interface Destinations {
     time: string;
     status?: 'travelled' | 'wishlist';
     source?: 'maps' | 'manual';
+    budget?: number
 }
 
 export interface BackendItinerary {
@@ -46,4 +47,5 @@ export interface BackendDestination {
     latitude: string | null;
     longitude: string | null;
     source: string;
+    budget: number;
 }

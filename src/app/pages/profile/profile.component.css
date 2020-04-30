@@ -26,6 +26,18 @@
   float: right;
 }
 
+.super-user-label {
+  border: 1px solid #159eee;
+  color: #159eee;
+  width: 90px;
+  margin: auto;
+  font-size: 12px;
+}
+
+.blue {
+  color: #159eee !important;
+}
+
 .title {
   color: grey;
   font-size: 18px;

@@ -10,6 +10,7 @@ import { map, shareReplay, publishReplay, refCount } from 'rxjs/operators';
 export class UserService {
 
   userEmail: string;
+  isSuperUser: boolean;
   private userEmailUpdate = new ReplaySubject<string>();
   userEmailObservable = this.userEmailUpdate.asObservable();
 

@@ -1,6 +1,6 @@
 <div class="budget-container">
   <div class="budget">
-    Trip Budget:
+    <span *ngIf="userInfo?.adminUser" class="gray">Additional</span> Trip Budget:
     <input
       [ngModel]="tripBudget"
       (ngModelChange)="updateBudget($event)"

@@ -3,6 +3,7 @@ import { ItineraryService } from '../itinerary.service';
 import { Itinerary } from 'src/app/models/itinerary';
 import { Router, NavigationEnd, ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs';
+import { UserService } from '../../services/user.service';
 
 @Component({
   selector: 'app-progress-tracker',
@@ -13,12 +14,26 @@ export class ProgressTrackerComponent implements OnInit, OnDestroy {
 
   itineraryobj: Itinerary;
   orderRoute: string;
+  userInfo: any;
   subscriptions = new Subscription();
 
-  constructor(private itineraryService: ItineraryService, private router: Router, private activatedRoute: ActivatedRoute) { }
+  constructor(private itineraryService: ItineraryService, private router: Router, private userService: UserService) { }
 
   ngOnInit() {
-    this.init();
+    this.userService.userEmailObservable.subscribe(
+      userEmail => {
+        this.userService.getUserInfo(userEmail).subscribe(
+          userInfo => {
+            this.userService.isSuperUser = userInfo.adminUser;
+            this.userInfo = userInfo;
+            this.init();
+          },
+          error => {
+            console.log('Error:', error);
+          }
+        );
+      }
+    );
     this.initActivateRoute();
   }
 
@@ -37,12 +52,11 @@ export class ProgressTrackerComponent implements OnInit, OnDestroy {
   }
 
   init(): void {
-    console.log('THIS IS SET.................');
     this.subscriptions.add(this.itineraryService.itineraryStream.subscribe(
       (data: Itinerary) => {
         console.log('These are the updates received: progress tracker', data);
         this.itineraryobj = data;
-        this.itineraryService.updateTrackerOptions();
+        this.itineraryService.updateTrackerOptions(this.userInfo.adminUser);
       }
     ));
   }

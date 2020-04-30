@@ -26,7 +26,6 @@ export class ProfileCompletionGuard implements CanActivate {
     return true;
     return this.userService.getUserInfo('contact.saransh29@gmail.com').pipe(map(
           localUserInfoRef => {
-            debugger;
             if (!localUserInfoRef.firstName || !localUserInfoRef.lastName) {
               this.navigateToProfilePage()
               return false;
@@ -34,7 +33,6 @@ export class ProfileCompletionGuard implements CanActivate {
             return true;
           },
           error => {
-            debugger;
             this.navigateToProfilePage()
             return false;
           }

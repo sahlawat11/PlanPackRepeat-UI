@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { ItineraryService } from '../itinerary.service';
 import { ToastrService } from 'ngx-toastr';
 import { Subscription } from 'rxjs';
+import { UserService } from '../../services/user.service';
 
 @Component({
   selector: 'app-budget',
@@ -13,11 +14,21 @@ export class BudgetComponent implements OnInit, OnDestroy {
 
   itineraryUpdateTimeout: any;
   tripBudget: number;
+  userInfo: any;
   subscriptions = new Subscription();
 
-  constructor(private itineraryService: ItineraryService, private alertService: ToastrService, private router: Router) { }
+  constructor(private userService: UserService, private itineraryService: ItineraryService, private alertService: ToastrService, private router: Router) { }
 
   ngOnInit() {
+    this.userService.getUserInfo(this.userService.userEmail).subscribe(
+      userInfo => {
+        this.userInfo = userInfo;
+        this.userService.isSuperUser = userInfo.adminUser;
+      },
+      error => {
+        console.log('Error:', error);
+      }
+    );
     this.validateItineraryObj();
     this.tripBudget = this.itineraryService.itineraryObj.budget;
   }

@@ -112,8 +112,8 @@ img:hover {
   margin-bottom: 20px;
   font-size: 75px;
 }
-.fa-smile-o, .fa-user, .fa-floppy-o {
-  color: #777777;
+.fa-smile-o, .fa-user {
+  color: #777777 !important;
 }
 
 a {

@@ -6,7 +6,6 @@ import { LoadingService } from "../../shared/loading/loading.service";
 import { UserService } from "../../services/user.service";
 import { cloneDeep } from "lodash";
 import { ToastrService } from "ngx-toastr";
-import { userInfo } from 'os';
 
 const HOUR_MILLI_SECONDS = 20000;
 
@@ -39,31 +38,28 @@ export class DetailsComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.loadingService.enableLoadingMask();
     this.subscriptions.add(
-      this.userService.userEmailObservable.subscribe((userEmail: string) => {
-        this.userEmail = userEmail;
-        this.userService.getUserInfo(this.userEmail).subscribe(
-          userInfo => {
-            this.userInfo = userInfo;
-            this.userService.isSuperUser = userInfo.adminUser;
-          },
-          error => {
-            console.log('Error:', error);
-          }
-        );
+      this.userService.getUserInfo(this.userEmail).subscribe(
+        (userInfo) => {
+          this.userInfo = userInfo;
+          this.userService.isSuperUser = userInfo.adminUser;
+        },
+        (error) => {
+          console.log("Error:", error);
+        }
+      )
+    );
+    this.subscriptions.add(
+      this.activatedRoute.params.subscribe((params: any) => {
+        this.itineraryId = params.id;
+        this.visibilityKeyId = params.visibilityKey;
+        this.getItineraryDetails();
         this.subscriptions.add(
-          this.activatedRoute.params.subscribe((params: any) => {
-            this.itineraryId = params.id;
-            this.visibilityKeyId = params.visibilityKey;
-            this.getItineraryDetails();
-            this.subscriptions.add(
-              this.itineraryService
-                .getItineraryLikes(this.itineraryId)
-                .subscribe((likeItiUpdateData: any) => {
-                  console.log("Itinerary likes:", likeItiUpdateData);
-                  this.itineraryLikes = likeItiUpdateData.listOfUsers;
-                })
-            );
-          })
+          this.itineraryService
+            .getItineraryLikes(this.itineraryId)
+            .subscribe((likeItiUpdateData: any) => {
+              console.log("Itinerary likes:", likeItiUpdateData);
+              this.itineraryLikes = likeItiUpdateData.listOfUsers;
+            })
         );
       })
     );
@@ -173,7 +169,7 @@ export class DetailsComponent implements OnInit, OnDestroy {
     if (this.isVisibilityKeyExpired(this.itineraryDetails.visibilityKey)) {
       const itinerary = cloneDeep(this.itineraryDetails);
       // the _id property needs to be deleted in order for Mongo to work as expected
-      itinerary.destinations.forEach(dest => {
+      itinerary.destinations.forEach((dest) => {
         delete dest["_id"];
         dest["_id"] = dest["id"];
         delete dest["id"];
@@ -199,10 +195,13 @@ export class DetailsComponent implements OnInit, OnDestroy {
   }
 
   getTripBudget(): string {
-    let result = '0';
+    let result = "0";
     if (this.userInfo.adminUser) {
-      this.itineraryDetails.destinations.forEach(destination => {
-        result = (parseInt(this.itineraryDetails.budgetId) + parseInt(destination.budget)).toString();
+      this.itineraryDetails.destinations.forEach((destination) => {
+        result = (
+          parseInt(this.itineraryDetails.budgetId) +
+          parseInt(destination.budget)
+        ).toString();
       });
     } else {
       result = this.itineraryDetails.budgetId;

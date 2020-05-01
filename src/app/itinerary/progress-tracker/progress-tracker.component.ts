@@ -6,32 +6,31 @@ import { Subscription } from 'rxjs';
 import { UserService } from '../../services/user.service';
 
 @Component({
-  selector: 'app-progress-tracker',
-  templateUrl: './progress-tracker.component.html',
-  styleUrls: ['./progress-tracker.component.scss']
+  selector: "app-progress-tracker",
+  templateUrl: "./progress-tracker.component.html",
+  styleUrls: ["./progress-tracker.component.scss"],
 })
 export class ProgressTrackerComponent implements OnInit, OnDestroy {
-
   itineraryobj: Itinerary;
   orderRoute: string;
   userInfo: any;
   subscriptions = new Subscription();
 
-  constructor(private itineraryService: ItineraryService, private router: Router, private userService: UserService) { }
+  constructor(
+    private itineraryService: ItineraryService,
+    private router: Router,
+    private userService: UserService
+  ) {}
 
   ngOnInit() {
-    this.userService.userEmailObservable.subscribe(
-      userEmail => {
-        this.userService.getUserInfo(userEmail).subscribe(
-          userInfo => {
-            this.userService.isSuperUser = userInfo.adminUser;
-            this.userInfo = userInfo;
-            this.init();
-          },
-          error => {
-            console.log('Error:', error);
-          }
-        );
+    this.userService.getUserInfo(this.userService.userEmail).subscribe(
+      (userInfo) => {
+        this.userService.isSuperUser = userInfo.adminUser;
+        this.userInfo = userInfo;
+        this.init();
+      },
+      (error) => {
+        console.log("Error:", error);
       }
     );
     this.initActivateRoute();
@@ -39,26 +38,28 @@ export class ProgressTrackerComponent implements OnInit, OnDestroy {
 
   initActivateRoute() {
     this.orderRoute = this.router.url;
-    this.subscriptions.add(this.router.events.subscribe((val) => {
-      if (val instanceof NavigationEnd) {
-        this.orderRoute = val.url;
-      }
-  }));
+    this.subscriptions.add(
+      this.router.events.subscribe((val) => {
+        if (val instanceof NavigationEnd) {
+          this.orderRoute = val.url;
+        }
+      })
+    );
   }
 
   goToStep(step: string) {
-    console.log('This has been called', step);
+    console.log("This has been called", step);
     this.router.navigateByUrl(`/itinerary/create-itinerary/${step}`);
   }
 
   init(): void {
-    this.subscriptions.add(this.itineraryService.itineraryStream.subscribe(
-      (data: Itinerary) => {
-        console.log('These are the updates received: progress tracker', data);
+    this.subscriptions.add(
+      this.itineraryService.itineraryStream.subscribe((data: Itinerary) => {
+        console.log("These are the updates received: progress tracker", data);
         this.itineraryobj = data;
         this.itineraryService.updateTrackerOptions(this.userInfo.adminUser);
-      }
-    ));
+      })
+    );
   }
 
   get updatedTrackerOptions() {
@@ -68,5 +69,4 @@ export class ProgressTrackerComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     this.subscriptions.unsubscribe();
   }
-
 }

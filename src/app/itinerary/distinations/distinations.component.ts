@@ -7,18 +7,17 @@ import { Subscription } from 'rxjs';
 import { UserService } from '../../services/user.service';
 
 @Component({
-  selector: 'app-distinations',
-  templateUrl: './distinations.component.html',
-  styleUrls: ['./distinations.component.scss']
+  selector: "app-distinations",
+  templateUrl: "./distinations.component.html",
+  styleUrls: ["./distinations.component.scss"],
 })
 export class DistinationsComponent implements OnInit, OnDestroy {
-
   itineraryDestinationsForm = new FormGroup({
-    name: new FormControl('', Validators.required),
-    streetAddress: new FormControl('', Validators.required),
-    date: new FormControl('', Validators.required),
-    time: new FormControl('', Validators.required),
-    budget: new FormControl('', Validators.required)
+    name: new FormControl("", Validators.required),
+    streetAddress: new FormControl("", Validators.required),
+    date: new FormControl("", Validators.required),
+    time: new FormControl("", Validators.required),
+    budget: new FormControl("", Validators.required),
   });
 
   itineraryUpdateTimeout: any;
@@ -32,24 +31,28 @@ export class DistinationsComponent implements OnInit, OnDestroy {
     private router: Router,
     private itineraryService: ItineraryService,
     private userService: UserService
-  ) {
-  }
+  ) {}
 
   ngOnInit() {
     this.userService.getUserInfo(this.userService.userEmail).subscribe(
       (userInfo) => {
         this.userService.isSuperUser = userInfo.adminUser;
         this.isAdminUser = userInfo.adminUser;
+        this.validateItineraryObj();
       },
       (error) => {
-        console.log('Error occured:', error);
+        console.log("Error occured:", error);
       }
     );
-    this.validateItineraryObj();
-    this.subscriptions.add(this.itineraryDestinationsForm.valueChanges.subscribe((data) => {
-      this.updateInput();
-    }));
-    if (this.itineraryService.itineraryObj && this.itineraryService.itineraryObj.destinations) {
+    this.subscriptions.add(
+      this.itineraryDestinationsForm.valueChanges.subscribe((data) => {
+        this.updateInput();
+      })
+    );
+    if (
+      this.itineraryService.itineraryObj &&
+      this.itineraryService.itineraryObj.destinations
+    ) {
       this.itineraryService.savedDestinations = this.itineraryService.itineraryObj.destinations;
     }
   }
@@ -61,22 +64,27 @@ export class DistinationsComponent implements OnInit, OnDestroy {
     this.itineraryUpdateTimeout = setTimeout(() => {
       this.itineraryUpdateTimeout = null;
       this.setItineraryObj();
-      console.log('Update input has been called:', this.itineraryDestinationsForm.value);
-      this.itineraryService.broadcastUpdates(this.itineraryService.itineraryObj);
-  }, 500);
-}
+      console.log(
+        "Update input has been called:",
+        this.itineraryDestinationsForm.value
+      );
+      this.itineraryService.broadcastUpdates(
+        this.itineraryService.itineraryObj
+      );
+    }, 500);
+  }
 
-setItineraryObj() {
-  this.itineraryService.itineraryObj.destinations = this.itineraryService.savedDestinations;
-}
+  setItineraryObj() {
+    this.itineraryService.itineraryObj.destinations = this.itineraryService.savedDestinations;
+  }
 
   addManualDestination() {
     const destObj: Destinations = {
-      name: '',
-      streetAddress: '',
-      date: '',
-      time: '',
-      source: 'manual',
+      name: "",
+      streetAddress: "",
+      date: "",
+      time: "",
+      source: "manual",
       latitude: null,
       longitude: null,
       budget: 0
@@ -90,9 +98,11 @@ setItineraryObj() {
   }
 
   validateItineraryObj() {
-    if (typeof this.itineraryService.itineraryObj === 'undefined' ||
-    typeof this.itineraryService.itineraryObj.info === 'undefined') {
-      this.router.navigateByUrl('/itinerary/create-itinerary/info');
+    if (
+      typeof this.itineraryService.itineraryObj === "undefined" ||
+      typeof this.itineraryService.itineraryObj.info === "undefined"
+    ) {
+      this.router.navigateByUrl("/itinerary/create-itinerary/info");
     }
   }
 
@@ -101,7 +111,7 @@ setItineraryObj() {
   }
 
   setDialogRef(event) {
-    console.log('this is set', event);
+    console.log("this is set", event);
     this.dialogRef = event;
   }
 
@@ -110,7 +120,7 @@ setItineraryObj() {
   }
 
   onBudgetChange(value, destinationObj) {
-    console.log('this is the value and destination:', value, destinationObj);
+    console.log("this is the value and destination:", value, destinationObj);
     if (value > -1) {
       destinationObj.budget = value;
     }

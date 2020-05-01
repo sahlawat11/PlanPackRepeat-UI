@@ -37,7 +37,10 @@ export class DetailsComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.loadingService.enableLoadingMask();
+    debugger;
     this.subscriptions.add(
+      this.userService.userEmailObservable.subscribe((userEmail: string) => {
+      this.userEmail = userEmail;
       this.userService.getUserInfo(this.userEmail).subscribe(
         (userInfo) => {
           this.userInfo = userInfo;
@@ -47,7 +50,8 @@ export class DetailsComponent implements OnInit, OnDestroy {
           console.log("Error:", error);
         }
       )
-    );
+      }
+    ));
     this.subscriptions.add(
       this.activatedRoute.params.subscribe((params: any) => {
         this.itineraryId = params.id;

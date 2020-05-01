@@ -9,3 +9,6 @@ export const s3Credentials = {
   secretAccessKey: `hp1nvLQfHeC7ximCbj/yDLmoAfHG2FPj6sgevIP8`,
   region: `us-east-1`
 };
+
+// accessKeyId: `AKIA2ETV5OLXRGQROP67`,
+//   secretAccessKey: `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`

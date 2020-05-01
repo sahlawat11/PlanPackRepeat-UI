@@ -24,7 +24,7 @@ export class UploaderService {
       region: s3Credentials.region
     });
     const params = {
-      Bucket: `plan-pack-repeat`,
+      Bucket: `planpackrepeat`,
       Key: file.name,
       Body: file,
       ACL: 'public-read',

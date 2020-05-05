@@ -6,6 +6,7 @@ import { LoadingService } from "../../shared/loading/loading.service";
 import { UserService } from "../../services/user.service";
 import { cloneDeep } from "lodash";
 import { ToastrService } from "ngx-toastr";
+import { AuthService } from 'src/app/auth/auth.service';
 
 const HOUR_MILLI_SECONDS = 20000;
 
@@ -32,19 +33,19 @@ export class DetailsComponent implements OnInit, OnDestroy {
     private activatedRoute: ActivatedRoute,
     private itineraryService: ItineraryService,
     private loadingService: LoadingService,
-    private userService: UserService
+    private userService: UserService,
+    private authService: AuthService
   ) {}
 
   ngOnInit() {
     this.loadingService.enableLoadingMask();
-    debugger;
-    this.subscriptions.add(
-      this.userService.userEmailObservable.subscribe((userEmail: string) => {
-      this.userEmail = userEmail;
+    this.authService.getUser$().subscribe(((userData: any) => {
+      this.userEmail = userData.email;
       this.userService.getUserInfo(this.userEmail).subscribe(
         (userInfo) => {
           this.userInfo = userInfo;
           this.userService.isSuperUser = userInfo.adminUser;
+          this.getItineraryDetails();
         },
         (error) => {
           console.log("Error:", error);
@@ -56,7 +57,6 @@ export class DetailsComponent implements OnInit, OnDestroy {
       this.activatedRoute.params.subscribe((params: any) => {
         this.itineraryId = params.id;
         this.visibilityKeyId = params.visibilityKey;
-        this.getItineraryDetails();
         this.subscriptions.add(
           this.itineraryService
             .getItineraryLikes(this.itineraryId)

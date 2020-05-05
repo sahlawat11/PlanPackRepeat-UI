@@ -4,6 +4,7 @@ import { Itinerary } from 'src/app/models/itinerary';
 import { Router, NavigationEnd, ActivatedRoute } from '@angular/router';
 import { Subscription } from 'rxjs';
 import { UserService } from '../../services/user.service';
+import { AuthService } from 'src/app/auth/auth.service';
 
 @Component({
   selector: "app-progress-tracker",
@@ -14,22 +15,32 @@ export class ProgressTrackerComponent implements OnInit, OnDestroy {
   itineraryobj: Itinerary;
   orderRoute: string;
   userInfo: any;
+  userEmail: string;
   subscriptions = new Subscription();
 
   constructor(
     private itineraryService: ItineraryService,
     private router: Router,
-    private userService: UserService
+    private userService: UserService,
+    private authService: AuthService
   ) {}
 
   ngOnInit() {
-    this.userService.getUserInfo(this.userService.userEmail).subscribe(
-      (userInfo) => {
-        this.userService.isSuperUser = userInfo.adminUser;
-        this.userInfo = userInfo;
-        this.init();
+    this.authService.getUser$().subscribe(
+      data => {
+        this.userEmail = data.email;
+        this.userService.getUserInfo(this.userEmail).subscribe(
+          (userInfo) => {
+            this.userService.isSuperUser = userInfo.adminUser;
+            this.userInfo = userInfo;
+            this.init();
+          },
+          (error) => {
+            console.log("Error:", error);
+          }
+        );
       },
-      (error) => {
+      error => {
         console.log("Error:", error);
       }
     );

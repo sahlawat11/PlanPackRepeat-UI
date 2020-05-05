@@ -117,7 +117,6 @@ export class ItineraryService {
   }
 
   saveItinerary(): Observable<any> {
-    debugger;
     const payload: BackendItinerary = {
       itineraryName: this.itineraryObj.info.name,
       startDate: this.itineraryObj.info.startDate,
@@ -145,7 +144,6 @@ export class ItineraryService {
       };
       payload.destinations.push(dest);
     });
-    debugger;
     return this.httpClient.post(`https://travelapp-boot.cfapps.io/itinerary/createItinerary`, payload);
   }
 

@@ -5,6 +5,7 @@ import { ItineraryService } from '../itinerary.service';
 import { Destinations } from '../../models/itinerary';
 import { Subscription } from 'rxjs';
 import { UserService } from '../../services/user.service';
+import { AuthService } from 'src/app/auth/auth.service';
 
 @Component({
   selector: "app-distinations",
@@ -25,23 +26,33 @@ export class DistinationsComponent implements OnInit, OnDestroy {
   destinationsArr: Array<Destinations> = [];
   dialogRef: any;
   isAdminUser: boolean;
+  userEmail: string;
   subscriptions = new Subscription();
 
   constructor(
     private router: Router,
     private itineraryService: ItineraryService,
-    private userService: UserService
+    private userService: UserService,
+    private authService: AuthService
   ) {}
 
   ngOnInit() {
-    this.userService.getUserInfo(this.userService.userEmail).subscribe(
-      (userInfo) => {
-        this.userService.isSuperUser = userInfo.adminUser;
-        this.isAdminUser = userInfo.adminUser;
-        this.validateItineraryObj();
+    this.authService.getUser$().subscribe(
+      data => {
+        this.userEmail = data.email;
+        this.userService.getUserInfo(this.userEmail).subscribe(
+          (userInfo) => {
+            this.userService.isSuperUser = userInfo.adminUser;
+            this.isAdminUser = userInfo.adminUser;
+            this.validateItineraryObj();
+          },
+          (error) => {
+            console.log("Error occured:", error);
+          }
+        );
       },
-      (error) => {
-        console.log("Error occured:", error);
+      error => {
+        console.log("Error:", error);
       }
     );
     this.subscriptions.add(

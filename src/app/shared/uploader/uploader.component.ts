@@ -50,7 +50,7 @@ export class UploaderComponent implements OnInit {
       region: s3Credentials.region
     });
     const params = {
-      Bucket: `plan-pack-repeat`,
+      Bucket: `planpackrepeat-new`,
       Key: file.name,
       Body: file,
       ACL: 'public-read',

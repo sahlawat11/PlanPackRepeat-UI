@@ -4,6 +4,7 @@ import { ItineraryService } from "../itinerary.service";
 import { ToastrService } from "ngx-toastr";
 import { Subscription } from "rxjs";
 import { UserService } from "../../services/user.service";
+import { AuthService } from 'src/app/auth/auth.service';
 
 @Component({
   selector: "app-budget",
@@ -14,24 +15,34 @@ export class BudgetComponent implements OnInit, OnDestroy {
   itineraryUpdateTimeout: any;
   tripBudget: number;
   userInfo: any;
+  userEmail: string;
   subscriptions = new Subscription();
 
   constructor(
     private userService: UserService,
     private itineraryService: ItineraryService,
     private alertService: ToastrService,
-    private router: Router
+    private router: Router,
+    private authService: AuthService
   ) {}
 
   ngOnInit() {
-    this.userService.getUserInfo(this.userService.userEmail).subscribe(
-      (userInfo) => {
-        this.userInfo = userInfo;
-        this.userService.isSuperUser = userInfo.adminUser;
-        this.validateItineraryObj();
-        this.tripBudget = this.itineraryService.itineraryObj.budget;
+    this.authService.getUser$().subscribe(
+      data => {
+        this.userEmail = data.email;
+        this.userService.getUserInfo(this.userEmail).subscribe(
+          (userInfo) => {
+            this.userInfo = userInfo;
+            this.userService.isSuperUser = userInfo.adminUser;
+            this.validateItineraryObj();
+            this.tripBudget = this.itineraryService.itineraryObj.budget;
+          },
+          (error) => {
+            console.log("Error:", error);
+          }
+        );
       },
-      (error) => {
+      error => {
         console.log("Error:", error);
       }
     );

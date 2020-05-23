@@ -31,7 +31,7 @@ import { DetailsComponent } from './details/details.component';
     NgbModule,
     SharedModule,
     AgmCoreModule.forRoot({
-      apiKey: 'AIzaSyAzdiZyPOCqTWmA8g-WVGYFG5DuDAIsV4I',
+      apiKey: null,  // Google Maps API Key
       libraries: ['places']
     })
   ]

@@ -40,6 +40,7 @@ export class DetailsComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.loadingService.enableLoadingMask();
     this.authService.getUser$().subscribe(((userData: any) => {
+      debugger;
       this.userEmail = userData.email;
       this.userService.getUserInfo(this.userEmail).subscribe(
         (userInfo) => {
